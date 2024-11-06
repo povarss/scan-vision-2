@@ -45,7 +45,7 @@ const updateSelectedOption = value => {
                 v-bind="item.icon"
                 class="text-high-emphasis"
               />
-              <h6 class="text-h6">
+              <h6 class="text-h6 font-weight-bold">
                 {{ item.title }}
               </h6>
 

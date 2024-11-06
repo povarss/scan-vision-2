@@ -1,13 +1,203 @@
 <script setup>
-
-import avatar1 from "@images/avatars/avatar-1.png"
+import userAvatar from '@images/user.png'
+// import avatar1 from "@images/avatars/avatar-1.png"
 
 // const isUserInfoEditDialogVisible = ref(false)
-import miscMaskDark from '@images/Screenshot_1.png'
+// import miscMaskDark from '@images/Screenshot_1.png'
 
+
+
+const isAddPatientVisible = ref(false)
+const inlineRadio = ref('radio-1')
+
+const region = [
+  'Автономна Республіка Крим',
+  'Вінницька',
+  'Волинська',
+  'Дніпропетровська',
+  'Донецька',
+  'Житомирська',
+  'Закарпатська',
+  'Запорізька',
+  'Івано-Франківська',
+  'Київська',
+  'Кіровоградська',
+  'Луганська',
+  'Львівська',
+  'Миколаївська',
+  'Одеська',
+  'Полтавська',
+  'Рівненська',
+  'Сумська',
+  'Тернопільська',
+  'Харківська',
+  'Херсонська',
+  'Хмельницька',
+  'Черкаська',
+  'Чернівецька',
+  'Чернігівська',
+]
+
+const selectedItem = ref(['Новий', ])
+const items = ['Новий', 'Пріоритетний']
+
+
+const isArchiveDialogVisible = ref(false)
 </script>
 
 <template>
+  <VDialog
+    v-model="isArchiveDialogVisible"
+    persistent
+    class="v-dialog-sm"
+  >
+
+
+    <!-- Dialog close btn -->
+    <DialogCloseBtn @click="isArchiveDialogVisible = !isArchiveDialogVisible" />
+
+    <!-- Dialog Content -->
+    <VCard title="Ви впевнені що хочете архівувати користувача?">
+      <VCardText>
+         Після архівації користувача не можна повернути.
+      </VCardText>
+
+      <VCardText class="d-flex justify-end gap-3 flex-wrap">
+        <VBtn
+          color="secondary"
+          variant="tonal"
+          @click="isArchiveDialogVisible = false"
+        >
+          Відмінити
+        </VBtn>
+        <VBtn @click="isArchiveDialogVisible = false">
+          Так, архівувати
+        </VBtn>
+      </VCardText>
+    </VCard>
+  </VDialog>
+
+  <VDialog
+    v-model="isAddPatientVisible"
+    max-width="600"
+  >
+
+
+    <!-- Dialog close btn -->
+    <DialogCloseBtn @click="isAddPatientVisible = !isAddPatientVisible"/>
+
+    <!-- Dialog Content -->
+    <VCard title="Редагувати користувача">
+      <VCardText>
+        <VRow>
+          <VCol
+            cols="12"
+            sm="7"
+          >
+            <AppTextField
+              v-model="firstName"
+              label="ПІБ"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="5"
+
+          >
+            <AppTextField
+              v-model="middleName"
+              label="Телефон"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+
+          >
+            <AppTextField
+              v-model="age"
+              label="Вік"
+              type="number"
+              placeholder="18"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <label class="v-label mb-1 text-body-2 text-wrap" for="app-text-field-Вік-1fk3v" style="line-height: 15px;"
+            > </label>
+            <VRadioGroup
+              v-model="inlineRadio"
+              inline
+            >
+              <VRadio
+                label="Чоловік"
+                value="radio-1"
+              />
+              <VRadio
+                label="Жінка"
+                value="radio-2"
+              />
+            </VRadioGroup>
+          </VCol>
+          <VCol cols="12">
+
+            <AppCombobox
+              v-model="selectedItem"
+              :items="items"
+              placeholder=""
+              label="Теги"
+              multiple
+              chips
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppTextField
+              label="Сфера"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppSelect
+              :items="region"
+              label="Область"
+              placeholder=""
+            />
+          </VCol>
+          <VCol cols="12">
+            <AppTextField
+              label="Клінічний діагноз"
+            />
+          </VCol>
+
+
+
+        </VRow>
+      </VCardText>
+
+      <VCardText class="d-flex justify-end flex-wrap gap-3">
+        <VBtn
+          variant="tonal"
+          color="secondary"
+          @click="isAddPatientVisible = false"
+        >
+          Відмінити
+        </VBtn>
+        <VBtn @click="isAddPatientVisible = false">
+          Зберегти
+        </VBtn>
+      </VCardText>
+    </VCard>
+  </VDialog>
+
+
+
   <VCard class="mb-4">
     <VCardText class=" pt-12">
       <VRow>
@@ -20,7 +210,9 @@ import miscMaskDark from '@images/Screenshot_1.png'
               rounded
               :size="100"
             >
-              <VImg :src="miscMaskDark"/>
+              <VImg :src="userAvatar"/>
+
+
             </VAvatar>
             <div class="d-flex flex-column align-start justify-start ms-4">
               <h5 class="text-h5  ">
@@ -33,14 +225,15 @@ import miscMaskDark from '@images/Screenshot_1.png'
                 <VBtn
                   variant="elevated"
                   visible="true"
+                  @click="isAddPatientVisible = !isAddPatientVisible"
                 >
-                  <!--                  @click="isUserInfoEditDialogV-->
                   Редагувати
                 </VBtn>
 
                 <VBtn
                   variant="tonal"
                   color="error"
+                  @click="isArchiveDialogVisible = !isArchiveDialogVisible"
                 >
                   Архівувати
                 </VBtn>
@@ -112,7 +305,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
           </div>
         </VCol>
         <VCol
-          cols="5"
+          cols="3"
           class="d-flex flex-column align-start justify-start"
         >
           <VList class="card-list mt-2">
@@ -175,6 +368,21 @@ import miscMaskDark from '@images/Screenshot_1.png'
         <VCol
           cols="4"
         >
+          <VList class="card-list mt-2">
+            <VListItem>
+              <VListItemTitle>
+                <h6 class="text-h6 text-left d-flex flex-column">
+
+                  Клінічний діагноз:
+                  <div class="d-inline-block text-body-1 text-capitalize">
+                    Діагноз
+                  </div>
+                </h6>
+              </VListItemTitle>
+            </VListItem>
+
+
+          </VList>
         </VCol>
       </VRow>
     </VCardText>
@@ -183,7 +391,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
   <VRow>
     <VCol cols="6">
       <!-- 👉 User Activity timeline -->
-      <VCard >
+      <VCard>
         <VCardItem class="notification-section">
 
           <div class="d-flex align-center justify-start">
@@ -203,7 +411,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
         </VCardItem>
 
 
-          <VCardText>
+        <VCardText>
           <VTimeline
             side="end"
             align="start"
@@ -221,7 +429,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
                 <span class="app-timeline-title">
                   Результат:   <VChip color="error">20%</VChip>
                 </span>
-                <span class="app-timeline-meta">01.11.2024</span>
+                <span class="app-timeline-meta">12.11.2024</span>
               </div>
 
               <!-- 👉 Content -->
@@ -240,7 +448,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
                 <span class="app-timeline-title">
                   Результат:   <VChip color="primary">50%</VChip>
                 </span>
-                <span class="app-timeline-meta">01.11.2024</span>
+                <span class="app-timeline-meta">10.11.2024</span>
               </div>
 
               <!-- 👉 Content -->
@@ -255,9 +463,9 @@ import miscMaskDark from '@images/Screenshot_1.png'
               <!-- 👉 Header -->
               <div class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2">
                 <span class="app-timeline-title">
-                  Результат:   <VChip>20%</VChip>
+                  Результат:   <VChip color="error">20%</VChip>
                 </span>
-                <span class="app-timeline-meta">01.11.2024</span>
+                <span class="app-timeline-meta">8.11.2024</span>
               </div>
 
               <!-- 👉 Content -->
@@ -274,7 +482,7 @@ import miscMaskDark from '@images/Screenshot_1.png'
                 <span class="app-timeline-title">
                   Результат:   <VChip color="success">100%</VChip>
                 </span>
-                <span class="app-timeline-meta">01.11.2024</span>
+                <span class="app-timeline-meta">7.11.2024</span>
               </div>
 
               <!-- 👉 Content -->

@@ -152,7 +152,7 @@ const resolveUserRoleVariant = role => {
       color: 'primary',
       icon: 'tabler-crown',
     }
-  
+
   return {
     color: 'primary',
     icon: 'tabler-user',
@@ -167,7 +167,7 @@ const resolveUserStatusVariant = stat => {
     return 'success'
   if (statLowerCase === 'inactive')
     return 'secondary'
-  
+
   return 'primary'
 }
 
@@ -184,7 +184,7 @@ const addNewUser = async userData => {
 }
 
 const deleteUser = async id => {
-  await $api(`/apps/users/${ id }`, { method: 'DELETE' })
+  await $api(`/apps/users/${id}`, { method: 'DELETE' })
 
   // Delete from selectedRows
   const index = selectedRows.value.findIndex(row => row === id)
@@ -229,113 +229,267 @@ const widgetData = ref([
     iconColor: 'warning',
   },
 ])
+
+const isAddPatientVisible = ref(false)
+const inlineRadio = ref('radio-1')
+
+const region = [
+  'Автономна Республіка Крим',
+  'Вінницька',
+  'Волинська',
+  'Дніпропетровська',
+  'Донецька',
+  'Житомирська',
+  'Закарпатська',
+  'Запорізька',
+  'Івано-Франківська',
+  'Київська',
+  'Кіровоградська',
+  'Луганська',
+  'Львівська',
+  'Миколаївська',
+  'Одеська',
+  'Полтавська',
+  'Рівненська',
+  'Сумська',
+  'Тернопільська',
+  'Харківська',
+  'Херсонська',
+  'Хмельницька',
+  'Черкаська',
+  'Чернівецька',
+  'Чернігівська',
+]
+
+const selectedItem = ref(['Новий', ])
+const items = ['Новий', 'Пріоритетний']
 </script>
 
 <template>
+  <VDialog
+    v-model="isAddPatientVisible"
+    max-width="600"
+  >
+
+
+    <!-- Dialog close btn -->
+    <DialogCloseBtn @click="isAddPatientVisible = !isAddPatientVisible"/>
+
+    <!-- Dialog Content -->
+    <VCard title="Додати користувача">
+      <VCardText>
+        <VRow>
+          <VCol
+            cols="12"
+            sm="7"
+          >
+            <AppTextField
+              v-model="firstName"
+              label="ПІБ"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="5"
+
+          >
+            <AppTextField
+              v-model="middleName"
+              label="Телефон"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+
+          >
+            <AppTextField
+              v-model="age"
+              label="Вік"
+              type="number"
+              placeholder="18"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <label class="v-label mb-1 text-body-2 text-wrap" for="app-text-field-Вік-1fk3v" style="line-height: 15px;"
+            > </label>
+            <VRadioGroup
+              v-model="inlineRadio"
+              inline
+            >
+              <VRadio
+                label="Чоловік"
+                value="radio-1"
+              />
+              <VRadio
+                label="Жінка"
+                value="radio-2"
+              />
+            </VRadioGroup>
+          </VCol>
+          <VCol cols="12">
+
+            <AppCombobox
+              v-model="selectedItem"
+              :items="items"
+              placeholder=""
+              label="Теги"
+              multiple
+              chips
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppTextField
+              label="Сфера"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+            sm="6"
+          >
+            <AppSelect
+              :items="region"
+              label="Область"
+              placeholder=""
+            />
+          </VCol>
+          <VCol cols="12">
+            <AppTextField
+              label="Клінічний діагноз"
+            />
+          </VCol>
+
+
+
+        </VRow>
+      </VCardText>
+
+      <VCardText class="d-flex justify-end flex-wrap gap-3">
+        <VBtn
+          variant="tonal"
+          color="secondary"
+          @click="isAddPatientVisible = false"
+        >
+          Відмінити
+        </VBtn>
+        <VBtn @click="isAddPatientVisible = false">
+          Додати
+        </VBtn>
+      </VCardText>
+    </VCard>
+  </VDialog>
+
+
   <section>
-<!--    &lt;!&ndash; 👉 Widgets &ndash;&gt;-->
-<!--    <div class="d-flex mb-6">-->
-<!--      <VRow>-->
-<!--        <template-->
-<!--          v-for="(data, id) in widgetData"-->
-<!--          :key="id"-->
-<!--        >-->
-<!--          <VCol-->
-<!--            cols="12"-->
-<!--            md="3"-->
-<!--            sm="6"-->
-<!--          >-->
-<!--            <VCard>-->
-<!--              <VCardText>-->
-<!--                <div class="d-flex justify-space-between">-->
-<!--                  <div class="d-flex flex-column gap-y-1">-->
-<!--                    <div class="text-body-1 text-high-emphasis">-->
-<!--                      {{ data.title }}-->
-<!--                    </div>-->
-<!--                    <div class="d-flex gap-x-2 align-center">-->
-<!--                      <h4 class="text-h4">-->
-<!--                        {{ data.value }}-->
-<!--                      </h4>-->
-<!--                      <div-->
-<!--                        class="text-base"-->
-<!--                        :class="data.change > 0 ? 'text-success' : 'text-error'"-->
-<!--                      >-->
-<!--                        ({{ prefixWithPlus(data.change) }}%)-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="text-sm">-->
-<!--                      {{ data.desc }}-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <VAvatar-->
-<!--                    :color="data.iconColor"-->
-<!--                    variant="tonal"-->
-<!--                    rounded-->
-<!--                    size="42"-->
-<!--                  >-->
-<!--                    <VIcon-->
-<!--                      :icon="data.icon"-->
-<!--                      size="26"-->
-<!--                    />-->
-<!--                  </VAvatar>-->
-<!--                </div>-->
-<!--              </VCardText>-->
-<!--            </VCard>-->
-<!--          </VCol>-->
-<!--        </template>-->
-<!--      </VRow>-->
-<!--    </div>-->
+    <!--    &lt;!&ndash; 👉 Widgets &ndash;&gt;-->
+    <!--    <div class="d-flex mb-6">-->
+    <!--      <VRow>-->
+    <!--        <template-->
+    <!--          v-for="(data, id) in widgetData"-->
+    <!--          :key="id"-->
+    <!--        >-->
+    <!--          <VCol-->
+    <!--            cols="12"-->
+    <!--            md="3"-->
+    <!--            sm="6"-->
+    <!--          >-->
+    <!--            <VCard>-->
+    <!--              <VCardText>-->
+    <!--                <div class="d-flex justify-space-between">-->
+    <!--                  <div class="d-flex flex-column gap-y-1">-->
+    <!--                    <div class="text-body-1 text-high-emphasis">-->
+    <!--                      {{ data.title }}-->
+    <!--                    </div>-->
+    <!--                    <div class="d-flex gap-x-2 align-center">-->
+    <!--                      <h4 class="text-h4">-->
+    <!--                        {{ data.value }}-->
+    <!--                      </h4>-->
+    <!--                      <div-->
+    <!--                        class="text-base"-->
+    <!--                        :class="data.change > 0 ? 'text-success' : 'text-error'"-->
+    <!--                      >-->
+    <!--                        ({{ prefixWithPlus(data.change) }}%)-->
+    <!--                      </div>-->
+    <!--                    </div>-->
+    <!--                    <div class="text-sm">-->
+    <!--                      {{ data.desc }}-->
+    <!--                    </div>-->
+    <!--                  </div>-->
+    <!--                  <VAvatar-->
+    <!--                    :color="data.iconColor"-->
+    <!--                    variant="tonal"-->
+    <!--                    rounded-->
+    <!--                    size="42"-->
+    <!--                  >-->
+    <!--                    <VIcon-->
+    <!--                      :icon="data.icon"-->
+    <!--                      size="26"-->
+    <!--                    />-->
+    <!--                  </VAvatar>-->
+    <!--                </div>-->
+    <!--              </VCardText>-->
+    <!--            </VCard>-->
+    <!--          </VCol>-->
+    <!--        </template>-->
+    <!--      </VRow>-->
+    <!--    </div>-->
 
     <VCard class="mb-6">
       <VCardItem class="pb-4">
         <VCardTitle>Користувачі</VCardTitle>
       </VCardItem>
 
-<!--      <VCardText>-->
-<!--        <VRow>-->
-<!--          &lt;!&ndash; 👉 Select Role &ndash;&gt;-->
-<!--          <VCol-->
-<!--            cols="12"-->
-<!--            sm="4"-->
-<!--          >-->
-<!--            <AppSelect-->
-<!--              v-model="selectedRole"-->
-<!--              placeholder="Select Role"-->
-<!--              :items="roles"-->
-<!--              clearable-->
-<!--              clear-icon="tabler-x"-->
-<!--            />-->
-<!--          </VCol>-->
-<!--          &lt;!&ndash; 👉 Select Plan &ndash;&gt;-->
-<!--          <VCol-->
-<!--            cols="12"-->
-<!--            sm="4"-->
-<!--          >-->
-<!--            <AppSelect-->
-<!--              v-model="selectedPlan"-->
-<!--              placeholder="Select Plan"-->
-<!--              :items="plans"-->
-<!--              clearable-->
-<!--              clear-icon="tabler-x"-->
-<!--            />-->
-<!--          </VCol>-->
-<!--          &lt;!&ndash; 👉 Select Status &ndash;&gt;-->
-<!--          <VCol-->
-<!--            cols="12"-->
-<!--            sm="4"-->
-<!--          >-->
-<!--            <AppSelect-->
-<!--              v-model="selectedStatus"-->
-<!--              placeholder="Select Status"-->
-<!--              :items="status"-->
-<!--              clearable-->
-<!--              clear-icon="tabler-x"-->
-<!--            />-->
-<!--          </VCol>-->
-<!--        </VRow>-->
-<!--      </VCardText>-->
+      <!--      <VCardText>-->
+      <!--        <VRow>-->
+      <!--          &lt;!&ndash; 👉 Select Role &ndash;&gt;-->
+      <!--          <VCol-->
+      <!--            cols="12"-->
+      <!--            sm="4"-->
+      <!--          >-->
+      <!--            <AppSelect-->
+      <!--              v-model="selectedRole"-->
+      <!--              placeholder="Select Role"-->
+      <!--              :items="roles"-->
+      <!--              clearable-->
+      <!--              clear-icon="tabler-x"-->
+      <!--            />-->
+      <!--          </VCol>-->
+      <!--          &lt;!&ndash; 👉 Select Plan &ndash;&gt;-->
+      <!--          <VCol-->
+      <!--            cols="12"-->
+      <!--            sm="4"-->
+      <!--          >-->
+      <!--            <AppSelect-->
+      <!--              v-model="selectedPlan"-->
+      <!--              placeholder="Select Plan"-->
+      <!--              :items="plans"-->
+      <!--              clearable-->
+      <!--              clear-icon="tabler-x"-->
+      <!--            />-->
+      <!--          </VCol>-->
+      <!--          &lt;!&ndash; 👉 Select Status &ndash;&gt;-->
+      <!--          <VCol-->
+      <!--            cols="12"-->
+      <!--            sm="4"-->
+      <!--          >-->
+      <!--            <AppSelect-->
+      <!--              v-model="selectedStatus"-->
+      <!--              placeholder="Select Status"-->
+      <!--              :items="status"-->
+      <!--              clearable-->
+      <!--              clear-icon="tabler-x"-->
+      <!--            />-->
+      <!--          </VCol>-->
+      <!--        </VRow>-->
+      <!--      </VCardText>-->
 
-      <VDivider />
+      <VDivider/>
 
       <VCardText class="d-flex flex-wrap gap-4">
         <div class="me-3 d-flex gap-3">
@@ -352,7 +506,7 @@ const widgetData = ref([
             @update:model-value="itemsPerPage = parseInt($event, 10)"
           />
         </div>
-        <VSpacer />
+        <VSpacer/>
 
         <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
           <!-- 👉 Search  -->
@@ -363,26 +517,26 @@ const widgetData = ref([
             />
           </div>
 
-<!--          &lt;!&ndash; 👉 Export button &ndash;&gt;-->
-<!--          <VBtn-->
-<!--            variant="tonal"-->
-<!--            color="secondary"-->
-<!--            prepend-icon="tabler-upload"-->
-<!--          >-->
-<!--            Export-->
-<!--          </VBtn>-->
+          <!--          &lt;!&ndash; 👉 Export button &ndash;&gt;-->
+          <!--          <VBtn-->
+          <!--            variant="tonal"-->
+          <!--            color="secondary"-->
+          <!--            prepend-icon="tabler-upload"-->
+          <!--          >-->
+          <!--            Export-->
+          <!--          </VBtn>-->
 
           <!-- 👉 Add user button -->
           <VBtn
             prepend-icon="tabler-plus"
-            @click="isAddNewUserDrawerVisible = true"
+            @click="isAddPatientVisible = true"
           >
             Додати користувача
           </VBtn>
         </div>
       </VCardText>
 
-      <VDivider />
+      <VDivider/>
 
       <!-- SECTION datatable -->
       <VDataTableServer
@@ -400,29 +554,30 @@ const widgetData = ref([
         <!-- User -->
         <template #item.user="{ item }">
           <div class="d-flex align-center gap-x-4">
-            <VAvatar
-              size="34"
-              :variant="!item.avatar ? 'tonal' : undefined"
-              :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"
-            >
-              <VImg
-                v-if="item.avatar"
-                :src="item.avatar"
-              />
-              <span v-else>{{ avatarText(item.fullName) }}</span>
-            </VAvatar>
+            <!--            <VAvatar-->
+            <!--              size="34"-->
+            <!--              :variant="!item.avatar ? 'tonal' : undefined"-->
+            <!--              :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"-->
+            <!--            >-->
+            <!--              <VImg-->
+            <!--                v-if="item.avatar"-->
+            <!--                :src="item.avatar"-->
+            <!--              />-->
+            <!--              <span v-else>{{ avatarText(item.fullName) }}</span>-->
+            <!--            </VAvatar>-->
             <div class="d-flex flex-column">
               <h6 class="text-base">
+
                 <RouterLink
-                  :to="{ name: 'apps-user-view-id', params: { id: item.id } }"
+                  :to="{ name: 'apps-user-card', params: { id: item.id } }"
                   class="font-weight-medium text-link"
                 >
                   {{ item.fullName }}
                 </RouterLink>
               </h6>
-<!--              <div class="text-sm">-->
-<!--                {{ item.email }}-->
-<!--              </div>-->
+              <!--              <div class="text-sm">-->
+              <!--                {{ item.email }}-->
+              <!--              </div>-->
             </div>
           </div>
         </template>
@@ -430,11 +585,11 @@ const widgetData = ref([
         <!-- 👉 Role -->
         <template #item.role="{ item }">
           <div class="d-flex align-center gap-x-2">
-<!--            <VIcon-->
-<!--              :size="22"-->
-<!--              :icon="resolveUserRoleVariant(item.role).icon"-->
-<!--              :color="resolveUserRoleVariant(item.role).color"-->
-<!--            />-->
+            <!--            <VIcon-->
+            <!--              :size="22"-->
+            <!--              :icon="resolveUserRoleVariant(item.role).icon"-->
+            <!--              :color="resolveUserRoleVariant(item.role).color"-->
+            <!--            />-->
 
             <div class="text-capitalize text-high-emphasis text-body-1">
               +380508465681
@@ -452,52 +607,52 @@ const widgetData = ref([
         <!-- Status -->
         <template #item.billing="{ item }">
 
-            Неглет тест (70%)
+          Неглет тест (70%)
 
         </template>
 
         <!-- Actions -->
         <template #item.actions="{ item }">
           <IconBtn @click="deleteUser(item.id)">
-            <VIcon icon="tabler-trash" />
+            <VIcon icon="tabler-trash"/>
           </IconBtn>
 
           <IconBtn>
-            <VIcon icon="tabler-eye" />
+            <VIcon icon="tabler-eye"/>
           </IconBtn>
 
-<!--          <VBtn-->
-<!--            icon-->
-<!--            variant="text"-->
-<!--            color="medium-emphasis"-->
-<!--          >-->
-<!--            <VIcon icon="tabler-dots-vertical" />-->
-<!--            <VMenu activator="parent">-->
-<!--              <VList>-->
-<!--                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.id } }">-->
-<!--                  <template #prepend>-->
-<!--                    <VIcon icon="tabler-eye" />-->
-<!--                  </template>-->
+          <!--          <VBtn-->
+          <!--            icon-->
+          <!--            variant="text"-->
+          <!--            color="medium-emphasis"-->
+          <!--          >-->
+          <!--            <VIcon icon="tabler-dots-vertical" />-->
+          <!--            <VMenu activator="parent">-->
+          <!--              <VList>-->
+          <!--                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.id } }">-->
+          <!--                  <template #prepend>-->
+          <!--                    <VIcon icon="tabler-eye" />-->
+          <!--                  </template>-->
 
-<!--                  <VListItemTitle>View</VListItemTitle>-->
-<!--                </VListItem>-->
+          <!--                  <VListItemTitle>View</VListItemTitle>-->
+          <!--                </VListItem>-->
 
-<!--                <VListItem link>-->
-<!--                  <template #prepend>-->
-<!--                    <VIcon icon="tabler-pencil" />-->
-<!--                  </template>-->
-<!--                  <VListItemTitle>Edit</VListItemTitle>-->
-<!--                </VListItem>-->
+          <!--                <VListItem link>-->
+          <!--                  <template #prepend>-->
+          <!--                    <VIcon icon="tabler-pencil" />-->
+          <!--                  </template>-->
+          <!--                  <VListItemTitle>Edit</VListItemTitle>-->
+          <!--                </VListItem>-->
 
-<!--                <VListItem @click="deleteUser(item.id)">-->
-<!--                  <template #prepend>-->
-<!--                    <VIcon icon="tabler-trash" />-->
-<!--                  </template>-->
-<!--                  <VListItemTitle>Delete</VListItemTitle>-->
-<!--                </VListItem>-->
-<!--              </VList>-->
-<!--            </VMenu>-->
-<!--          </VBtn>-->
+          <!--                <VListItem @click="deleteUser(item.id)">-->
+          <!--                  <template #prepend>-->
+          <!--                    <VIcon icon="tabler-trash" />-->
+          <!--                  </template>-->
+          <!--                  <VListItemTitle>Delete</VListItemTitle>-->
+          <!--                </VListItem>-->
+          <!--              </VList>-->
+          <!--            </VMenu>-->
+          <!--          </VBtn>-->
         </template>
 
         <!-- pagination -->
@@ -514,9 +669,9 @@ const widgetData = ref([
     <!-- 👉 Add New User -->
 
 
-    <AddNewUserDrawer
-      v-model:isDrawerOpen="isAddNewUserDrawerVisible"
-      @user-data="addNewUser"
-    />
+    <!--    <AddNewUserDrawer-->
+    <!--      v-model:isDrawerOpen="isAddNewUserDrawerVisible"-->
+    <!--      @user-data="addNewUser"-->
+    <!--    />-->
   </section>
 </template>

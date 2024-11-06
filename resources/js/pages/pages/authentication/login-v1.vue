@@ -93,7 +93,7 @@ const isPasswordVisible = ref(false)
                 <div class="d-flex align-center justify-space-between flex-wrap my-6">
                   <VCheckbox
                     v-model="form.remember"
-                    label="Remember me"
+                    label="Запам'ятати мене"
                   />
 
                 </div>
@@ -103,7 +103,7 @@ const isPasswordVisible = ref(false)
                   block
                   type="submit"
                 >
-                  Login
+                  Вхід
                 </VBtn>
               </VCol>
 
