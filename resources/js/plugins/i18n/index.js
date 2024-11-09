@@ -11,11 +11,11 @@ export const getI18n = () => {
     _i18n = createI18n({
       legacy: false,
       locale: cookieRef('language', themeConfig.app.i18n.defaultLocale).value,
-      fallbackLocale: 'en',
+      fallbackLocale: 'ua',
       messages,
     })
   }
-  
+
   return _i18n
 }
 export default function (app) {

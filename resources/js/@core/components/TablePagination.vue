@@ -27,7 +27,7 @@ const updatePage = value => {
 
     <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 px-6 py-3">
       <p class="text-disabled mb-0">
-        {{ paginationMeta({ page, itemsPerPage }, totalItems) }}
+        {{ $t("paginationMeta",paginationMeta({ page, itemsPerPage }, totalItems)) }}
       </p>
 
       <VPagination

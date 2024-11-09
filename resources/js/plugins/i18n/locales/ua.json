@@ -165,7 +165,7 @@
   "100": "100",
   "$vuetify": {
     "badge": "Badge",
-    "noDataText": "No data available",
+    "noDataText": "Нет данных",
     "close": "Close",
     "open": "open",
     "loading": "loading",
@@ -210,5 +210,5 @@
       }
     }
   },
-  "paginationMeta": "EN Showing {start} to {end} of {total} entries"
+  "paginationMeta": "Показано {start} до {end} із {total} записів"
 }
