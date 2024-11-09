@@ -11,11 +11,9 @@ export const redirects = [
       // TODO: Get type from backend
       const userData = useCookie('userData')
       const userRole = userData.value?.role
-      if (userRole === 'admin')
-        return { name: 'dashboards-crm' }
-      if (userRole === 'client')
-        return { name: 'access-control' }
-      
+      if (userRole)
+        return { name: 'patients' }
+
       return { name: 'login', query: to.query }
     },
   },

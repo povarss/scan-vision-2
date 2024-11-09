@@ -34,7 +34,7 @@ export const handlerAuth = [
     else {
       errors = { email: ['Invalid email or password'] }
     }
-    
+
     return HttpResponse.json({ errors }, { status: 400 })
   }),
 ]
