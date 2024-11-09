@@ -13,6 +13,7 @@ import NavBarI18n from '@core/components/I18n.vue'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
+const hidePanels = true;
 </script>
 
 <template>
@@ -31,17 +32,17 @@ import { VerticalNavLayout } from '@layouts'
           />
         </IconBtn>
 
-        <NavSearchBar class="ms-lg-n3" />
+        <NavSearchBar class="ms-lg-n3" v-if="!hidePanels" />
 
         <VSpacer />
 
         <NavBarI18n
-          v-if="themeConfig.app.i18n.enable && themeConfig.app.i18n.langConfig?.length"
+          v-if="themeConfig.app.i18n.enable && themeConfig.app.i18n.langConfig?.length && !hidePanels"
           :languages="themeConfig.app.i18n.langConfig"
         />
-        <NavbarThemeSwitcher />
-        <NavbarShortcuts />
-        <NavBarNotifications class="me-1" />
+        <NavbarThemeSwitcher v-if="!hidePanels" />
+        <NavbarShortcuts v-if="!hidePanels"/>
+        <NavBarNotifications class="me-1" v-if="!hidePanels" />
         <UserProfile />
       </div>
     </template>
