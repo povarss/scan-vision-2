@@ -78,7 +78,7 @@ const returnToPatientList = () => {
                 <VAvatar
                   :size="40"
                   rounded
-                  color="primary"
+                  :color="patientData.gender === 0 ? 'error' : 'primary'"
                   variant="tonal"
                   class="me-4"
                 >
@@ -270,9 +270,4 @@ const returnToPatientList = () => {
       </VCard>
     </VCol>
   </VRow>
-
-  <!-- 👉 Edit user info dialog -->
-  <!--  <UserInfoEditDialog-->
-  <!--    v-model:isDialogVisible="isUserInfoEditDialogVisible"-->
-  <!--  />-->
 </template>
