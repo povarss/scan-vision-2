@@ -13,6 +13,7 @@ const selectedRows = ref([]);
 const isAddPatientVisible = ref(false);
 const patientId = ref(null);
 const showActionButtons = ref(false);
+const router = useRouter();
 
 const updateOptions = (options) => {
   sortBy.value = options.sortBy[0]?.key;
@@ -79,13 +80,18 @@ const deleteUser = async (id) => {
   // Refetch User
   fetchPatients();
 };
+
+const afterSave = (patientId) => {
+  fetchPatients();
+  router.push({ name: "patients-card-id", params: { id: patientId } });
+};
 </script>
 
 <template>
   <AddEditPatientDialog
     :id="patientId"
     v-model:is-dialog-visible="isAddPatientVisible"
-    @saved="fetchPatients"
+    @saved="afterSave"
   />
 
   <section>
@@ -156,7 +162,7 @@ const deleteUser = async (id) => {
             <div class="d-flex flex-column">
               <h6 class="text-base">
                 <RouterLink
-                  :to="{ name: 'patients-card', params: { id: item.id } }"
+                  :to="{ name: 'patients-card-id', params: { id: item.id } }"
                   class="font-weight-medium text-link"
                 >
                   {{ item.full_name }}

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('region_id')->nullable();
             $table->string('field')->nullable();
             $table->text('clinic_diagnose')->nullable();
+            $table->boolean('is_archived')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

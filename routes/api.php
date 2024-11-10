@@ -15,6 +15,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('patient')->group(function () {
         Route::get('/', [PatientController::class, 'list']);
         Route::post('/', [PatientController::class, 'store']);
+        Route::post('/archive', [PatientController::class, 'archive']);
+        Route::get('/{patient}', [PatientController::class, 'get']);
     });
 
     // Add other protected routes here

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
+use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use App\Models\Tag;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -16,7 +17,9 @@ class PatientController extends Controller
     // Register a new user
     public function list(Request $request)
     {
-        $model = Patient::query();
+        $model = Patient::query()
+            ->where('doctor_id', Auth::id())
+            ->where('is_archived', 0);
 
         if (!empty($request->q)) {
             $model->where(function (Builder $query) use ($request) {
@@ -35,14 +38,16 @@ class PatientController extends Controller
             ->toJson();
     }
 
-    public function store(StorePatientRequest $request,)
+    public function store(StorePatientRequest $request)
     {
         $fields = $request->validated();
         $fields['doctor_id'] = Auth::id();
         DB::beginTransaction();
 
 
-        $patient = Patient::create($fields);
+        $patient = !empty($request->id) ? Patient::findOrFail($request->id) : new Patient();
+        $patient->fill($fields);
+        $patient->save();
 
         $tagIds  = [];
         if (!empty($request->tags)) {
@@ -66,6 +71,18 @@ class PatientController extends Controller
         return response()->json([
             'message' => 'Patient created successfully',
             'patient' => $patient
-        ], 201);
+        ]);
+    }
+
+    public function archive(Request $request)
+    {
+        $patient = Patient::findOrFail($request->id);
+        $patient->archive();
+        return response()->noContent();
+    }
+
+    public function get(Patient $patient)
+    {
+        return new PatientResource($patient);
     }
 }

@@ -3,7 +3,7 @@ import { VForm } from "vuetify/components/VForm";
 
 const props = defineProps({
   id: {
-    type: String,
+    type: [String, Number],
     required: false,
     default: () => null,
   },
@@ -59,9 +59,9 @@ const formReset = () => {
   errors.value = {};
 };
 
-const afterSave = () => {
+const afterSave = (patientId) => {
   formReset();
-  emit("saved");
+  emit("saved", patientId);
   emit("update:isDialogVisible", false);
 };
 
@@ -77,7 +77,7 @@ const store = async () => {
     });
 
     if (res.patient) {
-      afterSave();
+      afterSave(res.patient.id);
     }
   } catch (err) {
     console.error(err);
@@ -94,11 +94,25 @@ const onReset = () => {
   formReset();
 };
 
+const loadPatientData = async (id) => {
+  const { data } = await useApi(`/patient/${id}`);
+  if (data.value) {
+    const patientData = data.value.data;
+    patient.value = {
+      ...patientData,
+      tags: patientData.tags.map((v) => v.label),
+    };
+  }
+};
+
 watch(
   () => props.isDialogVisible,
   () => {
     if (props.isDialogVisible) {
       loadReferences();
+      if (props.id) {
+        loadPatientData(props.id);
+      }
     }
   }
 );
@@ -115,7 +129,7 @@ watch(
 
     <!-- Dialog Content -->
     <VForm ref="refPatientForm" @submit.prevent="onSubmit">
-      <VCard :title="$t('patient.addNew')">
+      <VCard :title="$t('patient.' + (props.id ? 'editTitle' : 'addTitle'))">
         <VCardText>
           <VRow>
             <VCol cols="12" sm="7">
@@ -203,7 +217,9 @@ watch(
           <VBtn variant="tonal" color="secondary" @click="onReset">
             {{ $t("btnLabel.cancel") }}
           </VBtn>
-          <VBtn @click="onSubmit"> {{ $t("btnLabel.add") }} </VBtn>
+          <VBtn @click="onSubmit">
+            {{ $t("btnLabel." + (props.id ? "save" : "add")) }}
+          </VBtn>
         </VCardText>
       </VCard>
     </VForm>

@@ -30,4 +30,15 @@ class Patient extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function region()
+    {
+        return $this->belongsTo(Reference::class)->where('key_', Reference::KEY_REGION);
+    }
+
+    public function archive()
+    {
+        $this->is_archived = 1;
+        $this->save();
+    }
 }
