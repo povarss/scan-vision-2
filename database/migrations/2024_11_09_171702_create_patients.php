@@ -28,10 +28,10 @@ return new class extends Migration
             $table->id();
             $table->string('label');
         });
-        Schema::create('patient_tags', function (Blueprint $table) {
+        Schema::create('patient_tag', function (Blueprint $table) {
             $table->id();
-            $table->integer('patient_id');
-            $table->string('tag_id');
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
         });
         Schema::create('references', function (Blueprint $table) {
             $table->id();
@@ -49,7 +49,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('patients');
         Schema::dropIfExists('tags');
-        Schema::dropIfExists('patient_tags');
+        Schema::dropIfExists('patient_tag');
         Schema::dropIfExists('references');
     }
 };

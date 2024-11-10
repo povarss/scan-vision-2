@@ -1,5 +1,5 @@
 <script setup>
-import AddNewPatientDrawer from "@/views/apps/patient/list/AddNewPatientDrawer.vue";
+import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue";
 
 // 👉 Store
 const searchQuery = ref("");
@@ -10,6 +10,9 @@ const page = ref(1);
 const sortBy = ref();
 const orderBy = ref();
 const selectedRows = ref([]);
+const isAddPatientVisible = ref(false);
+const patientId = ref(null);
+const showActionButtons = ref(false);
 
 const updateOptions = (options) => {
   sortBy.value = options.sortBy[0]?.key;
@@ -41,7 +44,7 @@ const headers = [
   },
 ];
 
-const { data: usersData, execute: fetchUsers } = await useApi(
+const { data: usersData, execute: fetchPatients } = await useApi(
   createUrl("/patient", {
     query: {
       q: searchQuery,
@@ -56,109 +59,6 @@ const { data: usersData, execute: fetchUsers } = await useApi(
 const users = computed(() => usersData.value.data);
 const totalUsers = computed(() => usersData.value.recordsTotal);
 
-// 👉 search filters
-const roles = [
-  {
-    title: "Admin",
-    value: "admin",
-  },
-  {
-    title: "Author",
-    value: "author",
-  },
-  {
-    title: "Editor",
-    value: "editor",
-  },
-  {
-    title: "Maintainer",
-    value: "maintainer",
-  },
-  {
-    title: "Subscriber",
-    value: "subscriber",
-  },
-];
-
-const plans = [
-  {
-    title: "Basic",
-    value: "basic",
-  },
-  {
-    title: "Company",
-    value: "company",
-  },
-  {
-    title: "Enterprise",
-    value: "enterprise",
-  },
-  {
-    title: "Team",
-    value: "team",
-  },
-];
-
-const status = [
-  {
-    title: "Pending",
-    value: "pending",
-  },
-  {
-    title: "Active",
-    value: "active",
-  },
-  {
-    title: "Inactive",
-    value: "inactive",
-  },
-];
-
-const resolveUserRoleVariant = (role) => {
-  const roleLowerCase = role.toLowerCase();
-  if (roleLowerCase === "subscriber")
-    return {
-      color: "success",
-      icon: "tabler-user",
-    };
-  if (roleLowerCase === "author")
-    return {
-      color: "error",
-      icon: "tabler-device-desktop",
-    };
-  if (roleLowerCase === "maintainer")
-    return {
-      color: "info",
-      icon: "tabler-chart-pie",
-    };
-  if (roleLowerCase === "editor")
-    return {
-      color: "warning",
-      icon: "tabler-edit",
-    };
-  if (roleLowerCase === "admin")
-    return {
-      color: "primary",
-      icon: "tabler-crown",
-    };
-
-  return {
-    color: "primary",
-    icon: "tabler-user",
-  };
-};
-
-const resolveUserStatusVariant = (stat) => {
-  const statLowerCase = stat.toLowerCase();
-  if (statLowerCase === "pending") return "warning";
-  if (statLowerCase === "active") return "success";
-  if (statLowerCase === "inactive") return "secondary";
-
-  return "primary";
-};
-
-const isAddNewUserDrawerVisible = ref(false);
-
 const addNewUser = async (userData) => {
   await $api("/apps/users", {
     method: "POST",
@@ -166,7 +66,7 @@ const addNewUser = async (userData) => {
   });
 
   // Refetch User
-  fetchUsers();
+  fetchPatients();
 };
 
 const deleteUser = async (id) => {
@@ -177,98 +77,16 @@ const deleteUser = async (id) => {
   if (index !== -1) selectedRows.value.splice(index, 1);
 
   // Refetch User
-  fetchUsers();
+  fetchPatients();
 };
-
-const isAddPatientVisible = ref(false);
-const inlineRadio = ref("radio-1");
-
-const selectedItem = ref(["Новий"]);
-const items = ["Новий", "Пріоритетний"];
-const showActionButtons = false;
-const regions = ref([]);
-
-const loadReferences = async () => {
-  const res = await $api("/reference-by-key", {
-    method: "POST",
-    body: { keys: ["region"] },
-  });
-
-  regions.value = res.region;
-};
-
-loadReferences();
 </script>
 
 <template>
-  <VDialog v-model="isAddPatientVisible" max-width="600">
-    <!-- Dialog close btn -->
-    <DialogCloseBtn @click="isAddPatientVisible = !isAddPatientVisible" />
-
-    <!-- Dialog Content -->
-    <VCard title="Додати користувача">
-      <VCardText>
-        <VRow>
-          <VCol cols="12" sm="7">
-            <AppTextField v-model="firstName" label="ПІБ" />
-          </VCol>
-          <VCol cols="12" sm="5">
-            <AppTextField v-model="middleName" label="Телефон" />
-          </VCol>
-          <VCol cols="12" sm="6">
-            <AppTextField
-              v-model="age"
-              label="Вік"
-              type="number"
-              placeholder="18"
-            />
-          </VCol>
-          <VCol cols="12" sm="6">
-            <label
-              class="v-label mb-1 text-body-2 text-wrap"
-              for="app-text-field-Вік-1fk3v"
-              style="line-height: 15px"
-            >
-            </label>
-            <VRadioGroup v-model="inlineRadio" inline>
-              <VRadio label="Чоловік" value="radio-1" />
-              <VRadio label="Жінка" value="radio-2" />
-            </VRadioGroup>
-          </VCol>
-          <VCol cols="12">
-            <AppCombobox
-              v-model="selectedItem"
-              :items="items"
-              placeholder=""
-              label="Теги"
-              multiple
-              chips
-            />
-          </VCol>
-          <VCol cols="12" sm="6">
-            <AppTextField label="Сфера" />
-          </VCol>
-          <VCol cols="12" sm="6">
-            <AppSelect :items="regions" label="Область" placeholder="" />
-          </VCol>
-          <VCol cols="12">
-            <AppTextField label="Клінічний діагноз" />
-          </VCol>
-        </VRow>
-      </VCardText>
-
-      <VCardText class="d-flex justify-end flex-wrap gap-3">
-        <VBtn
-          variant="tonal"
-          color="secondary"
-          @click="isAddPatientVisible = false"
-        >
-          Відмінити
-        </VBtn>
-        <VBtn @click="isAddPatientVisible = false"> Додати </VBtn>
-      </VCardText>
-    </VCard>
-  </VDialog>
+  <AddEditPatientDialog
+    :id="patientId"
+    v-model:is-dialog-visible="isAddPatientVisible"
+    @saved="fetchPatients"
+  />
 
   <section>
     <VCard class="mb-6">
@@ -389,11 +207,5 @@ loadReferences();
       </VDataTableServer>
       <!-- SECTION -->
     </VCard>
-    <!-- 👉 Add New User -->
-
-    <!--    <AddNewUserDrawer-->
-    <!--      v-model:isDrawerOpen="isAddNewUserDrawerVisible"-->
-    <!--      @user-data="addNewUser"-->
-    <!--    />-->
   </section>
 </template>

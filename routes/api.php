@@ -11,6 +11,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reference-by-key', [ReferenceController::class, 'getByKey']);
-    Route::get('/patient', [PatientController::class, 'list']);
+
+    Route::prefix('patient')->group(function () {
+        Route::get('/', [PatientController::class, 'list']);
+        Route::post('/', [PatientController::class, 'store']);
+    });
+
     // Add other protected routes here
 });

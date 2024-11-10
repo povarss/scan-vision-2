@@ -210,5 +210,24 @@
       }
     }
   },
-  "paginationMeta": "Показано {start} до {end} із {total} записів"
+  "paginationMeta": "Показано {start} до {end} із {total} записів",
+  "patient":{
+    "full_name" : "ПІБ",
+    "phone" : "Телефон",
+    "born_date" : "День рождение",
+    "tags" :"Теги",
+    "field" : "Сфера",
+    "region" : "Область",
+    "clinic_diagnose" : "Клінічний діагноз",
+    "addNew" : "Додати користувача"
+  },
+  "gender":{
+    "man":"Человек",
+    "woman":"Женка"
+  },
+  "btnLabel":{
+    "add":"Додати",
+    "save": "",
+    "cancel" : "Відмінити"
+  }
 }

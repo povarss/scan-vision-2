@@ -13,9 +13,17 @@ class Reference extends Model
 
     const KEY_REGION = 'region';
 
+    public function getAvailableKeys()
+    {
+        return [
+            self::KEY_REGION
+        ];
+    }
     public function getRefItems($refKey)
     {
-        return Reference::where(['key_' => $refKey])->get()->map(function($item){return ['title' => $item->label,'value' => $item->id];});
+        return Reference::where(['key_' => $refKey])->get()->map(function ($item) {
+            return ['title' => $item->label, 'value' => $item->id];
+        });
     }
     public static function getInitValues()
     {

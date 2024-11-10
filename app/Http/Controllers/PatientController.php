@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePatientRequest;
 use App\Models\Patient;
-use App\Models\Reference;
+use App\Models\Tag;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PatientController extends Controller
@@ -30,5 +33,39 @@ class PatientController extends Controller
                 return 'Неглет тест (70%) ';
             })
             ->toJson();
+    }
+
+    public function store(StorePatientRequest $request,)
+    {
+        $fields = $request->validated();
+        $fields['doctor_id'] = Auth::id();
+        DB::beginTransaction();
+
+
+        $patient = Patient::create($fields);
+
+        $tagIds  = [];
+        if (!empty($request->tags)) {
+            $storedTags = Tag::get()->keyBy('label');
+            foreach ($request->tags as $tagLabel) {
+                if ($storedTags->has($tagLabel)) {
+                    $tagIds[] = $storedTags->get($tagLabel)->id;
+                } else {
+                    $newTag = Tag::create([
+                        'label' => $tagLabel
+                    ]);
+                    $tagIds[] = $newTag->id;
+                }
+            }
+        }
+        $patient->tags()->sync($tagIds);
+        DB::commit();
+
+
+
+        return response()->json([
+            'message' => 'Patient created successfully',
+            'patient' => $patient
+        ], 201);
     }
 }
