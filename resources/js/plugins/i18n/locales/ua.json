@@ -233,6 +233,15 @@
     "archiveConfirm" : "Так, архівувати"
   },
   "menu" : {
-    "Patients" : "Користувачі"
+    "Patients" : "Користувачі",
+    "Doctors" : "Доктора",
+  },
+  "doctor":{
+    "addTitle" : "Додати доктора",
+    "editTitle": "Редагувати доктора",
+    "name" : "ФИО",
+    "email" : "Email",
+    "password" : "пароль",
+    "expire_at" : "Дата окончение подписки",
   }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue";
+import AddEditDoctorDialog from "@/components/doctor/AddEditDoctorDialog.vue";
 
 // 👉 Store
 const searchQuery = ref("");
@@ -13,7 +13,6 @@ const selectedRows = ref([]);
 const isAddPatientVisible = ref(false);
 const patientId = ref(null);
 const showActionButtons = ref(false);
-const router = useRouter();
 
 const updateOptions = (options) => {
   sortBy.value = options.sortBy[0]?.key;
@@ -24,19 +23,15 @@ const updateOptions = (options) => {
 const headers = [
   {
     title: "Користувач",
-    key: "user",
+    key: "name",
   },
   {
-    title: "Телефон",
-    key: "role",
+    title: "Email",
+    key: "email",
   },
   {
-    title: "Перший тест",
-    key: "first_test",
-  },
-  {
-    title: "Останній тест",
-    key: "last_test",
+    title: "Дата окончание",
+    key: "expire_at",
   },
   {
     title: "",
@@ -45,8 +40,8 @@ const headers = [
   },
 ];
 
-const { data: usersData, execute: fetchPatients } = await useApi(
-  createUrl("/patient", {
+const { data: usersData, execute: fetchDoctors } = await useApi(
+  createUrl("/doctor", {
     query: {
       q: searchQuery,
       itemsPerPage,
@@ -68,17 +63,21 @@ const deleteUser = async (id) => {
   if (index !== -1) selectedRows.value.splice(index, 1);
 
   // Refetch User
-  fetchPatients();
+  fetchDoctors();
 };
 
-const afterSave = (patientId) => {
-  fetchPatients();
-  router.push({ name: "patients-card-id", params: { id: patientId } });
+const afterSave = () => {
+  fetchDoctors();
+};
+
+const openEditUser = (itemId) => {
+  patientId.value = itemId;
+  isAddPatientVisible.value = true;
 };
 </script>
 
 <template>
-  <AddEditPatientDialog
+  <AddEditDoctorDialog
     :id="patientId"
     v-model:is-dialog-visible="isAddPatientVisible"
     @saved="afterSave"
@@ -87,7 +86,7 @@ const afterSave = (patientId) => {
   <section>
     <VCard class="mb-6">
       <VCardItem class="pb-4">
-        <VCardTitle>Користувачі</VCardTitle>
+        <VCardTitle>Доктора</VCardTitle>
       </VCardItem>
 
       <VDivider />
@@ -115,18 +114,9 @@ const afterSave = (patientId) => {
             <AppTextField v-model="searchQuery" placeholder="Пошук ..." />
           </div>
 
-          <!--          &lt;!&ndash; 👉 Export button &ndash;&gt;-->
-          <!--          <VBtn-->
-          <!--            variant="tonal"-->
-          <!--            color="secondary"-->
-          <!--            prepend-icon="tabler-upload"-->
-          <!--          >-->
-          <!--            Export-->
-          <!--          </VBtn>-->
-
           <!-- 👉 Add user button -->
-          <VBtn prepend-icon="tabler-plus" @click="isAddPatientVisible = true">
-            Додати користувача
+          <VBtn prepend-icon="tabler-plus" @click="openEditUser(null)">
+            {{ $t("doctor.addTitle") }}
           </VBtn>
         </div>
       </VCardText>
@@ -155,7 +145,7 @@ const afterSave = (patientId) => {
                   :to="{ name: 'patients-card-id', params: { id: item.id } }"
                   class="font-weight-medium text-link"
                 >
-                  {{ item.full_name }}
+                  {{ item.name }}
                 </RouterLink>
               </h6>
             </div>
@@ -166,7 +156,7 @@ const afterSave = (patientId) => {
         <template #item.role="{ item }">
           <div class="d-flex align-center gap-x-2">
             <div class="text-capitalize text-high-emphasis text-body-1">
-              {{ item.phone }}
+              {{ item.email }}
             </div>
           </div>
         </template>
@@ -174,12 +164,9 @@ const afterSave = (patientId) => {
         <!-- Plan -->
         <template #item.first_test="{ item }">
           <div class="text-body-1 text-high-emphasis text-capitalize">
-            {{ item.first_test }}
+            {{ item.expire_at }}
           </div>
         </template>
-
-        <!-- Status -->
-        <template #item.last_test="{ item }"> {{ item.last_test }}</template>
 
         <!-- Actions -->
         <template #item.actions="{ item }">
@@ -187,8 +174,8 @@ const afterSave = (patientId) => {
             <VIcon icon="tabler-trash" />
           </IconBtn>
 
-          <IconBtn v-if="showActionButtons">
-            <VIcon icon="tabler-eye" />
+          <IconBtn>
+            <VIcon icon="tabler-pencil" @click="openEditUser(item.id)" />
           </IconBtn>
         </template>
 

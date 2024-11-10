@@ -1,4 +1,4 @@
-import { useAbility } from '@casl/vue'
+import { useAbility } from "@casl/vue";
 
 /**
  * Returns ability result if ACL is configured or else just return true
@@ -10,32 +10,42 @@ import { useAbility } from '@casl/vue'
  * @param {string} action CASL Actions // https://casl.js.org/v4/en/guide/intro#basics
  * @param {string} subject CASL Subject // https://casl.js.org/v4/en/guide/intro#basics
  */
-export const can = (action, subject) => {
-  const vm = getCurrentInstance()
-  if (!vm)
-    return false
-  const localCan = vm.proxy && '$can' in vm.proxy
-    
-  return localCan ? vm.proxy?.$can(action, subject) : true
-}
+export const can = (action, subject, role = null) => {
+  const vm = getCurrentInstance();
+  if (!vm) return false;
+  const localCan = vm.proxy && "$can" in vm.proxy;
+
+  return localCan ? vm.proxy?.$can(action, subject) : true;
+};
+
+export const hasAccessRole = (roles) => {
+  if (!roles) {
+    return true;
+  }
+  const user = useCookie("userData");
+  return roles.includes(user.value.role);
+};
 
 /**
  * Check if user can view item based on it's ability
  * Based on item's action and subject & Hide group if all of it's children are hidden
  * @param {object} item navigation object item
  */
-export const canViewNavMenuGroup = item => {
-  const hasAnyVisibleChild = item.children.some(i => can(i.action, i.subject))
+export const canViewNavMenuGroup = (item) => {
+  const hasAnyVisibleChild = item.children.some((i) =>
+    can(i.action, i.subject)
+  );
 
   // If subject and action is defined in item => Return based on children visibility (Hide group if no child is visible)
   // Else check for ability using provided subject and action along with checking if has any visible child
-  if (!(item.action && item.subject))
-    return hasAnyVisibleChild
-  
-  return can(item.action, item.subject) && hasAnyVisibleChild
-}
-export const canNavigate = to => {
-  const ability = useAbility()
-    
-  return to.matched.some(route => ability.can(route.meta.action, route.meta.subject))
-}
+  if (!(item.action && item.subject)) return hasAnyVisibleChild;
+
+  return can(item.action, item.subject) && hasAnyVisibleChild;
+};
+export const canNavigate = (to) => {
+  const ability = useAbility();
+
+  return to.matched.some((route) =>
+    ability.can(route.meta.action, route.meta.subject)
+  );
+};

@@ -7,6 +7,7 @@ export {}
 declare global {
   const $api: typeof import('./resources/js/utils/api.js')['$api']
   const COOKIE_MAX_AGE_1_YEAR: typeof import('./resources/js/utils/constants.js')['COOKIE_MAX_AGE_1_YEAR']
+  const CookieDefaults: typeof import('./resources/js/@core/composable/useCookie.js')['CookieDefaults']
   const EffectScope: typeof import('vue')['EffectScope']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const alphaDashValidator: typeof import('./resources/js/@core/utils/validators.js')['alphaDashValidator']

@@ -1,34 +1,39 @@
 <script setup>
-import { layoutConfig } from '@layouts'
-import { can } from '@layouts/plugins/casl'
-import { useLayoutConfigStore } from '@layouts/stores/config'
+import { layoutConfig } from "@layouts";
+import { can, hasAccessRole } from "@layouts/plugins/casl";
+import { useLayoutConfigStore } from "@layouts/stores/config";
 import {
   getComputedNavLinkToProp,
   getDynamicI18nProps,
   isNavLinkActive,
-} from '@layouts/utils'
+} from "@layouts/utils";
 
 const props = defineProps({
   item: {
     type: null,
     required: true,
   },
-})
+});
 
-const configStore = useLayoutConfigStore()
-const hideTitleAndBadge = configStore.isVerticalNavMini()
+const configStore = useLayoutConfigStore();
+const hideTitleAndBadge = configStore.isVerticalNavMini();
 </script>
 
 <template>
   <li
-    v-if="can(item.action, item.subject)"
+    v-if="can(item.action, item.subject) && hasAccessRole(item.roles)"
     class="nav-link"
     :class="{ disabled: item.disable }"
   >
     <Component
       :is="item.to ? 'RouterLink' : 'a'"
       v-bind="getComputedNavLinkToProp(item)"
-      :class="{ 'router-link-active router-link-exact-active': isNavLinkActive(item, $router) }"
+      :class="{
+        'router-link-active router-link-exact-active': isNavLinkActive(
+          item,
+          $router
+        ),
+      }"
     >
       <Component
         :is="layoutConfig.app.iconRenderer || 'div'"
@@ -41,7 +46,7 @@ const hideTitleAndBadge = configStore.isVerticalNavMini()
           :is="layoutConfig.app.i18n.enable ? 'i18n-t' : 'span'"
           v-show="!hideTitleAndBadge"
           key="title"
-          class="nav-item-title"
+          class="nav-item-title ty"
           v-bind="getDynamicI18nProps(item.title, 'span')"
         >
           {{ item.title }}

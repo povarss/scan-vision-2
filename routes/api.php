@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ReferenceController;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +20,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{patient}', [PatientController::class, 'get']);
     });
 
-    // Add other protected routes here
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::prefix('doctor')->group(function () {
+            Route::get('/', [DoctorController::class, 'list']);
+            Route::post('/', [DoctorController::class, 'store']);
+            Route::get('/{user}', [DoctorController::class, 'get']);
+        });
+    });
 });

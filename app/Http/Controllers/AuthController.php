@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -52,11 +53,13 @@ class AuthController extends Controller
 
         // Check if the user exists, if password is correct, and if access has expired
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            throw ValidationException::withMessages(['email' => __('messages.InvalidCredentials')]);
+            // return response()->json(['errors' => 'Invalid credentials'], 401);
         }
 
         if ($this->checkIsExpired($user)) {
-            return response()->json(['error' => 'User access has expired'], 403);
+            throw ValidationException::withMessages(['email' => __('messages.UserAccessHasExpired')]);
+            // return response()->json(['error' => 'User access has expired'], 403);
         }
 
         $token = $user->createToken('authToken')->plainTextToken;
@@ -67,7 +70,7 @@ class AuthController extends Controller
             'userData' => [
                 'id' => $user->id,
                 'fullName' => $user->name,
-                'role' => 'doctor'
+                'role' => $user->roles->first()->name
             ],
             'userAbilityRules' => [
                 [

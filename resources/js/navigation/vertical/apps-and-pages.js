@@ -5,9 +5,15 @@ export default [
     to: 'patients',
   },
   {
-    title: 'Авторизація',
-    icon: { icon: 'tabler-user' },
-    to: 'pages-authentication-login-v1',
-    target: '_blank',
+    title: 'menu.Doctors',
+    icon: { icon: 'tabler-users' },
+    roles: ['admin'],
+    to: 'doctors',
   },
+  // {
+  //   title: 'Авторизація',
+  //   icon: { icon: 'tabler-user' },
+  //   to: 'pages-authentication-login-v1',
+  //   target: '_blank',
+  // },
 ]
