@@ -1,6 +1,6 @@
 export default [
   {
-    title: 'Користувачі',
+    title: 'menu.Patients',
     icon: { icon: 'tabler-users' },
     to: 'patients',
   },

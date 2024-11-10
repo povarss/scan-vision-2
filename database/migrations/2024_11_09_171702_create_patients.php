@@ -41,6 +41,20 @@ return new class extends Migration
             $table->string('af1')->nullable();
             $table->timestamps();
         });
+        Schema::create('exams', function (Blueprint $table) {
+            $table->id();
+            $table->string('label');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        Schema::create('patient_exams', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('exam_id')->constrained()->onDelete('cascade');
+            $table->float('final_result')->default(0);
+            $table->boolean('is_finished')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -52,5 +66,7 @@ return new class extends Migration
         Schema::dropIfExists('tags');
         Schema::dropIfExists('patient_tag');
         Schema::dropIfExists('references');
+        Schema::dropIfExists('exams');
+        Schema::dropIfExists('patient_exams');
     }
 };

@@ -26,7 +26,29 @@ class PatientResource extends JsonResource
             'region' => $this->region,
             'field' => $this->field,
             'clinic_diagnose' => $this->clinic_diagnose,
-            'tags' => $this->tags
+            'tags' => $this->tags,
+            'exams' => [
+                [
+                    'test_id' => 1,
+                    'final_result' => 20,
+                    'date' => '12.11.2022'
+                ],
+                [
+                    'test_id' => 1,
+                    'final_result' => 50,
+                    'date' => '11.10.2022'
+                ],
+                [
+                    'test_id' => 1,
+                    'final_result' => 20,
+                    'date' => '23.04.2022'
+                ],
+                [
+                    'test_id' => 1,
+                    'final_result' => 100,
+                    'date' => '28.02.2022'
+                ],
+            ]
         ];
     }
 }

@@ -199,72 +199,43 @@ const returnToPatientList = () => {
             density="compact"
           >
             <!-- SECTION Timeline Item: Flight -->
-            <VTimelineItem dot-color="error" size="x-small">
+            <VTimelineItem
+              :dot-color="
+                examResult.final_result < 34
+                  ? 'error'
+                  : examResult.final_result < 67
+                  ? 'primary'
+                  : 'success'
+              "
+              size="x-small"
+              v-for="examResult in patientData.exams"
+            >
               <!-- 👉 Header -->
               <div
                 class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
               >
                 <span class="app-timeline-title">
-                  Результат: <VChip color="error">20%</VChip>
+                  Результат:
+                  <VChip
+                    :color="
+                      examResult.final_result < 34
+                        ? 'error'
+                        : examResult.final_result < 67
+                        ? 'primary'
+                        : 'success'
+                    "
+                    >{{ examResult.final_result }}%</VChip
+                  >
                 </span>
-                <span class="app-timeline-meta">12.11.2024</span>
+                <span class="app-timeline-meta">{{ examResult.date }}</span>
               </div>
 
               <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
+              <!-- <div class="app-timeline-text mt-1">
                 Тест пройдено без проблем
-              </div>
+              </div> -->
             </VTimelineItem>
             <!-- !SECTION -->
-
-            <VTimelineItem dot-color="primary" size="x-small">
-              <!-- 👉 Header -->
-              <div
-                class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
-              >
-                <span class="app-timeline-title">
-                  Результат: <VChip color="primary">50%</VChip>
-                </span>
-                <span class="app-timeline-meta">10.11.2024</span>
-              </div>
-
-              <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
-                Тест пройдено без проблем
-              </div>
-            </VTimelineItem>
-            <VTimelineItem dot-color="primary" size="x-small">
-              <!-- 👉 Header -->
-              <div
-                class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
-              >
-                <span class="app-timeline-title">
-                  Результат: <VChip color="error">20%</VChip>
-                </span>
-                <span class="app-timeline-meta">8.11.2024</span>
-              </div>
-
-              <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
-                Тест пройдено без проблем
-              </div>
-            </VTimelineItem>
-            <VTimelineItem dot-color="success" size="x-small">
-              <!-- 👉 Header -->
-              <div
-                class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
-              >
-                <span class="app-timeline-title">
-                  Результат: <VChip color="success">100%</VChip>
-                </span>
-                <span class="app-timeline-meta">7.11.2024</span>
-              </div>
-
-              <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
-                Тест пройдено без проблем
-              </div>
-            </VTimelineItem>
           </VTimeline>
         </VCardText>
       </VCard>
