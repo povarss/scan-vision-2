@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TestProcess from "@/components/exam/TestProcess.vue";
 
 
 const sizeSlider = ref<number>(100)
@@ -222,12 +223,13 @@ const isTestVisible = ref(false)
       </div>
 
       <div class="d-flex align-center justify-center">
-        <img
+        <TestProcess/>
+        <!-- <img
           class="misc-footer-img"
           :src="testImg"
           alt="misc-footer-img"
           style="height: 800px; width: auto;"
-        >
+        > -->
       </div>
     </VCard>
   </VDialog>
