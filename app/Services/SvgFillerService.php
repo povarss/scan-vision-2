@@ -68,8 +68,9 @@ class SvgFillerService
     {
         foreach ($this->sections as $section) {
             $setedSvg = 0;
-            $correctSvgs = $this->isDual ? [1] : [1, 2];
+            $correctSvgs = $this->isDual ? [1,2] : [1];
             foreach ($correctSvgs as $correctSvg) {
+                $setedSvg = 0;
                 while ($setedSvg < $this->correctSvgInPie) {
                     $position = $section[rand(0, count($section) - 1)];
                     if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
