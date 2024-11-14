@@ -5,7 +5,7 @@ import type { CustomInputContent } from "@core/types";
 
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
 const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
-const ticksLabels = {1: "1", 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
+const ticksLabels = { 1: "1", 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 const levels: CustomInputContent[] = [
   {
     title: "Легкий",
@@ -44,7 +44,7 @@ const correctSvgList: string[] = ["1", "2"];
 const normalSize = ref(50);
 const formData = ref({
   svg_size: 100,
-  time: 1,
+  time: 20,
   level: "1",
   mode: "1",
 });
@@ -122,14 +122,26 @@ const storeSetting = () => {
       </div>
 
       <div class="d-flex align-center justify-center mt-5 p-5" style="">
-        <template v-for="svg in correctSvgList">
-          <img
-            class="misc-footer-img d-none d-md-block"
-            :src="'/images/vision/' + svg + '.svg'"
-            :width="(formData.svg_size * normalSize) / 100"
-            :height="(formData.svg_size * normalSize) / 100"
-          />
-        </template>
+        <div class="v-row">
+          <div class="d-md-block v-col-12">
+            <img
+              class="misc-footer-img d-none d-md-block"
+              :src="miscMaskDark"
+              alt="misc-footer-img"
+              :style="{ width: pixelWidths[formData.svg_size] + 'px' }"
+            />
+          </div>
+          <div class="d-md-block v-col-12">
+            <template v-for="svg in correctSvgList">
+              <img
+                class="misc-footer-img d-none d-md-block"
+                :src="'/images/vision/' + svg + '.svg'"
+                :width="(formData.svg_size * normalSize) / 100"
+                :height="(formData.svg_size * normalSize) / 100"
+              />
+            </template>
+          </div>
+        </div>
         <!-- <img
           class="misc-footer-img d-none d-md-block"
           :src="miscMaskDark"
