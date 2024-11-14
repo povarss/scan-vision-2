@@ -15,7 +15,7 @@ class PatientResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data=  [
             'id' => $this->id,
             'full_name' => $this->full_name,
             'phone' => $this->phone,
@@ -27,28 +27,15 @@ class PatientResource extends JsonResource
             'field' => $this->field,
             'clinic_diagnose' => $this->clinic_diagnose,
             'tags' => $this->tags,
-            'exams' => [
-                [
-                    'test_id' => 1,
-                    'final_result' => 20,
-                    'date' => '12.11.2022'
-                ],
-                [
-                    'test_id' => 1,
-                    'final_result' => 50,
-                    'date' => '11.10.2022'
-                ],
-                [
-                    'test_id' => 1,
-                    'final_result' => 20,
-                    'date' => '23.04.2022'
-                ],
-                [
-                    'test_id' => 1,
-                    'final_result' => 100,
-                    'date' => '28.02.2022'
-                ],
-            ]
+            'exams' => []
         ];
+        foreach ($this->tests()->where('status','finished')->orderBy('start_time','desc')->get() as $test) {
+            $data['exams'][] = [
+                'test_id' => $test->id,
+                'final_result' => 0,
+                'date' => date('Y-m-d H:i',strtotime($test->start_time))
+            ];
+        }
+        return $data;
     }
 }

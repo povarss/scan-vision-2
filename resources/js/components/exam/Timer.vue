@@ -12,6 +12,10 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits([
+  'timeout',
+])
+
 const remainingTime = ref(0);
 const interval = ref();
 
@@ -29,7 +33,7 @@ const startTimer = () => {
       if (remainingTime.value > 0) {
         remainingTime.value -= 1;
       } else {
-        this.stopTimer();
+        stopTimer();
       }
     }, 1000);
   }
@@ -37,6 +41,7 @@ const startTimer = () => {
 
 const stopTimer = () => {
   clearInterval(interval.value);
+  emit('timeout')
 };
 
 onMounted(() => {

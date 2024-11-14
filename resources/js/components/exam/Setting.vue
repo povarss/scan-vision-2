@@ -5,7 +5,7 @@ import type { CustomInputContent } from "@core/types";
 
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
 const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
-const ticksLabels = { 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
+const ticksLabels = {1: "1", 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 const levels: CustomInputContent[] = [
   {
     title: "Легкий",
@@ -44,7 +44,7 @@ const correctSvgList: string[] = ["1", "2"];
 const normalSize = ref(50);
 const formData = ref({
   svg_size: 100,
-  time: 20,
+  time: 1,
   level: "1",
   mode: "1",
 });

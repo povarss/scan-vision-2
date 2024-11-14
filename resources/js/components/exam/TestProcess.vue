@@ -14,7 +14,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["itemSelected"]);
+const emit = defineEmits(["itemSelected", "timeout"]);
 
 let examData = ref([]);
 const loadTest = async (id) => {
@@ -69,6 +69,9 @@ const setSelected = (rowKey, colKey) => {
     emit("itemSelected", selectedItems.value);
   }
 };
+const onTimeout = () => {
+  emit("timeout");
+};
 </script>
 
 <template>
@@ -76,7 +79,7 @@ const setSelected = (rowKey, colKey) => {
     <VCardText class="d-flex flex-wrap gap-4">
       <VRow>
         <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
-          <Timer :initialTime="exam.time" />
+          <Timer :initialTime="exam.time" @timeout="onTimeout" />
         </VCol>
         <VCol cols="12" class="d-flex flex-column">
           <div style="position: relative; width: 400px; height: 500px">

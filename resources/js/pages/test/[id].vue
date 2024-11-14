@@ -114,7 +114,11 @@ const finishTestProcces = async () => {
       </div>
 
       <div class="d-flex align-center justify-center">
-        <TestProcess :exam="exam" @itemSelected="onItemSelected" />
+        <TestProcess
+          :exam="exam"
+          @itemSelected="onItemSelected"
+          @timeout="finishTestProcces"
+        />
       </div>
     </VCard>
   </VDialog>
