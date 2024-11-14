@@ -23,11 +23,13 @@ const resultData = ref({
     right: 0,
   },
 });
+const emit = defineEmits(["dataLoaded"]);
 
 const getResult = async () => {
   const { data } = await useApi(`/exam/info/` + props.exam.id);
   if (data.value) {
     resultData.value = data.value;
+    emit("dataLoaded", data.value);
   }
   console.log(resultData.value, "resultData");
 };

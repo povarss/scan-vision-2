@@ -51,6 +51,14 @@ class ExamController extends Controller
         $patientExam->save();
     }
 
+    public function getDetail(PatientExam $patientExam)
+    {
+        return [
+            'id' => $patientExam->id,
+            'isFinished' => $patientExam->status == PatientExam::STATUS_FINISHED,
+        ];
+    }
+
     public function getInfo(PatientExam $patientExam)
     {
         $difSeconds = Carbon::parse($patientExam->start_time)->diffInSeconds(Carbon::parse($patientExam->end_time));
@@ -77,6 +85,7 @@ class ExamController extends Controller
             }
         }
         return response()->json([
+            'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
             'testMinute' => $testMinute,
             'correctCount' => $correctCount,

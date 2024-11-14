@@ -27,6 +27,11 @@ const props = defineProps({
     required: false,
     default: undefined,
   },
+  isActiveStepFreeze: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   align: {
     type: String,
     required: false,
@@ -71,7 +76,7 @@ watchEffect(() => {
           (!props.isActiveStepValid && (isValidationEnabled)) && 'stepper-steps-invalid',
           activeOrCompletedStepsClasses(index),
         ]"
-        @click="!isValidationEnabled && emit('update:currentStep', index)"
+        @click="!isValidationEnabled && !isActiveStepFreeze && emit('update:currentStep', index)"
       >
         <!-- SECTION stepper step with icon -->
         <template v-if="item.icon">

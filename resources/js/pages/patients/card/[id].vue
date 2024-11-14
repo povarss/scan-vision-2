@@ -231,9 +231,17 @@ const returnToPatientList = () => {
               </div>
 
               <!-- 👉 Content -->
-              <!-- <div class="app-timeline-text mt-1">
-                Тест пройдено без проблем
-              </div> -->
+              <div class="app-timeline-text mt-1">
+                <VBtn
+                  :to="{
+                    name: 'exam-result-id',
+                    params: { id: examResult.test_id },
+                  }"
+                  color="primary"
+                >
+                  Перейти к результатам
+                </VBtn>
+              </div>
             </VTimelineItem>
             <!-- !SECTION -->
           </VTimeline>
