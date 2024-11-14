@@ -138,6 +138,7 @@ const finishTestProcces = async () => {
       <AppStepper
         v-model:current-step="currentStep"
         :items="numberedSteps"
+        :isActiveStepFreeze="currentStep == 2"
         class="stepper-icon-step-bg"
       />
     </VCardText>
@@ -165,22 +166,33 @@ const finishTestProcces = async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            :disabled="currentStep === 0"
+            :disabled="currentStep === 0 || currentStep == 2"
             @click="currentStep--"
           >
             <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
             Назад
           </VBtn>
 
-          <VBtn v-if="numberedSteps.length - 1 === currentStep" color="success">
+          <VBtn
+            :to="{ name: 'patients-card-id', params: { id: exam.patient_id } }"
+            color="success"
+          >
+            Перейти к карточки
+          </VBtn>
+
+          <VBtn
+            v-if="numberedSteps.length - 1 === currentStep"
+            :disabled="currentStep == 2"
+            color="success"
+          >
             Завершити
           </VBtn>
 
-          <VBtn v-else @click="currentStep++">
+          <!-- <VBtn v-else @click="currentStep++">
             Далі
 
             <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
-          </VBtn>
+          </VBtn> -->
         </div>
       </VForm>
     </VCardText>
