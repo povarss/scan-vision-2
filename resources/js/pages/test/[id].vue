@@ -1,0 +1,164 @@
+<script setup lang="ts">
+import TestProcess from "@/components/exam/TestProcess.vue";
+import Result from "@/components/exam/Result.vue";
+import Setting from "@/components/exam/Setting.vue";
+import { ref, onMounted } from "vue";
+
+const isTestVisible = ref(false);
+const router = useRouter();
+const route = useRoute("test-id");
+
+const numberedSteps = [
+  {
+    title: "Налаштування",
+  },
+  {
+    title: "Скринінг",
+  },
+  {
+    title: "Результати",
+  },
+];
+
+const currentStep = ref(0);
+const exam = ref(null);
+onMounted(() => {});
+const isLoading = ref(false);
+
+const store = async (setting) => {
+  try {
+    const res = await $api("/exam/setting", {
+      method: "POST",
+      body: { patient_id: route.params.id, ...setting },
+      onResponseError({ response }) {
+        console.error(response._data.errors);
+      },
+    });
+
+    if (res.exam) {
+      exam.value = res.exam;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const startTest = async (setting) => {
+  isLoading.value = true;
+  await store(setting);
+  isLoading.value = false;
+  isTestVisible.value = true;
+};
+</script>
+
+<template>
+  <VDialog
+    v-model="isTestVisible"
+    fullscreen
+    :scrim="false"
+    transition="dialog-bottom-transition"
+  >
+    <!-- Dialog Content -->
+    <VCard>
+      <div>
+        <VToolbar color="primary">
+          <VBtn icon variant="plain" @click="isTestVisible = false">
+            <VIcon color="white" icon="tabler-x" />
+          </VBtn>
+
+          <VToolbarTitle>Скринінг</VToolbarTitle>
+
+          <VSpacer />
+
+          <VToolbarItems>
+            <VBtn
+              variant="text"
+              @click="
+                isTestVisible = false;
+                currentStep += 2;
+              "
+            >
+              Завершити
+            </VBtn>
+          </VToolbarItems>
+        </VToolbar>
+      </div>
+
+      <div class="d-flex align-center justify-center">
+        <TestProcess  :exam="exam"/>
+      </div>
+    </VCard>
+  </VDialog>
+
+  <template v-if="isLoading">
+    <VSkeletonLoader v-for="i in 3" :key="i" type="list-item-two-line" />
+  </template>
+
+  <VCard>
+    <VCardItem class="pb-4">
+      <VCardTitle>Неглект скринінг</VCardTitle>
+    </VCardItem>
+    <VDivider />
+
+    <VCardText>
+      <!-- 👉 Stepper -->
+      <AppStepper
+        v-model:current-step="currentStep"
+        :items="numberedSteps"
+        class="stepper-icon-step-bg"
+      />
+    </VCardText>
+
+    <VDivider />
+
+    <VCardText>
+      <!-- 👉 stepper content -->
+      <VForm>
+        <VWindow v-model="currentStep" class="disable-tab-transition">
+          <VWindowItem>
+            <Setting @settingsSaved="startTest" />
+          </VWindowItem>
+
+          <VWindowItem> </VWindowItem>
+
+          <VWindowItem>
+            <Result />
+          </VWindowItem>
+        </VWindow>
+
+        <div
+          class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
+        >
+          <VBtn
+            color="secondary"
+            variant="tonal"
+            :disabled="currentStep === 0"
+            @click="currentStep--"
+          >
+            <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
+            Назад
+          </VBtn>
+
+          <VBtn v-if="numberedSteps.length - 1 === currentStep" color="success">
+            Завершити
+          </VBtn>
+
+          <VBtn v-else @click="currentStep++">
+            Далі
+
+            <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
+          </VBtn>
+        </div>
+      </VForm>
+    </VCardText>
+  </VCard>
+</template>
+
+<style>
+.v-slider-thumb__label {
+  min-width: 63px !important;
+}
+
+.text-h6 {
+}
+</style>

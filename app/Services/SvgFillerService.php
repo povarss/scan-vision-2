@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\PatientExam;
 use Illuminate\Http\Request;
 
 class SvgFillerService
@@ -27,6 +28,12 @@ class SvgFillerService
     public $sections = [];
 
     public $isDual = false;
+    public $patientExam;
+    public function __construct(PatientExam $patientExam)
+    {
+        $this->patientExam = $patientExam;
+        $this->setParams();
+    }
     public function checkArray()
     {
         $data = json_decode(file_get_contents(public_path('test.json')), true);
@@ -47,7 +54,6 @@ class SvgFillerService
 
     public function makePrint()
     {
-        // $this->checkArray();
         while ($this->y < $this->maxHeight) {
             $this->fillInit();
 
@@ -58,20 +64,73 @@ class SvgFillerService
         return response()->json($this->items);
     }
 
-    public function setCorrect(){
+    public function setCorrect()
+    {
         foreach ($this->sections as $section) {
             $setedSvg = 0;
-            while ($setedSvg < $this->correctSvgInPie) {
-                $position = $section[rand(0, count($section) - 1)];
-                if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
-                    $this->items[$position['y']][$position['x']]['type'] = $this->isDual ? rand(1,2) : 1;
-                    $this->items[$position['y']][$position['x']]['isCorrect'] = 1;
-                    $setedSvg++;
+            $correctSvgs = $this->isDual ? [1] : [1, 2];
+            foreach ($correctSvgs as $correctSvg) {
+                while ($setedSvg < $this->correctSvgInPie) {
+                    $position = $section[rand(0, count($section) - 1)];
+                    if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
+                        $this->items[$position['y']][$position['x']]['type'] = $correctSvg;
+                        $this->items[$position['y']][$position['x']]['isCorrect'] = 1;
+                        $setedSvg++;
+                    }
                 }
             }
         }
     }
 
+    public function setDual()
+    {
+        $this->isDual = ($this->patientExam->mode == 2);
+    }
+
+    function cmToPx($cm) {
+        // Assuming 96 DPI
+        $ppi = 96;
+        $inches = $cm / 2.54; // Convert cm to inches
+        $pixels = $inches * $ppi;
+        return round($pixels);
+    }
+
+    public function setContainerWidth()
+    {
+        $minItems = 18;
+        $sizes = [
+            1 => 2,
+            2 => 1.5,
+            3 => 1,
+        ];
+        $sizeInSm = $sizes[$this->patientExam->level] * $minItems;
+        $this->maxWidth = $this->cmToPx($sizeInSm);
+        $this->maxHeight = $this->cmToPx($sizeInSm);
+
+        $this->maxWidth = $this->calcWidth() * $minItems;
+        $this->maxHeight = $this->calcWidth() * $minItems;
+    }
+
+    public function setParams(){
+        $this->setDual();
+        $this->setContainerWidth();
+        $this->setOffset();
+    }
+
+    public function setOffset(){
+        $this->offsetXRange = intval($this->calcWidth() / 2);
+        $this->offsetYRange = intval($this->calcHeight() / 2);
+    }
+
+    public function calcWidth()
+    {
+        return $this->svgWidth * $this->patientExam->svg_size / 100;
+    }
+
+    public function calcHeight()
+    {
+        return $this->svgHeight * $this->patientExam->svg_size / 100;
+    }
     public function getSvgTypes()
     {
         $svgTypes = [];
@@ -81,8 +140,8 @@ class SvgFillerService
             }
             $svgTypes[] = [
                 'type' => $i,
-                'width' => $this->svgWidth,
-                'height' => $this->svgHeight,
+                'width' => $this->calcWidth(),
+                'height' => $this->calcHeight(),
                 'isCorrect' => 0,
             ];
         }
@@ -221,7 +280,7 @@ class SvgFillerService
         $this->items[$this->curY][$this->curX]['angle'] = $angle;
         $sectionNum = intval($angle / 45) + 1;
         $this->items[$this->curY][$this->curX]['section'] = $sectionNum;
-        if($sectionNum < 9){
+        if ($sectionNum < 9) {
             $this->sections[intval($angle / 45) + 1][] = ['x' => $this->curX, 'y' => $this->curY];
         }
         return $angle_degrees;

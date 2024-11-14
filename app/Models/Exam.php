@@ -16,4 +16,9 @@ class Exam extends Model
     {
         return $this->belongsToMany(Patient::class);
     }
+
+    public function getMainTest()
+    {
+        return self::where(['label' => 'Main test'])->first();
+    }
 }

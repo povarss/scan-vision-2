@@ -40,7 +40,7 @@ const stopTimer = () => {
 };
 
 onMounted(() => {
-  remainingTime.value = props.initialTime;
+  remainingTime.value = props.initialTime * 60;
   startTimer();
 });
 
@@ -50,7 +50,6 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div>
-    <h2>Countdown Timer</h2>
-    <p>{{ formattedTime }}</p>
+    <p class="text-center">{{ formattedTime }}</p>
   </div>
 </template>

@@ -183,7 +183,7 @@ const returnToPatientList = () => {
               variant="elevated"
               visible="true"
               class="ms-4"
-              :to="{ name: 'apps-user-test-neglekt' }"
+              :to="{ name: 'test-id', params: { id: patientData.id } }"
             >
               Почати тест
             </VBtn>

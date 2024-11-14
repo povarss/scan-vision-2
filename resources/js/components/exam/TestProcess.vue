@@ -2,9 +2,16 @@
 import { ref, onMounted } from "vue";
 import Timer from "@/components/exam/Timer.vue";
 
+const props = defineProps({
+  exam: {
+    type: [Object],
+    required: true,
+  },
+});
+
 let examData = ref([]);
 const loadTest = async (id) => {
-  const { data } = await useApi(`/test`);
+  const { data } = await useApi(`/exam/test-pattern/` + props.exam.id);
   if (data.value) examData.value = data.value;
   console.log(data.value, examData.value, "data.value");
 };
@@ -51,10 +58,10 @@ const setSelected = (rowKey, colKey) => {
     <VCardText class="d-flex flex-wrap gap-4">
       <VRow>
         <VCol cols="12" class="d-flex flex-column">
-          <Timer :initialTime="1500" />
+          <Timer :initialTime="exam.time" />
         </VCol>
         <VCol cols="12" class="d-flex flex-column">
-          <div style="position: relative; width: 400px; height: 400px">
+          <div style="position: relative; width: 400px; height: 500px">
             <template v-for="(row, rowKey) in examData">
               <template v-for="(imgItem, colKey) in row">
                 <img

@@ -13,13 +13,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reference-by-key', [ReferenceController::class, 'getByKey']);
-    Route::get('/test', [ExamController::class, 'index']);
 
     Route::prefix('patient')->group(function () {
         Route::get('/', [PatientController::class, 'list']);
         Route::post('/', [PatientController::class, 'store']);
         Route::post('/archive', [PatientController::class, 'archive']);
         Route::get('/{patient}', [PatientController::class, 'get']);
+    });
+
+    Route::prefix('exam')->group(function () {
+        Route::post('/setting', [ExamController::class, 'storeSettings']);
+        Route::get('/test-pattern/{patientExam}', [ExamController::class, 'getTestPattern']);
     });
 
     Route::group(['middleware' => ['role:admin']], function () {

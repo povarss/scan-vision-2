@@ -53,6 +53,11 @@ return new class extends Migration
             $table->foreignId('exam_id')->constrained()->onDelete('cascade');
             $table->float('final_result')->default(0);
             $table->boolean('is_finished')->default(0);
+            $table->integer('time');
+            $table->integer('svg_size');
+            $table->integer('level');
+            $table->integer('mode');
+            $table->string('status');
             $table->timestamps();
         });
     }
