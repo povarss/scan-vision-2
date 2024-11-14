@@ -2,8 +2,39 @@
 import { ref, onMounted } from "vue";
 import testImg from "@images/test_img.png";
 
-onMounted(() => {});
+const props = defineProps({
+  exam: {
+    type: [Object],
+    required: true,
+  },
+});
 
+const resultData = ref({
+  totalMinute: 0,
+  testMinute: 0,
+  correctCount: {
+    total: 0,
+    left: 0,
+    right: 0,
+  },
+  incorrectCount: {
+    total: 0,
+    left: 0,
+    right: 0,
+  },
+});
+
+const getResult = async () => {
+  const { data } = await useApi(`/exam/info/` + props.exam.id);
+  if (data.value) {
+    resultData.value = data.value;
+  }
+  console.log(resultData.value, "resultData");
+};
+
+onMounted(() => {
+  getResult();
+});
 </script>
 
 <template>
@@ -28,7 +59,9 @@ onMounted(() => {});
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
-                <div class="text-body-1">13хв з 20хв</div>
+                <div class="text-body-1">
+                  {{ resultData.testMinute }}хв з {{ resultData.totalMinute }}хв
+                </div>
               </div>
             </template>
           </VListItem>
@@ -50,7 +83,9 @@ onMounted(() => {});
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
-                <div class="text-body-1">10</div>
+                <div class="text-body-1">
+                  {{ resultData.correctCount.total }}
+                </div>
               </div>
             </template>
           </VListItem>
@@ -71,7 +106,9 @@ onMounted(() => {});
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
-                <div class="text-body-1">6</div>
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.total }}
+                </div>
               </div>
             </template>
           </VListItem>
@@ -93,7 +130,9 @@ onMounted(() => {});
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
-                <div class="text-body-1">6</div>
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.right }}
+                </div>
               </div>
             </template>
           </VListItem>
@@ -115,7 +154,9 @@ onMounted(() => {});
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
-                <div class="text-body-1">6</div>
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.left }}
+                </div>
               </div>
             </template>
           </VListItem>
@@ -125,16 +166,17 @@ onMounted(() => {});
 
     <VCol cols="12" md="6">
       <div class="symbol-container border rounded mt-5 pa-5">
-        <img
+        <TestProcess :exam="exam" is-readonly="true" />
+
+        <!-- <img
           class="misc-footer-img d-none d-md-block"
           :src="testImg"
           alt="misc-footer-img"
           width="100%"
-        />
+        /> -->
       </div>
     </VCol>
   </VRow>
 </template>
 
-<style>
-</style>
+<style></style>

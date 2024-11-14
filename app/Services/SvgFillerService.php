@@ -61,7 +61,7 @@ class SvgFillerService
         }
         $this->setCorrect();
 
-        return response()->json($this->items);
+        return $this->items;
     }
 
     public function setCorrect()
@@ -279,10 +279,8 @@ class SvgFillerService
         $angle = 360 - intval($angle_degrees);
         $this->items[$this->curY][$this->curX]['angle'] = $angle;
         $sectionNum = intval($angle / 45) + 1;
-        $this->items[$this->curY][$this->curX]['section'] = $sectionNum;
-        if ($sectionNum < 9) {
-            $this->sections[intval($angle / 45) + 1][] = ['x' => $this->curX, 'y' => $this->curY];
-        }
+        $this->items[$this->curY][$this->curX]['section'] = $sectionNum < 9 ? $sectionNum : 1;
+        $this->sections[intval($angle / 45) + 1][] = ['x' => $this->curX, 'y' => $this->curY];
         return $angle_degrees;
     }
 

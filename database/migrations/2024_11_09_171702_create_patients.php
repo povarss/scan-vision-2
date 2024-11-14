@@ -58,6 +58,10 @@ return new class extends Migration
             $table->integer('level');
             $table->integer('mode');
             $table->string('status');
+            $table->text('pattern')->nullable();
+            $table->text('result')->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->timestamps();
         });
     }

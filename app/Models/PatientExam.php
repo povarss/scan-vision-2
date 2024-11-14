@@ -19,7 +19,16 @@ class PatientExam extends Model
         'mode'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'pattern' => 'array',
+            'result' => 'array',
+        ];
+    }
+
     const STATUS_DRAFT = 'draft';
+    const STATUS_FINISHED = 'finished';
 
     public function patient()
     {
@@ -29,5 +38,10 @@ class PatientExam extends Model
     public function setDraftStatus()
     {
         $this->status = self::STATUS_DRAFT;
+    }
+
+    public function setFinished()
+    {
+        $this->status = self::STATUS_FINISHED;
     }
 }

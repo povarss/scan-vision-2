@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('exam')->group(function () {
         Route::post('/setting', [ExamController::class, 'storeSettings']);
+        Route::post('/result', [ExamController::class, 'storeResult']);
+        Route::get('/info/{patientExam}', [ExamController::class, 'getInfo']);
         Route::get('/test-pattern/{patientExam}', [ExamController::class, 'getTestPattern']);
     });
 

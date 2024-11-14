@@ -7,12 +7,24 @@ const props = defineProps({
     type: [Object],
     required: true,
   },
+  isReadonly: {
+    type: [Object],
+    required: false,
+    default: false,
+  },
 });
+
+const emit = defineEmits(["itemSelected"]);
 
 let examData = ref([]);
 const loadTest = async (id) => {
   const { data } = await useApi(`/exam/test-pattern/` + props.exam.id);
-  if (data.value) examData.value = data.value;
+  if (data.value) {
+    examData.value = data.value.pattern;
+    selectedItems.value = data.value.selected.map(
+      (pos) => pos[0] + "_" + pos[1]
+    );
+  }
   console.log(data.value, examData.value, "data.value");
 };
 
@@ -30,34 +42,40 @@ const getSectionColor = (imgItem, rowKey, colKey) => {
   //   default:
   //     break;
   // }
-  // if(imgItem.isCorrect == 1){
-  //   color = '#00ff72';
-  // }
-  if (selectedItems.value.includes(rowKey + "_" + colKey)) {
-    color = "#dde6ff";
+  if (props.isReadonly) {
+    if (imgItem.isCorrect == 1) {
+      color = "#00ff72";
+    }
+    if (selectedItems.value.includes(rowKey + "_" + colKey)) {
+      color = "#dde6ff";
+    }
   }
   return color;
 };
+const isSelected = (rowKey, colKey) => {
+  return selectedItems.value.includes(rowKey + "_" + colKey);
+};
+
 const selectedItems = ref([]);
 onMounted(() => {
   loadTest();
 });
 const setSelected = (rowKey, colKey) => {
+  if (props.isReadonly) {
+    return;
+  }
   if (!selectedItems.value.includes(rowKey + "_" + colKey)) {
     selectedItems.value.push(rowKey + "_" + colKey);
+    emit("itemSelected", selectedItems.value);
   }
-  console.log(selectedItems.value);
 };
 </script>
 
 <template>
   <VCard>
-    <!-- <VCardItem class="pb-4">
-      <VCardTitle>Неглект скринінг</VCardTitle>
-    </VCardItem> -->
     <VCardText class="d-flex flex-wrap gap-4">
       <VRow>
-        <VCol cols="12" class="d-flex flex-column">
+        <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
           <Timer :initialTime="exam.time" />
         </VCol>
         <VCol cols="12" class="d-flex flex-column">
@@ -70,6 +88,7 @@ const setSelected = (rowKey, colKey) => {
                   :width="imgItem.width"
                   :height="imgItem.height"
                   style="position: absolute"
+                  :class="{ 'rounded-blue': isSelected(rowKey, colKey) }"
                   :style="{
                     top: imgItem.y + 'px',
                     left: imgItem.x + 'px',
@@ -90,6 +109,8 @@ const setSelected = (rowKey, colKey) => {
   min-width: 63px !important;
 }
 
-.text-h6 {
+.rounded-blue {
+  border-radius: 50%;
+  border: 2px solid #95b1ff;
 }
 </style>

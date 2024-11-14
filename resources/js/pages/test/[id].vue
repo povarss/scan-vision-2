@@ -43,11 +43,48 @@ const store = async (setting) => {
   }
 };
 
+const storeResult = async () => {
+  try {
+    const res = await $api("/exam/result", {
+      method: "POST",
+      body: {
+        id: exam.value?.id || "",
+        result: result.value,
+      },
+      onResponseError({ response }) {
+        console.error(response._data.errors);
+      },
+    });
+
+    if (res.exam) {
+      exam.value = res.exam;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const result = ref([]);
+const onItemSelected = (items) => {
+  result.value = items.map((pos) => {
+    const [part1, part2] = pos.split("_");
+    const intValue1 = parseInt(part1, 10);
+    const intValue2 = parseInt(part2, 10);
+    return [intValue1, intValue2];
+  });
+};
+
 const startTest = async (setting) => {
   isLoading.value = true;
   await store(setting);
   isLoading.value = false;
   isTestVisible.value = true;
+};
+
+const finishTestProcces = async () => {
+  await storeResult();
+  isTestVisible.value = false;
+  currentStep.value = 2;
 };
 </script>
 
@@ -71,21 +108,13 @@ const startTest = async (setting) => {
           <VSpacer />
 
           <VToolbarItems>
-            <VBtn
-              variant="text"
-              @click="
-                isTestVisible = false;
-                currentStep += 2;
-              "
-            >
-              Завершити
-            </VBtn>
+            <VBtn variant="text" @click="finishTestProcces"> Завершити </VBtn>
           </VToolbarItems>
         </VToolbar>
       </div>
 
       <div class="d-flex align-center justify-center">
-        <TestProcess  :exam="exam"/>
+        <TestProcess :exam="exam" @itemSelected="onItemSelected" />
       </div>
     </VCard>
   </VDialog>
@@ -122,7 +151,7 @@ const startTest = async (setting) => {
           <VWindowItem> </VWindowItem>
 
           <VWindowItem>
-            <Result />
+            <Result :exam="exam" v-if="currentStep == 2" />
           </VWindowItem>
         </VWindow>
 
