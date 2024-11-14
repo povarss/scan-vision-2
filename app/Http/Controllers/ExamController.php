@@ -6,6 +6,7 @@ use App\Http\Requests\StoreExamSettingRequest;
 use App\Models\Exam;
 use App\Models\PatientExam;
 use App\Services\SvgFillerService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -59,7 +60,7 @@ class ExamController extends Controller
         ];
     }
 
-    public function getInfo(PatientExam $patientExam)
+    public function getResultData($patientExam)
     {
         $difSeconds = Carbon::parse($patientExam->start_time)->diffInSeconds(Carbon::parse($patientExam->end_time));
         $testMinute = intval(ceil($difSeconds / 60));
@@ -84,12 +85,24 @@ class ExamController extends Controller
                 }
             }
         }
-        return response()->json([
+        return [
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
             'testMinute' => $testMinute,
             'correctCount' => $correctCount,
             'incorrectCount' => $incorrectCount,
-        ]);
+        ];
+    }
+    public function getInfo(PatientExam $patientExam)
+    {
+        return response()->json($this->getResultData($patientExam));
+    }
+
+    public function print(PatientExam $patientExam)
+    {
+        $totals = $this->getResultData($patientExam);
+        // return view('pdf.exam', compact('patientExam', 'totals'));
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals'))->setWarnings(true);
+        return $pdf->output();
     }
 }

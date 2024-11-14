@@ -92,7 +92,7 @@ const onDataLoad = (data) => {
           >
             Перейти к карточки
           </VBtn>
-
+          <PdfButton :btnLabel="'Печать'" :url="'/exam/print/' + exam.id" />
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"
             :disabled="true"

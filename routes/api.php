@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/info/{patientExam}', [ExamController::class, 'getInfo']);
         Route::get('/test-pattern/{patientExam}', [ExamController::class, 'getTestPattern']);
         Route::get('/detail/{patientExam}', [ExamController::class, 'getDetail']);
+        Route::get('/print/{patientExam}', [ExamController::class, 'print']);
     });
 
     Route::group(['middleware' => ['role:admin']], function () {
