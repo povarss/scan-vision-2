@@ -113,6 +113,6 @@ class ExamController extends Controller
         $totals = $this->getResultData($patientExam);
         // return view('pdf.exam', compact('patientExam', 'totals'));
         $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals'))->setWarnings(true);
-        return $pdf->output();
+        return $pdf->stream();
     }
 }

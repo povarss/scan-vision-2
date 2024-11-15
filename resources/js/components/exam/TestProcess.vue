@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Timer from "@/components/exam/Timer.vue";
+import TestLine from "@/components/exam/TestLine.vue";
 
 const props = defineProps({
   exam: {
@@ -24,6 +25,13 @@ const loadTest = async (id) => {
     selectedItems.value = data.value.selected.map(
       (pos) => pos[0] + "_" + pos[1]
     );
+    selectedPoints.value = data.value.selected.map((pos) => {
+      let item = examData.value[pos[0]][pos[1]];
+      return {
+        x: item.x + item.width / 2,
+        y: item.y + item.height / 2,
+      };
+    });
   }
 };
 
@@ -48,11 +56,10 @@ const getSectionColor = (imgItem, rowKey, colKey) => {
       } else {
         color = "#ff6f6f";
       }
-    }else{
+    } else {
       if (imgItem.isCorrect == 1) {
         color = "#fbf525";
       }
-
     }
   }
   return color;
@@ -72,11 +79,20 @@ const setSelected = (rowKey, colKey) => {
   if (!selectedItems.value.includes(rowKey + "_" + colKey)) {
     selectedItems.value.push(rowKey + "_" + colKey);
     emit("itemSelected", selectedItems.value);
+    // console.log(examData.value,)
+    let item = examData.value[rowKey][colKey];
+    selectedPoints.value.push({
+      x: item.x + item.width / 2,
+      y: item.y + item.height / 2,
+    });
   }
 };
 const onTimeout = () => {
   emit("timeout");
 };
+
+const selectedPoints = ref([]);
+const myCanvas = ref();
 </script>
 
 <template>
@@ -88,6 +104,12 @@ const onTimeout = () => {
         </VCol>
         <VCol cols="12" class="d-flex flex-column">
           <div style="position: relative; width: 400px; height: 500px">
+            <TestLine
+              v-if="isReadonly"
+              :points="selectedPoints"
+              :width="500"
+              :height="500"
+            />
             <template v-for="(row, rowKey) in examData">
               <template v-for="(imgItem, colKey) in row">
                 <img
@@ -95,7 +117,12 @@ const onTimeout = () => {
                   :src="'/images/vision/' + imgItem.type + '.svg'"
                   :width="imgItem.width"
                   :height="imgItem.height"
-                  style="position: absolute;padding: 2px;box-sizing: content-box; border: 2px solid transparent"
+                  style="
+                    position: absolute;
+                    padding: 2px;
+                    box-sizing: content-box;
+                    border: 2px solid transparent;
+                  "
                   :class="{
                     'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
                   }"
@@ -121,6 +148,6 @@ const onTimeout = () => {
 
 .rounded-blue {
   border-radius: 50%;
-  border-color: #857e7e!important;
+  border-color: #857e7e !important;
 }
 </style>
