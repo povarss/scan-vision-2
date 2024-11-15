@@ -96,49 +96,47 @@ const myCanvas = ref();
 </script>
 
 <template>
-  <VCard>
-    <VCardText class="d-flex flex-wrap gap-4">
-      <VRow>
-        <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
-          <Timer :initialTime="exam.time" @timeout="onTimeout" />
-        </VCol>
-        <VCol cols="12" class="d-flex flex-column">
-          <div style="position: relative; width: 400px; height: 500px">
-            <TestLine
-              v-if="isReadonly"
-              :points="selectedPoints"
-              :width="500"
-              :height="500"
-            />
-            <template v-for="(row, rowKey) in examData">
-              <template v-for="(imgItem, colKey) in row">
-                <img
-                  @click="setSelected(rowKey, colKey)"
-                  :src="'/images/vision/' + imgItem.type + '.svg'"
-                  :width="imgItem.width"
-                  :height="imgItem.height"
-                  style="
-                    position: absolute;
-                    padding: 2px;
-                    box-sizing: content-box;
-                    border: 2px solid transparent;
-                  "
-                  :class="{
-                    'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
-                  }"
-                  :style="{
-                    top: imgItem.y + 'px',
-                    left: imgItem.x + 'px',
-                    backgroundColor: getSectionColor(imgItem, rowKey, colKey),
-                  }"
-                />
-              </template>
+  <VRow>
+    <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
+      <Timer :initialTime="exam.time" @timeout="onTimeout" />
+    </VCol>
+    <VCol cols="12" class="d-flex flex-column">
+      <div style="  display: flex;justify-content: center;">
+        <div style="position: relative; width: 400px; height: 500px">
+          <TestLine
+            v-if="isReadonly"
+            :points="selectedPoints"
+            :width="500"
+            :height="500"
+          />
+          <template v-for="(row, rowKey) in examData">
+            <template v-for="(imgItem, colKey) in row">
+              <img
+                @click="setSelected(rowKey, colKey)"
+                :src="'/images/vision/' + imgItem.type + '.svg'"
+                :width="imgItem.width"
+                :height="imgItem.height"
+                style="
+                  position: absolute;
+                  padding: 2px;
+                  box-sizing: content-box;
+                  border: 2px solid transparent;
+                "
+                :class="{
+                  'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
+                }"
+                :style="{
+                  top: imgItem.y + 'px',
+                  left: imgItem.x + 'px',
+                  backgroundColor: getSectionColor(imgItem, rowKey, colKey),
+                }"
+              />
             </template>
-          </div>
-        </VCol>
-      </VRow>
-    </VCardText>
-  </VCard>
+          </template>
+        </div>
+      </div>
+    </VCol>
+  </VRow>
 </template>
 
 <style>
