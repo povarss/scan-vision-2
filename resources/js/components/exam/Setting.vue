@@ -5,6 +5,8 @@ import type { CustomInputContent } from "@core/types";
 
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
 const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
+const cardWidth = ref(480); // Ширини в пікселях для кожного значення
+
 const ticksLabels = { 1: "1", 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 const levels: CustomInputContent[] = [
   {
@@ -128,7 +130,7 @@ const storeSetting = () => {
               class="misc-footer-img d-none d-md-block"
               :src="miscMaskDark"
               alt="misc-footer-img"
-              :style="{ width: pixelWidths[formData.svg_size] + 'px' }"
+              :style="{ width: cardWidth * formData.svg_size/100  + 'px' }"
             />
           </div>
           <div class="d-md-block v-col-12">
