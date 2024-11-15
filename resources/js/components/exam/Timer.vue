@@ -12,9 +12,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([
-  'timeout',
-])
+const emit = defineEmits(["timeout"]);
 
 const remainingTime = ref(0);
 const interval = ref();
@@ -39,9 +37,11 @@ const startTimer = () => {
   }
 };
 
-const stopTimer = () => {
+const stopTimer = (isEmit = true) => {
   clearInterval(interval.value);
-  emit('timeout')
+  if (isEmit) {
+    emit("timeout");
+  }
 };
 
 onMounted(() => {
@@ -50,7 +50,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  stopTimer();
+  stopTimer(false);
 });
 </script>
 <template>

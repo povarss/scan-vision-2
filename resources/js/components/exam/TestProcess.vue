@@ -8,7 +8,7 @@ const props = defineProps({
     required: true,
   },
   isReadonly: {
-    type: [Object],
+    type: [Boolean],
     required: false,
     default: false,
   },
@@ -25,7 +25,6 @@ const loadTest = async (id) => {
       (pos) => pos[0] + "_" + pos[1]
     );
   }
-  console.log(data.value, examData.value, "data.value");
 };
 
 const getSectionColor = (imgItem, rowKey, colKey) => {

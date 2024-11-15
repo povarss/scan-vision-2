@@ -88,6 +88,12 @@ const finishTestProcces = async () => {
   isTestVisible.value = false;
   currentStep.value = finishStep;
 };
+
+const returnToSettings = () =>{
+  exam.value = null;
+  currentStep.value = 0;
+  isTestVisible.value = false
+}
 </script>
 
 <template>
@@ -101,7 +107,7 @@ const finishTestProcces = async () => {
     <VCard>
       <div>
         <VToolbar color="primary">
-          <VBtn icon variant="plain" @click="isTestVisible = false">
+          <VBtn icon variant="plain" @click.stop="returnToSettings">
             <VIcon color="white" icon="tabler-x" />
           </VBtn>
 
@@ -110,13 +116,14 @@ const finishTestProcces = async () => {
           <VSpacer />
 
           <VToolbarItems>
-            <VBtn variant="text" @click="finishTestProcces"> Завершити </VBtn>
+            <VBtn variant="text" @click.stop="finishTestProcces"> Завершити </VBtn>
           </VToolbarItems>
         </VToolbar>
       </div>
 
       <div class="d-flex align-center justify-center">
         <TestProcess
+          v-if="exam"
           :exam="exam"
           @itemSelected="onItemSelected"
           @timeout="finishTestProcces"
