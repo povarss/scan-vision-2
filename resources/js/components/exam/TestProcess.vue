@@ -43,11 +43,17 @@ const getSectionColor = (imgItem, rowKey, colKey) => {
   //     break;
   // }
   if (props.isReadonly) {
-    if (imgItem.isCorrect == 1) {
-      color = "#00ff72";
-    }
     if (selectedItems.value.includes(rowKey + "_" + colKey)) {
-      color = "#dde6ff";
+      if (imgItem.isCorrect == 1) {
+        color = "#00ff72";
+      } else {
+        color = "#ff6f6f";
+      }
+    }else{
+      if (imgItem.isCorrect == 1) {
+        color = "#fbf525";
+      }
+
     }
   }
   return color;
@@ -90,8 +96,10 @@ const onTimeout = () => {
                   :src="'/images/vision/' + imgItem.type + '.svg'"
                   :width="imgItem.width"
                   :height="imgItem.height"
-                  style="position: absolute"
-                  :class="{ 'rounded-blue': isSelected(rowKey, colKey) }"
+                  style="position: absolute;padding: 2px;box-sizing: content-box; border: 2px solid transparent"
+                  :class="{
+                    'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
+                  }"
                   :style="{
                     top: imgItem.y + 'px',
                     left: imgItem.x + 'px',
@@ -114,6 +122,6 @@ const onTimeout = () => {
 
 .rounded-blue {
   border-radius: 50%;
-  border: 2px solid #95b1ff;
+  border-color: #857e7e!important;
 }
 </style>
