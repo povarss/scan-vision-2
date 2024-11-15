@@ -12,9 +12,9 @@ const numberedSteps = [
   {
     title: "Налаштування",
   },
-  {
-    title: "Скринінг",
-  },
+  // {
+  //   title: "Скринінг",
+  // },
   {
     title: "Результати",
   },
@@ -81,10 +81,12 @@ const startTest = async (setting) => {
   isTestVisible.value = true;
 };
 
+const finishStep = 1;
+
 const finishTestProcces = async () => {
   await storeResult();
   isTestVisible.value = false;
-  currentStep.value = 2;
+  currentStep.value = finishStep;
 };
 </script>
 
@@ -138,7 +140,7 @@ const finishTestProcces = async () => {
       <AppStepper
         v-model:current-step="currentStep"
         :items="numberedSteps"
-        :isActiveStepFreeze="currentStep == 2"
+        :isActiveStepFreeze="currentStep > -1"
         class="stepper-icon-step-bg"
       />
     </VCardText>
@@ -153,10 +155,8 @@ const finishTestProcces = async () => {
             <Setting @settingsSaved="startTest" />
           </VWindowItem>
 
-          <VWindowItem> </VWindowItem>
-
           <VWindowItem>
-            <Result :exam="exam" v-if="currentStep == 2" />
+            <Result :exam="exam" v-if="currentStep == finishStep" />
           </VWindowItem>
         </VWindow>
 
@@ -166,7 +166,7 @@ const finishTestProcces = async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            :disabled="currentStep === 0 || currentStep == 2"
+            :disabled="currentStep === 0 || currentStep == finishStep"
             @click="currentStep--"
           >
             <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
@@ -184,7 +184,7 @@ const finishTestProcces = async () => {
 
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"
-            :disabled="currentStep == 2"
+            :disabled="currentStep == finishStep"
             color="success"
           >
             Завершити

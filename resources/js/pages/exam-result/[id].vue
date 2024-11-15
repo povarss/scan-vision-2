@@ -10,15 +10,15 @@ const numberedSteps = [
   {
     title: "Налаштування",
   },
-  {
-    title: "Скринінг",
-  },
+  // {
+  //   title: "Скринінг",
+  // },
   {
     title: "Результати",
   },
 ];
 
-const currentStep = ref(2);
+const currentStep = ref(1);
 const exam = ref({ id: null });
 onMounted(() => {
   exam.value.id = route.params.id;
@@ -62,12 +62,11 @@ const onDataLoad = (data) => {
         <VWindow v-model="currentStep" class="disable-tab-transition">
           <VWindowItem> </VWindowItem>
 
-          <VWindowItem> </VWindowItem>
 
           <VWindowItem>
             <Result
               :exam="exam"
-              v-if="currentStep == 2 && exam.id"
+              v-if="currentStep == 1 && exam.id"
               @dataLoaded="onDataLoad"
             />
           </VWindowItem>
