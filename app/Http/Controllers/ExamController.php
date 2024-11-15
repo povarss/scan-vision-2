@@ -64,13 +64,23 @@ class ExamController extends Controller
     {
         $difSeconds = Carbon::parse($patientExam->start_time)->diffInSeconds(Carbon::parse($patientExam->end_time));
         $testMinute = intval(ceil($difSeconds / 60));
-        $correctCount = ['left' => 0, 'right' => 0, 'total' => 0];
+
+        $correctTotal = 0;
+        foreach ($patientExam->pattern as $row) {
+            foreach ($row as $item) {
+                if ($item['isCorrect']) {
+                    $correctTotal++;
+                }
+            }
+        }
+
+        $correctCount = ['left' => 0, 'right' => 0, 'total' => $correctTotal, 'selected' => 0];
         $incorrectCount = ['left' => 0, 'right' => 0, 'total' => 0];
 
         foreach ($patientExam->result as $key => $position) {
             $item = $patientExam->pattern[$position[0]][$position[1]];
             if ($item['isCorrect']) {
-                $correctCount['total'] = $correctCount['total'] + 1;
+                $correctCount['selected'] = $correctCount['selected'] + 1;
                 if (in_array($item['section'], [1, 2, 7, 8])) {
                     $correctCount['right'] = $correctCount['right'] + 1;
                 } else {

@@ -10,13 +10,19 @@
 
 <body>
     <div>
-        ПИБ {{ $patientExam->patient->full_name }}
+        ПІБ: {{ $patientExam->patient->full_name }}
     </div>
     <div>
         Час скринінгу {{ $totals['testMinute'] }}хв з {{ $totals['totalMinute'] }}
     </div>
     <div>
-        Кількість правильних стимулів:{{ $totals['correctCount']['total'] }}
+        Кількість правильних стимулів: {{ $totals['correctCount']['selected'] }} з {{ $totals['correctCount']['total'] }}
+    </div>
+    <div>
+        Кількість правильних цілей з правого боку:{{ $totals['correctCount']['right'] }}
+    </div>
+    <div>
+        Кількість правильних цілей з лівого боку:{{ $totals['correctCount']['left'] }}
     </div>
     <div>
         Кількість неправильних стимулів:{{ $totals['incorrectCount']['total'] }}

@@ -13,6 +13,7 @@ const resultData = ref({
   totalMinute: 0,
   testMinute: 0,
   correctCount: {
+    selected: 0,
     total: 0,
     left: 0,
     right: 0,
@@ -86,11 +87,58 @@ onMounted(() => {
             <template #append>
               <div class="d-flex gap-x-4">
                 <div class="text-body-1">
-                  {{ resultData.correctCount.total }}
+                  {{ resultData.correctCount.selected }} з {{ resultData.correctCount.total }}
                 </div>
               </div>
             </template>
           </VListItem>
+          <VListItem>
+            <template #prepend>
+              <VAvatar
+                color="secondary"
+                variant="tonal"
+                size="34"
+                rounded
+                class="me-1"
+              >
+                <VIcon icon="tabler-arrow-big-right" size="22" />
+              </VAvatar>
+            </template>
+            <VListItemTitle class="font-weight-medium me-4">
+              Кількість правильних цілей з правого боку
+            </VListItemTitle>
+            <template #append>
+              <div class="d-flex gap-x-4">
+                <div class="text-body-1">
+                  {{ resultData.correctCount.right }}
+                </div>
+              </div>
+            </template>
+          </VListItem>
+          <VListItem>
+            <template #prepend>
+              <VAvatar
+                color="secondary"
+                variant="tonal"
+                size="34"
+                rounded
+                class="me-1"
+              >
+                <VIcon icon="tabler-arrow-big-right" size="22" />
+              </VAvatar>
+            </template>
+            <VListItemTitle class="font-weight-medium me-4">
+              Кількість правильних цілей з лівого боку
+            </VListItemTitle>
+            <template #append>
+              <div class="d-flex gap-x-4">
+                <div class="text-body-1">
+                  {{ resultData.correctCount.left }}
+                </div>
+              </div>
+            </template>
+          </VListItem>
+
           <VListItem>
             <template #prepend>
               <VAvatar
