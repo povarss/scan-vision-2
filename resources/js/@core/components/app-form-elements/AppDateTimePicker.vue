@@ -120,7 +120,7 @@ const elementId = computed(() => {
 
 
   const _elementIdToken = fieldProps.value.id || fieldProps.value.label
-  
+
   return _elementIdToken ? `app-picker-field-${ _elementIdToken }-${ Math.random().toString(36).slice(2, 7) }` : undefined
 })
 </script>
@@ -468,7 +468,7 @@ input[altinputclass="inlinePicker"] {
     transition: all 0.15s ease-out;
 
     span {
-      display: none;
+      //display: none;
     }
 
     .flatpickr-monthDropdown-month {
