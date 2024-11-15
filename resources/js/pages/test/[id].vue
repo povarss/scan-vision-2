@@ -178,9 +178,9 @@ const finishTestProcces = async () => {
             :to="{ name: 'patients-card-id', params: { id: exam.patient_id } }"
             color="success"
           >
-            Перейти к карточки
+            Перейти на картку клієнта
           </VBtn>
-          <PdfButton v-if="exam" :btnLabel="'Печать'" :url="'/exam/print/' + exam.id" />
+          <PdfButton v-if="exam" :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
 
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import miscMaskDark from "@images/Screenshot_1.png";
+import miscMaskDark from "@images/card.png";
 import type { CustomInputContent } from "@core/types";
 
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };

@@ -16,7 +16,7 @@ const timeSlider = ref(20)
 
 const ticksLabels = {5: '5хв', 10: '10хв', 15: '15хв', 20: '20хв'}
 
-import miscMaskDark from '@images/Screenshot_1.png'
+import miscMaskDark from '@images/card.png'
 import testScreenshot from '@images/test_screen.png'
 // const authThemeMask = miscMaskDark
 
@@ -70,7 +70,7 @@ const selectedRadio = ref('starter')
 
 // const value = ref(100)
 
-// import miscMaskDark from '@images/Screenshot_1.png'
+// import miscMaskDark from '@images/card.png'
 
 
 const numberedSteps = [

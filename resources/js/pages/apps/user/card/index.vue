@@ -3,7 +3,7 @@
 import userAvatar from "@images/avatars/avatar-1.png"
 
 // const isUserInfoEditDialogVisible = ref(false)
-// import miscMaskDark from '@images/Screenshot_1.png'
+// import miscMaskDark from '@images/card.png'
 
 
 

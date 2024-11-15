@@ -86,7 +86,7 @@ const openEditUser = (itemId) => {
   <section>
     <VCard class="mb-6">
       <VCardItem class="pb-4">
-        <VCardTitle>Доктора</VCardTitle>
+        <VCardTitle>Лікарі</VCardTitle>
       </VCardItem>
 
       <VDivider />

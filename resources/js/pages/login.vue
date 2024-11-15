@@ -13,8 +13,8 @@ definePage({
 });
 
 const form = ref({
-  email: "admin@admin.com",
-  password: "admin@admin.com",
+  email: "",
+  password: "",
   remember: false,
 });
 

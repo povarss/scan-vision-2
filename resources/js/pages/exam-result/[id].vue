@@ -90,9 +90,9 @@ const onDataLoad = (data) => {
             :to="{ name: 'patients-card-id', params: { id: patientId } }"
             color="success"
           >
-            Перейти к карточки
+            Перейти на картку клієнта
           </VBtn>
-          <PdfButton :btnLabel="'Печать'" :url="'/exam/print/' + exam.id" />
+          <PdfButton :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"
             :disabled="true"

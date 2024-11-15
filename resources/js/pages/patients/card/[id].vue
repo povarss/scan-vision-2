@@ -239,7 +239,7 @@ const returnToPatientList = () => {
                   }"
                   color="primary"
                 >
-                  Перейти к результатам
+                  Переглянути результат
                 </VBtn>
               </div>
             </VTimelineItem>

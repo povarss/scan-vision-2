@@ -134,7 +134,7 @@ return [
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
     'regex' => 'The :attribute field format is invalid.',
-    'required' => 'Поле :attribute обязательное.',
+    'required' => 'Поле :attribute обов\'язкове.',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_if_accepted' => 'The :attribute field is required when :other is accepted.',
@@ -193,7 +193,7 @@ return [
         'full_name' => 'ПІБ',
         'phone' => 'Телефон',
         'region_id' => 'Область',
-        'born_date' => 'День рождение'
+        'born_date' => 'День народження'
     ],
 
 ];

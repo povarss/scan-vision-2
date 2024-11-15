@@ -40,7 +40,7 @@ npm run build
 2. Delete video.js@ in all files
 2. npm install
 3. composer update
-4. .env.example to .env
+4. .env.example to .env  
 5. php artisan key:generate
 6. npm run dev
 7. php artisan serve or https://prnt.sc/KNRvPDEV8ad7
