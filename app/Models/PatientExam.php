@@ -44,4 +44,28 @@ class PatientExam extends Model
     {
         $this->status = self::STATUS_FINISHED;
     }
+
+    public function selectedCorrectCount()
+    {
+        $count = 0;
+        foreach ($this->result as $pos) {
+            if ($this->pattern[$pos[0]][$pos[1]]['isCorrect']) {
+                $count++;
+            }
+        }
+        return  $count;
+    }
+
+    public function totalCorrectCount()
+    {
+        $count = 0;
+        foreach ($this->pattern as $row) {
+            foreach ($row as $cell) {
+                if ($cell['isCorrect']) {
+                    $count++;
+                }
+            }
+        }
+        return  $count;
+    }
 }
