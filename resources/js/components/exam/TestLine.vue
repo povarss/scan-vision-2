@@ -21,7 +21,7 @@ const props = defineProps({
 const linePoints = computed(() =>
   props.points.map((point) => `${point.x},${point.y}`).join(" ")
 );
-const color = "black";
+const color = "#b7b7b7";
 const mainPointColor = "red";
 </script>
 
