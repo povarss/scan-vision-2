@@ -165,7 +165,7 @@
   "100": "100",
   "$vuetify": {
     "badge": "Badge",
-    "noDataText": "Нет данных",
+    "noDataText": "Нічого не знайдено",
     "close": "Close",
     "open": "open",
     "loading": "loading",

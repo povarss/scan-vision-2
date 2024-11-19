@@ -255,296 +255,296 @@ const resetCustomizer = async () => {
 </script>
 
 <template>
-  <div class="d-lg-block d-none">
-    <VBtn
-      icon
-      class="app-customizer-toggler rounded-s-lg rounded-0"
-      style="z-index: 1001;"
-      @click="isNavDrawerOpen = true"
-    >
-      <VIcon
-        size="22"
-        icon="tabler-settings"
-      />
-    </VBtn>
+<!--  <div class="d-lg-block d-none">-->
+<!--    <VBtn-->
+<!--      icon-->
+<!--      class="app-customizer-toggler rounded-s-lg rounded-0"-->
+<!--      style="z-index: 1001;"-->
+<!--      @click="isNavDrawerOpen = true"-->
+<!--    >-->
+<!--      <VIcon-->
+<!--        size="22"-->
+<!--        icon="tabler-settings"-->
+<!--      />-->
+<!--    </VBtn>-->
 
-    <VNavigationDrawer
-      v-model="isNavDrawerOpen"
-      temporary
-      touchless
-      border="none"
-      location="end"
-      width="400"
-      elevation="10"
-      :scrim="false"
-      class="app-customizer"
-    >
-      <!-- 👉 Header -->
-      <div class="customizer-heading d-flex align-center justify-space-between">
-        <div>
-          <h6 class="text-h6">
-            Theme Customizer
-          </h6>
-          <p class="text-body-2 mb-0">
-            Customize & Preview in Real Time
-          </p>
-        </div>
+<!--    <VNavigationDrawer-->
+<!--      v-model="isNavDrawerOpen"-->
+<!--      temporary-->
+<!--      touchless-->
+<!--      border="none"-->
+<!--      location="end"-->
+<!--      width="400"-->
+<!--      elevation="10"-->
+<!--      :scrim="false"-->
+<!--      class="app-customizer"-->
+<!--    >-->
+<!--      &lt;!&ndash; 👉 Header &ndash;&gt;-->
+<!--      <div class="customizer-heading d-flex align-center justify-space-between">-->
+<!--        <div>-->
+<!--          <h6 class="text-h6">-->
+<!--            Theme Customizer-->
+<!--          </h6>-->
+<!--          <p class="text-body-2 mb-0">-->
+<!--            Customize & Preview in Real Time-->
+<!--          </p>-->
+<!--        </div>-->
 
-        <div class="d-flex align-center gap-1">
-          <VBtn
-            icon
-            variant="text"
-            size="small"
-            color="medium-emphasis"
-            @click="resetCustomizer"
-          >
-            <VBadge
-              v-show="isCookieHasAnyValue"
-              dot
-              color="error"
-              offset-x="-29"
-              offset-y="-14"
-            />
+<!--        <div class="d-flex align-center gap-1">-->
+<!--          <VBtn-->
+<!--            icon-->
+<!--            variant="text"-->
+<!--            size="small"-->
+<!--            color="medium-emphasis"-->
+<!--            @click="resetCustomizer"-->
+<!--          >-->
+<!--            <VBadge-->
+<!--              v-show="isCookieHasAnyValue"-->
+<!--              dot-->
+<!--              color="error"-->
+<!--              offset-x="-29"-->
+<!--              offset-y="-14"-->
+<!--            />-->
 
-            <VIcon
-              size="24"
-              color="high-emphasis"
-              icon="tabler-refresh"
-            />
-          </VBtn>
+<!--            <VIcon-->
+<!--              size="24"-->
+<!--              color="high-emphasis"-->
+<!--              icon="tabler-refresh"-->
+<!--            />-->
+<!--          </VBtn>-->
 
-          <VBtn
-            icon
-            variant="text"
-            color="medium-emphasis"
-            size="small"
-            @click="isNavDrawerOpen = false"
-          >
-            <VIcon
-              icon="tabler-x"
-              color="high-emphasis"
-              size="24"
-            />
-          </VBtn>
-        </div>
-      </div>
+<!--          <VBtn-->
+<!--            icon-->
+<!--            variant="text"-->
+<!--            color="medium-emphasis"-->
+<!--            size="small"-->
+<!--            @click="isNavDrawerOpen = false"-->
+<!--          >-->
+<!--            <VIcon-->
+<!--              icon="tabler-x"-->
+<!--              color="high-emphasis"-->
+<!--              size="24"-->
+<!--            />-->
+<!--          </VBtn>-->
+<!--        </div>-->
+<!--      </div>-->
 
-      <VDivider />
+<!--      <VDivider />-->
 
-      <PerfectScrollbar
-        tag="ul"
-        :options="{ wheelPropagation: false }"
-      >
-        <!-- SECTION Theming -->
-        <CustomizerSection
-          title="Theming"
-          :divider="false"
-        >
-          <!-- 👉 Primary Color -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-h6">
-              Primary Color
-            </h6>
+<!--      <PerfectScrollbar-->
+<!--        tag="ul"-->
+<!--        :options="{ wheelPropagation: false }"-->
+<!--      >-->
+<!--        &lt;!&ndash; SECTION Theming &ndash;&gt;-->
+<!--        <CustomizerSection-->
+<!--          title="Theming"-->
+<!--          :divider="false"-->
+<!--        >-->
+<!--          &lt;!&ndash; 👉 Primary Color &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-h6">-->
+<!--              Primary Color-->
+<!--            </h6>-->
 
-            <div
-              class="d-flex app-customizer-primary-colors"
-              style="column-gap: 0.75rem; margin-block-start: 2px;"
-            >
-              <div
-                v-for="color in colors"
-                :key="color.main"
-                style="
-              border-radius: 0.375rem;
-              outline: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
-              padding-block: 0.5rem;
-              padding-inline: 0.625rem;"
-                class="primary-color-wrapper cursor-pointer"
-                :class="vuetifyTheme.current.value.colors.primary === color.main ? 'active' : ''"
-                :style="vuetifyTheme.current.value.colors.primary === color.main ? `outline-color: ${color.main}; outline-width:2px;` : `--v-color:${color.main}`"
-                @click="setPrimaryColor(color)"
-              >
-                <div
-                  style="border-radius: 0.375rem;block-size: 2.125rem; inline-size: 1.8938rem;"
-                  :style="{ backgroundColor: color.main }"
-                />
-              </div>
+<!--            <div-->
+<!--              class="d-flex app-customizer-primary-colors"-->
+<!--              style="column-gap: 0.75rem; margin-block-start: 2px;"-->
+<!--            >-->
+<!--              <div-->
+<!--                v-for="color in colors"-->
+<!--                :key="color.main"-->
+<!--                style="-->
+<!--              border-radius: 0.375rem;-->
+<!--              outline: 1px solid rgba(var(&#45;&#45;v-border-color), var(&#45;&#45;v-border-opacity));-->
+<!--              padding-block: 0.5rem;-->
+<!--              padding-inline: 0.625rem;"-->
+<!--                class="primary-color-wrapper cursor-pointer"-->
+<!--                :class="vuetifyTheme.current.value.colors.primary === color.main ? 'active' : ''"-->
+<!--                :style="vuetifyTheme.current.value.colors.primary === color.main ? `outline-color: ${color.main}; outline-width:2px;` : `&#45;&#45;v-color:${color.main}`"-->
+<!--                @click="setPrimaryColor(color)"-->
+<!--              >-->
+<!--                <div-->
+<!--                  style="border-radius: 0.375rem;block-size: 2.125rem; inline-size: 1.8938rem;"-->
+<!--                  :style="{ backgroundColor: color.main }"-->
+<!--                />-->
+<!--              </div>-->
 
-              <div
-                class="primary-color-wrapper cursor-pointer d-flex align-center"
-                style="
-              border-radius: 0.375rem;
-              outline: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
-              padding-block: 0.5rem;
-              padding-inline: 0.625rem;"
-                :class="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? 'active' : ''"
-                :style="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? `outline-color: ${customPrimaryColor}; outline-width:2px;` : ''"
-              >
-                <VBtn
-                  icon
-                  size="30"
-                  :color="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? customPrimaryColor : $vuetify.theme.current.dark ? '#8692d029' : '#4b465c29'"
-                  variant="flat"
-                  style="border-radius: 0.375rem;"
-                >
-                  <VIcon
-                    size="20"
-                    icon="tabler-color-picker"
-                    :color="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? 'rgb(var(--v-theme-on-primary))' : ''"
-                  />
-                </VBtn>
+<!--              <div-->
+<!--                class="primary-color-wrapper cursor-pointer d-flex align-center"-->
+<!--                style="-->
+<!--              border-radius: 0.375rem;-->
+<!--              outline: 1px solid rgba(var(&#45;&#45;v-border-color), var(&#45;&#45;v-border-opacity));-->
+<!--              padding-block: 0.5rem;-->
+<!--              padding-inline: 0.625rem;"-->
+<!--                :class="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? 'active' : ''"-->
+<!--                :style="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? `outline-color: ${customPrimaryColor}; outline-width:2px;` : ''"-->
+<!--              >-->
+<!--                <VBtn-->
+<!--                  icon-->
+<!--                  size="30"-->
+<!--                  :color="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? customPrimaryColor : $vuetify.theme.current.dark ? '#8692d029' : '#4b465c29'"-->
+<!--                  variant="flat"-->
+<!--                  style="border-radius: 0.375rem;"-->
+<!--                >-->
+<!--                  <VIcon-->
+<!--                    size="20"-->
+<!--                    icon="tabler-color-picker"-->
+<!--                    :color="vuetifyTheme.current.value.colors.primary === customPrimaryColor ? 'rgb(var(&#45;&#45;v-theme-on-primary))' : ''"-->
+<!--                  />-->
+<!--                </VBtn>-->
 
-                <VMenu
-                  activator="parent"
-                  :close-on-content-click="false"
-                >
-                  <VList>
-                    <VListItem>
-                      <VColorPicker
-                        v-model="customPrimaryColor"
-                        mode="hex"
-                        :modes="['hex']"
-                        @update:model-value="setPrimaryColor({ main: customPrimaryColor, darken: customPrimaryColor })"
-                      />
-                    </VListItem>
-                  </VList>
-                </VMenu>
-              </div>
-            </div>
-          </div>
+<!--                <VMenu-->
+<!--                  activator="parent"-->
+<!--                  :close-on-content-click="false"-->
+<!--                >-->
+<!--                  <VList>-->
+<!--                    <VListItem>-->
+<!--                      <VColorPicker-->
+<!--                        v-model="customPrimaryColor"-->
+<!--                        mode="hex"-->
+<!--                        :modes="['hex']"-->
+<!--                        @update:model-value="setPrimaryColor({ main: customPrimaryColor, darken: customPrimaryColor })"-->
+<!--                      />-->
+<!--                    </VListItem>-->
+<!--                  </VList>-->
+<!--                </VMenu>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <!-- 👉 Theme -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-h6">
-              Theme
-            </h6>
+<!--          &lt;!&ndash; 👉 Theme &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-h6">-->
+<!--              Theme-->
+<!--            </h6>-->
 
-            <CustomRadiosWithImage
-              :key="configStore.theme"
-              v-model:selected-radio="configStore.theme"
-              :radio-content="themeMode"
-              :grid-column="{ cols: '4' }"
-              class="customizer-skins"
-            >
-              <template #label="item">
-                <span class="text-sm text-medium-emphasis mt-1">{{ item?.label }}</span>
-              </template>
+<!--            <CustomRadiosWithImage-->
+<!--              :key="configStore.theme"-->
+<!--              v-model:selected-radio="configStore.theme"-->
+<!--              :radio-content="themeMode"-->
+<!--              :grid-column="{ cols: '4' }"-->
+<!--              class="customizer-skins"-->
+<!--            >-->
+<!--              <template #label="item">-->
+<!--                <span class="text-sm text-medium-emphasis mt-1">{{ item?.label }}</span>-->
+<!--              </template>-->
 
-              <template #content="{ item }">
-                <div
-                  class="customizer-skins-icon-wrapper d-flex align-center justify-center py-3 w-100"
-                  style="min-inline-size: 100%;"
-                >
-                  <VIcon
-                    size="30"
-                    :icon="item.bgImage"
-                    color="high-emphasis"
-                  />
-                </div>
-              </template>
-            </CustomRadiosWithImage>
-          </div>
+<!--              <template #content="{ item }">-->
+<!--                <div-->
+<!--                  class="customizer-skins-icon-wrapper d-flex align-center justify-center py-3 w-100"-->
+<!--                  style="min-inline-size: 100%;"-->
+<!--                >-->
+<!--                  <VIcon-->
+<!--                    size="30"-->
+<!--                    :icon="item.bgImage"-->
+<!--                    color="high-emphasis"-->
+<!--                  />-->
+<!--                </div>-->
+<!--              </template>-->
+<!--            </CustomRadiosWithImage>-->
+<!--          </div>-->
 
-          <!-- 👉 Skin -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-h6">
-              Skins
-            </h6>
+<!--          &lt;!&ndash; 👉 Skin &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-h6">-->
+<!--              Skins-->
+<!--            </h6>-->
 
-            <CustomRadiosWithImage
-              :key="configStore.skin"
-              v-model:selected-radio="configStore.skin"
-              :radio-content="themeSkin"
-              :grid-column="{ cols: '4' }"
-            >
-              <template #label="item">
-                <span class="text-sm text-medium-emphasis">{{ item?.label }}</span>
-              </template>
-            </CustomRadiosWithImage>
-          </div>
+<!--            <CustomRadiosWithImage-->
+<!--              :key="configStore.skin"-->
+<!--              v-model:selected-radio="configStore.skin"-->
+<!--              :radio-content="themeSkin"-->
+<!--              :grid-column="{ cols: '4' }"-->
+<!--            >-->
+<!--              <template #label="item">-->
+<!--                <span class="text-sm text-medium-emphasis">{{ item?.label }}</span>-->
+<!--              </template>-->
+<!--            </CustomRadiosWithImage>-->
+<!--          </div>-->
 
-          <!-- 👉 Semi Dark -->
-          <div
-            class="align-center justify-space-between"
-            :class="vuetifyTheme.global.name.value === 'light' && configStore.appContentLayoutNav === AppContentLayoutNav.Vertical ? 'd-flex' : 'd-none'"
-          >
-            <VLabel
-              for="customizer-semi-dark"
-              class="text-h6 text-high-emphasis"
-            >
-              Semi Dark Menu
-            </VLabel>
+<!--          &lt;!&ndash; 👉 Semi Dark &ndash;&gt;-->
+<!--          <div-->
+<!--            class="align-center justify-space-between"-->
+<!--            :class="vuetifyTheme.global.name.value === 'light' && configStore.appContentLayoutNav === AppContentLayoutNav.Vertical ? 'd-flex' : 'd-none'"-->
+<!--          >-->
+<!--            <VLabel-->
+<!--              for="customizer-semi-dark"-->
+<!--              class="text-h6 text-high-emphasis"-->
+<!--            >-->
+<!--              Semi Dark Menu-->
+<!--            </VLabel>-->
 
-            <div>
-              <VSwitch
-                id="customizer-semi-dark"
-                v-model="configStore.isVerticalNavSemiDark"
-                class="ms-2"
-              />
-            </div>
-          </div>
-        </CustomizerSection>
-        <!-- !SECTION -->
+<!--            <div>-->
+<!--              <VSwitch-->
+<!--                id="customizer-semi-dark"-->
+<!--                v-model="configStore.isVerticalNavSemiDark"-->
+<!--                class="ms-2"-->
+<!--              />-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </CustomizerSection>-->
+<!--        &lt;!&ndash; !SECTION &ndash;&gt;-->
 
-        <!-- SECTION LAYOUT -->
-        <CustomizerSection title="Layout">
-          <!-- 👉 Layouts -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-base font-weight-medium">
-              Layout
-            </h6>
+<!--        &lt;!&ndash; SECTION LAYOUT &ndash;&gt;-->
+<!--        <CustomizerSection title="Layout">-->
+<!--          &lt;!&ndash; 👉 Layouts &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-base font-weight-medium">-->
+<!--              Layout-->
+<!--            </h6>-->
 
-            <CustomRadiosWithImage
-              :key="currentLayout"
-              v-model:selected-radio="currentLayout"
-              :radio-content="layouts"
-              :grid-column="{ cols: '4' }"
-            >
-              <template #label="item">
-                <span class="text-sm text-medium-emphasis">{{ item.label }}</span>
-              </template>
-            </CustomRadiosWithImage>
-          </div>
+<!--            <CustomRadiosWithImage-->
+<!--              :key="currentLayout"-->
+<!--              v-model:selected-radio="currentLayout"-->
+<!--              :radio-content="layouts"-->
+<!--              :grid-column="{ cols: '4' }"-->
+<!--            >-->
+<!--              <template #label="item">-->
+<!--                <span class="text-sm text-medium-emphasis">{{ item.label }}</span>-->
+<!--              </template>-->
+<!--            </CustomRadiosWithImage>-->
+<!--          </div>-->
 
-          <!-- 👉 Content Width -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-base font-weight-medium">
-              Content
-            </h6>
+<!--          &lt;!&ndash; 👉 Content Width &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-base font-weight-medium">-->
+<!--              Content-->
+<!--            </h6>-->
 
-            <CustomRadiosWithImage
-              :key="configStore.appContentWidth"
-              v-model:selected-radio="configStore.appContentWidth"
-              :radio-content="contentWidth"
-              :grid-column="{ cols: '4' }"
-            >
-              <template #label="item">
-                <span class="text-sm text-medium-emphasis">{{ item.label }}</span>
-              </template>
-            </CustomRadiosWithImage>
-          </div>
+<!--            <CustomRadiosWithImage-->
+<!--              :key="configStore.appContentWidth"-->
+<!--              v-model:selected-radio="configStore.appContentWidth"-->
+<!--              :radio-content="contentWidth"-->
+<!--              :grid-column="{ cols: '4' }"-->
+<!--            >-->
+<!--              <template #label="item">-->
+<!--                <span class="text-sm text-medium-emphasis">{{ item.label }}</span>-->
+<!--              </template>-->
+<!--            </CustomRadiosWithImage>-->
+<!--          </div>-->
 
-          <!-- 👉 Direction -->
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-base font-weight-medium">
-              Direction
-            </h6>
+<!--          &lt;!&ndash; 👉 Direction &ndash;&gt;-->
+<!--          <div class="d-flex flex-column gap-2">-->
+<!--            <h6 class="text-base font-weight-medium">-->
+<!--              Direction-->
+<!--            </h6>-->
 
-            <CustomRadiosWithImage
-              :key="currentDir"
-              v-model:selected-radio="currentDir"
-              :radio-content="direction"
-              :grid-column="{ cols: '4' }"
-            >
-              <template #label="item">
-                <span class="text-sm text-medium-emphasis">{{ item?.label }}</span>
-              </template>
-            </CustomRadiosWithImage>
-          </div>
-        </CustomizerSection>
-        <!-- !SECTION -->
-      </PerfectScrollbar>
-    </VNavigationDrawer>
-  </div>
+<!--            <CustomRadiosWithImage-->
+<!--              :key="currentDir"-->
+<!--              v-model:selected-radio="currentDir"-->
+<!--              :radio-content="direction"-->
+<!--              :grid-column="{ cols: '4' }"-->
+<!--            >-->
+<!--              <template #label="item">-->
+<!--                <span class="text-sm text-medium-emphasis">{{ item?.label }}</span>-->
+<!--              </template>-->
+<!--            </CustomRadiosWithImage>-->
+<!--          </div>-->
+<!--        </CustomizerSection>-->
+<!--        &lt;!&ndash; !SECTION &ndash;&gt;-->
+<!--      </PerfectScrollbar>-->
+<!--    </VNavigationDrawer>-->
+<!--  </div>-->
 </template>
 
 <style lang="scss">
