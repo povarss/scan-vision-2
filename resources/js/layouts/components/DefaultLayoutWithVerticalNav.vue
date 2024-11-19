@@ -10,6 +10,7 @@ import NavbarShortcuts from '@/layouts/components/NavbarShortcuts.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import NavBarI18n from '@core/components/I18n.vue'
+import { HorizontalNav2 } from '@layouts/components'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
@@ -31,9 +32,9 @@ const hidePanels = true;
             icon="tabler-menu-2"
           />
         </IconBtn>
+        <HorizontalNav2 :nav-items="navItems" />
 
         <NavSearchBar class="ms-lg-n3" v-if="!hidePanels" />
-
         <VSpacer />
 
         <NavBarI18n
