@@ -1,4 +1,5 @@
 export { default as HorizontalNav } from './components/HorizontalNav.vue'
+export { default as HorizontalNav2 } from './components/HorizontalNav2.vue'
 export { default as HorizontalNavGroup } from './components/HorizontalNavGroup.vue'
 export { default as HorizontalNavLayout } from './components/HorizontalNavLayout.vue'
 export { default as HorizontalNavLink } from './components/HorizontalNavLink.vue'

@@ -60,7 +60,7 @@
                 '<svg width="'.ceil($maxX).'" height="'.ceil($maxY).'" style="border: none">
                 <polyline points="' .
                 $line .
-                '" stroke="black" fill="none" stroke-width="2" />';
+                '" stroke="#b7b7b7" fill="none" stroke-width="2" />';
 
             foreach ($points as $key => $point) {
                 $color = $key == 0 || $key == count($points) - 1 ? 'red' : 'black';
