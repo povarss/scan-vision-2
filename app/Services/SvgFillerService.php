@@ -18,35 +18,44 @@ class SvgFillerService
     public $curY = 0;
 
     public $offsetXRange = 25;
-    public $offsetYRange = 5;
+    public $offsetYRange = 25;
 
-    public $svgWidth = 25;
-    public $svgHeight = 25;
+    public $svgWidth = 50;
+    public $svgHeight = 50;
 
     public $correctSvgInPie = 1;
 
     public $sections = [];
 
     public $isDual = false;
+    public $overlapCounter = 0;
     public $patientExam;
-    public function __construct(PatientExam $patientExam)
+    public function __construct(PatientExam $patientExam, $width, $height)
     {
         $this->patientExam = $patientExam;
+        $this->maxWidth = $width;
+        $this->maxHeight = $height;
         $this->setParams();
     }
-    public function checkArray()
-    {
-        $data = json_decode(file_get_contents(public_path('test.json')), true);
 
+    public function isCheckNum($svg)
+    {
+        return ($svg['y'] == 52 && $svg['x'] == 991);
+    }
+
+    public function checkPattern()
+    {
+        $data = $this->patientExam->pattern;
+        // dd($data);
         $this->items = $data;
         foreach ($data as $n => $row) {
             $this->curY = $n;
             foreach ($row as $m => $svg) {
                 $this->curX = $m;
-                $checkSvgs = $this->getCheckSvgs();
-                $isOverlap = $this->checkSvgOverlap($svg, $checkSvgs);
-                if ($this->curY == 1 && $this->curX == 1) {
-                    dd($isOverlap);
+                $checkSvgs = $this->getCheckSvgs($svg);
+                list($isOverlap, $newPos) = $this->checkSvgOverlap($svg, $checkSvgs);
+                if ($this->isCheckNum($svg)) {
+                    dd($isOverlap, $newPos, $checkSvgs, $svg, $n, $m);
                 }
             }
         }
@@ -54,10 +63,15 @@ class SvgFillerService
 
     public function makePrint()
     {
-        while ($this->y < $this->maxHeight) {
+        $num = 0;
+        while ($this->y < $this->maxHeight - $this->calcWidth()) {
             $this->fillInit();
 
             $this->generateSvgObject();
+            $num++;
+            // if($num ==30){
+            //     break;
+            // }
         }
         $this->setCorrect();
 
@@ -68,7 +82,7 @@ class SvgFillerService
     {
         foreach ($this->sections as $section) {
             $setedSvg = 0;
-            $correctSvgs = $this->isDual ? [1,2] : [1];
+            $correctSvgs = $this->isDual ? [1, 2] : [1];
             foreach ($correctSvgs as $correctSvg) {
                 $setedSvg = 0;
                 while ($setedSvg < $this->correctSvgInPie) {
@@ -88,7 +102,8 @@ class SvgFillerService
         $this->isDual = ($this->patientExam->mode == 2);
     }
 
-    function cmToPx($cm) {
+    function cmToPx($cm)
+    {
         // Assuming 96 DPI
         $ppi = 96;
         $inches = $cm / 2.54; // Convert cm to inches
@@ -112,15 +127,17 @@ class SvgFillerService
         $this->maxHeight = $this->calcWidth() * $minItems;
     }
 
-    public function setParams(){
+    public function setParams()
+    {
         $this->setDual();
-        $this->setContainerWidth();
+        // $this->setContainerWidth();
         $this->setOffset();
     }
 
-    public function setOffset(){
-        $this->offsetXRange = intval($this->calcWidth() / 2);
-        $this->offsetYRange = intval($this->calcHeight() / 2);
+    public function setOffset()
+    {
+        $this->offsetXRange = intval($this->calcWidth());
+        $this->offsetYRange = intval($this->calcHeight());
     }
 
     public function calcWidth()
@@ -199,15 +216,25 @@ class SvgFillerService
     public function generateSvgObject()
     {
         $svg = $this->makeNewSvg();
-        $checkSvgs = $this->getCheckSvgs();
 
         do {
             $positions = $this->getPosition($this->x, $this->y);
             $svg['x'] = $positions[0];
             $svg['y'] = $positions[1];
-            $isOverlap = $this->checkSvgOverlap($svg, $checkSvgs);
+            $checkSvgs = $this->getCheckSvgs($svg);
+            list($isOverlap, $newPos) = $this->checkSvgOverlap($svg, $checkSvgs);
+            if ($isOverlap) {
+                $svg['x'] = $newPos['x'];
+                $svg['y'] = $newPos['y'];
+            }
+            // list($isOverlap, $newPos) = $this->checkSvgOverlap($svg, $checkSvgs);
+            // if ($isOverlap) {
+            //     $svg['x'] = $newPos['x'];
+            //     $svg['y'] = $newPos['y'];
+            // }
+            $isOverlap = false;
+            $this->overlapCounter++;
         } while ($isOverlap);
-
         $this->pushSvg($svg);
     }
 
@@ -215,31 +242,34 @@ class SvgFillerService
     {
         $isOverlap = true;
         if (empty($checkSvgs)) {
-            $isOverlap = false;
+            return [false, null];
         }
+        $isOverlap = false;
         foreach ($checkSvgs as $key => $checkSvg) {
-            $isOverlap = $this->checkIsOverlap($curSvg, $checkSvg);
-            if ($isOverlap) {
-                break;
+            list($isOverlaped, $newPos) = $this->checkIsOverlap($curSvg, $checkSvg);
+            if ($isOverlaped) {
+                $curSvg['x'] = $newPos[0];
+                $curSvg['y'] = $newPos[1];
+                $isOverlap = true;
             }
         }
-        return $isOverlap;
+        return [$isOverlap, $curSvg];
     }
 
-    public function getCheckSvgs()
+    public function getCheckSvgs($svg)
     {
         $checkSvgs = [];
         $previousSvg = $this->getPreviousSvg();
         if (!empty($previousSvg)) {
             $checkSvgs[] = $previousSvg;
         }
-        for ($i = 0; $i < 3; $i++) {
-            $checkSvg = $this->getItemByPosition($this->curX + $i - 1, $this->curY - 1);
-            if ($this->curX == 0 && $this->curY == 3) {
-                // var_dump($this->curY - 1, $this->curX + $i - 1, $checkSvg);
-            }
+        for ($i = -3; $i < 8; $i++) {
+            $checkSvg = $this->getItemByPosition($this->curX + $i, $this->curY - 1);
             if (!empty($checkSvg)) {
                 $checkSvgs[] = $checkSvg;
+                if ($checkSvg['x'] > $svg['x']) {
+                    break;
+                }
             }
         }
         return $checkSvgs;
@@ -247,11 +277,13 @@ class SvgFillerService
 
     public function pushSvg($svg)
     {
-        $this->items[$this->curY][$this->curX] = $svg;
-        $this->addSection();
+        if($svg['x'] < $this->maxWidth - $this->calcWidth()){
+            $this->items[$this->curY][$this->curX] = $svg;
+            $this->addSection();
+        }
         $this->x = $svg['x'] + $svg['width'];
 
-        if ($this->x >= $this->maxWidth) {
+        if ($this->x >= $this->maxWidth - $this->calcWidth()) {
             $this->y = $this->y + $this->ySpace;
             $this->x = 0;
             $this->curY++;
@@ -285,16 +317,16 @@ class SvgFillerService
         return $angle_degrees;
     }
 
-    public function checkIsOverlap($item1, $item2)
+    public function checkIsOverlap($item1, $item2): array
     {
         if (empty($item1) || empty($item2)) {
-            return false;
+            return [false, []];
         }
-        $isOverlap = $this->isOverlapping($item1, $item2);
-        return $isOverlap;
+        $isOverlapInfo = $this->isOverlapping($item1, $item2);
+        return $isOverlapInfo;
     }
 
-    function isOverlapping(array $rect1, array $rect2): bool
+    function isOverlapping(array $rect1, array $rect2): array
     {
         // Extract coordinates and dimensions from rectangles
         $x1 = $rect1['x'];
@@ -318,19 +350,37 @@ class SvgFillerService
         $r2Top = $y2;
         $r2Bottom = $y2 + $h2;
 
-        // Check for overlap
-        return !(
-            $r1Right < $r2Left ||
-            $r1Left > $r2Right ||
-            $r1Bottom < $r2Top ||
-            $r1Top > $r2Bottom
-        );
+        $newPos = [$x1, $y1];
+
+        if (
+            $r1Right > $r2Left &&
+            $r1Left < $r2Right &&
+            $r1Bottom > $r2Top &&
+            $r1Top < $r2Bottom
+        ) {
+            // Adjust rect1's position to avoid overlap
+            if ($r1Right > $r2Left) {
+                $newPos[0] = $r2Right;
+            } elseif ($r1Left < $r2Left) {
+                $newPos[0] = $r2Left - $w1;
+            }
+
+            if ($r1Bottom > $r2Top) {
+                $newPos[1] = $r2Bottom;
+            } elseif ($r1Top < $r2Top) {
+                $newPos[1] = $r2Top - $h1;
+            }
+
+            return [true, $newPos];
+        }
+
+        return [false, $newPos];
     }
 
     public function getPosition($startX, $startY)
     {
         $x = $startX + $this->xSpace + rand(0, $this->offsetXRange);
-        $y = $startY + rand(0, 2 * $this->offsetYRange) - $this->offsetYRange;
+        $y = $startY + rand(0,  $this->offsetYRange / 2);
         if ($y < 0) {
             $y = 0;
         }

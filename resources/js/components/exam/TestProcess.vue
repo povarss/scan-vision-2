@@ -19,7 +19,14 @@ const emit = defineEmits(["itemSelected", "timeout"]);
 
 let examData = ref([]);
 const loadTest = async (id) => {
-  const { data } = await useApi(`/exam/test-pattern/` + props.exam.id);
+  const { data } = await useApi(
+    `/exam/test-pattern/` +
+      props.exam.id +
+      "?width=" +
+      container.value.clientWidth +
+      "&height=" +
+      container.value.clientHeight
+  );
   if (data.value) {
     examData.value = data.value.pattern;
     selectedItems.value = data.value.selected.map(
@@ -69,6 +76,7 @@ const isSelected = (rowKey, colKey) => {
 };
 
 const selectedItems = ref([]);
+const container = ref();
 onMounted(() => {
   loadTest();
 });
@@ -101,8 +109,18 @@ const myCanvas = ref();
       <Timer :initialTime="exam.time" @timeout="onTimeout" />
     </VCol>
     <VCol cols="12" class="d-flex flex-column">
-      <div style="  display: flex;justify-content: center;">
-        <div style="position: relative; width: 400px; height: 500px">
+      <div
+        ref="container"
+        style="
+          display: flex;
+          justify-content: center;
+          height: calc(100vh - 120px);
+          align-items: center;
+          position: relative;
+          padding: 20px;
+        "
+      >
+        <div style="">
           <TestLine
             v-if="isReadonly"
             :points="selectedPoints"
