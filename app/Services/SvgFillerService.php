@@ -140,14 +140,23 @@ class SvgFillerService
         $this->offsetYRange = intval($this->calcHeight());
     }
 
+    public function getLevels(){
+        return [
+            '1' => 50,
+            '2' => 37,
+            '3' => 25
+        ];
+    }
+
     public function calcWidth()
     {
-        return $this->svgWidth * $this->patientExam->svg_size / 100;
+
+        return $this->getLevels()[$this->patientExam->level] * $this->patientExam->svg_size / 100;
     }
 
     public function calcHeight()
     {
-        return $this->svgHeight * $this->patientExam->svg_size / 100;
+        return $this->getLevels()[$this->patientExam->level] * $this->patientExam->svg_size / 100;
     }
     public function getSvgTypes()
     {

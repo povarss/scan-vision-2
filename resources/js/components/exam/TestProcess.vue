@@ -29,6 +29,7 @@ const loadTest = async (id) => {
   );
   if (data.value) {
     examData.value = data.value.pattern;
+    examParams.value = data.value;
     selectedItems.value = data.value.selected.map(
       (pos) => pos[0] + "_" + pos[1]
     );
@@ -76,6 +77,7 @@ const isSelected = (rowKey, colKey) => {
 };
 
 const selectedItems = ref([]);
+const examParams = ref({});
 const container = ref();
 onMounted(() => {
   loadTest();
@@ -101,6 +103,13 @@ const onTimeout = () => {
 
 const selectedPoints = ref([]);
 const myCanvas = ref();
+
+const scale = computed(() => {
+  if (!examParams.value.width) {
+    return 0;
+  }
+  return (container.value ? container.value.clientWidth : 0) / examParams.value.width;
+});
 </script>
 
 <template>
@@ -114,18 +123,25 @@ const myCanvas = ref();
         style="
           display: flex;
           justify-content: center;
-          height: calc(100vh - 120px);
           align-items: center;
           position: relative;
           padding: 20px;
         "
+        :style="{ height: !isReadonly ? 'calc(100vh - 120px)' : '400px' }"
       >
-        <div style="">
+        <div
+          :style="{
+            position: isReadonly ? 'absolute' : '',
+            top: isReadonly ? '0' : '',
+            left: isReadonly ? '0' : '',
+            scale: isReadonly ? scale : '',
+          }"
+        >
           <TestLine
-            v-if="isReadonly"
+            v-if="isReadonly && examParams"
             :points="selectedPoints"
-            :width="500"
-            :height="500"
+            :width="examParams.width"
+            :height="examParams.height"
           />
           <template v-for="(row, rowKey) in examData">
             <template v-for="(imgItem, colKey) in row">

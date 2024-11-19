@@ -45,6 +45,11 @@ class PatientExam extends Model
         $this->status = self::STATUS_FINISHED;
     }
 
+    public function getCorrectPercentage()
+    {
+        return ceil($this->selectedCorrectCount() / $this->totalCorrectCount() * 100);
+    }
+
     public function selectedCorrectCount()
     {
         $count = 0;

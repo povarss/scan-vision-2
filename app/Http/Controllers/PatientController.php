@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
+use App\Models\PatientExam;
 use App\Models\Tag;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -30,10 +31,12 @@ class PatientController extends Controller
         return DataTables::eloquent($model)
             ->only(['id', 'full_name', 'phone', 'first_test', 'last_test'])
             ->addColumn('first_test', function (Patient $patient) {
-                return 'Неглет тест (20%)';
+                $exam = PatientExam::where('patient_id', $patient->id)->orderBy('id', 'asc')->where('status', PatientExam::STATUS_FINISHED)->first();
+                return 'Неглет тест ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '');
             })
             ->addColumn('last_test', function (Patient $patient) {
-                return 'Неглет тест (70%) ';
+                $exam = PatientExam::where('patient_id', $patient->id)->orderBy('id', 'desc')->where('status', PatientExam::STATUS_FINISHED)->first();
+                return 'Неглет тест ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '');
             })
             ->toJson();
     }

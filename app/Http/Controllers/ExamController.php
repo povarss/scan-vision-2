@@ -32,7 +32,9 @@ class ExamController extends Controller
         }
         return response()->json([
             'pattern' => $patientExam->pattern,
-            'selected' => $patientExam->result ?? []
+            'selected' => $patientExam->result ?? [],
+            'width' => $patientExam->width,
+            'height' => $patientExam->height,
         ]);
     }
 

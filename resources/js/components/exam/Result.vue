@@ -216,7 +216,7 @@ onMounted(() => {
 
     <VCol cols="12" md="6">
       <div class="symbol-container border rounded mt-5 pa-5">
-        <TestProcess :exam="exam" is-readonly="true" />
+        <TestProcess :exam="exam" :is-readonly="true" />
 
         <!-- <img
           class="misc-footer-img d-none d-md-block"
