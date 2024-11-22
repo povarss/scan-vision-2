@@ -80,6 +80,7 @@ const onDataLoad = (data) => {
             variant="tonal"
             :disabled="true"
             @click="currentStep--"
+            class="mr-auto"
           >
             <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
             Назад
@@ -92,13 +93,13 @@ const onDataLoad = (data) => {
             Перейти на картку клієнта
           </VBtn>
           <PdfButton :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
-          <VBtn
-            v-if="numberedSteps.length - 1 === currentStep"
-            :disabled="true"
-            color="success"
-          >
-            Завершити
-          </VBtn>
+<!--          <VBtn-->
+<!--            v-if="numberedSteps.length - 1 === currentStep"-->
+<!--            :disabled="true"-->
+<!--            color="success"-->
+<!--          >-->
+<!--            Завершити-->
+<!--          </VBtn>-->
         </div>
       </VForm>
     </VCardText>

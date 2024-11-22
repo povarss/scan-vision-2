@@ -55,6 +55,6 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div>
-    <p class="text-center">{{ formattedTime }}</p>
+    <p class="text-center mb-0">{{ formattedTime }}</p>
   </div>
 </template>

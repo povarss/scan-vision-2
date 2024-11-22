@@ -175,6 +175,7 @@ const returnToSettings = () =>{
             variant="tonal"
             :disabled="currentStep === 0 || currentStep == finishStep"
             @click="currentStep--"
+            class="mr-auto"
           >
             <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
             Назад
@@ -189,13 +190,13 @@ const returnToSettings = () =>{
           </VBtn>
           <PdfButton v-if="exam" :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
 
-          <VBtn
-            v-if="numberedSteps.length - 1 === currentStep"
-            :disabled="currentStep == finishStep"
-            color="success"
-          >
-            Завершити
-          </VBtn>
+<!--          <VBtn-->
+<!--            v-if="numberedSteps.length - 1 === currentStep"-->
+<!--            :disabled="currentStep == finishStep"-->
+<!--            color="success"-->
+<!--          >-->
+<!--            Завершити-->
+<!--          </VBtn>-->
 
           <!-- <VBtn v-else @click="currentStep++">
             Далі

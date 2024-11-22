@@ -36,9 +36,22 @@ const updateSelectedOption = value => {
         v-bind="gridColumn"
       >
         <VLabel
-          class="custom-input custom-radio-icon rounded cursor-pointer"
+          class="custom-input custom-radio-icon rounded cursor-pointer position-relative"
           :class="props.selectedRadio === item.value ? 'active' : ''"
         >
+          <!--          <div>-->
+
+
+              <VIcon
+                v-bind="props"
+                @click.stop
+                icon="tabler-info-circle"
+                class="text-high-emphasis position-absolute"
+                style="right: 0px; top:0px"
+              />
+<!--            {{ item.description }}-->
+          <!--          </div>-->
+
           <slot :item="item">
             <div class="d-flex flex-column align-center text-center gap-2">
               <VIcon
@@ -56,7 +69,7 @@ const updateSelectedOption = value => {
           </slot>
 
           <div>
-            <VRadio :value="item.value" />
+            <VRadio :value="item.value"/>
           </div>
         </VLabel>
       </VCol>
