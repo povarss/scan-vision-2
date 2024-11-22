@@ -224,37 +224,37 @@ const demoList = [
 
             {{ new Date().getFullYear() }}
             <a
-              href="https://pixinvent.com/"
+              href="https://scanvision.tech/"
               target="_blank"
               rel="noopener noreferrer"
               class="font-weight-bold ms-1 text-white"
-            >Pixinvent</a>,
-            Made With ❤️ for a better web.
+            >Scanvision.tech</a>,
+
           </div>
 
-          <div class="d-flex gap-x-6">
-            <template
-              v-for="(item, index) in [
-                { title: 'github', icon: 'tabler-brand-github-filled', href: 'https://github.com/pixinvent' },
-                { title: 'facebook', icon: 'tabler-brand-facebook-filled', href: 'https://www.facebook.com/pixinvents/' },
-                { title: 'twitter', icon: 'tabler-brand-twitter-filled', href: 'https://twitter.com/pixinvents' },
-                { title: 'google', icon: 'tabler-brand-youtube-filled', href: 'https://www.youtube.com/channel/UClOcB3o1goJ293ri_Hxpklg' },
-              ]"
-              :key="index"
-            >
-              <a
-                :href="item.href"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <VIcon
-                  :icon="item.icon"
-                  size="16"
-                  color="white"
-                />
-              </a>
-            </template>
-          </div>
+<!--          <div class="d-flex gap-x-6">-->
+<!--            <template-->
+<!--              v-for="(item, index) in [-->
+<!--                { title: 'github', icon: 'tabler-brand-github-filled', href: 'https://github.com/pixinvent' },-->
+<!--                { title: 'facebook', icon: 'tabler-brand-facebook-filled', href: 'https://www.facebook.com/pixinvents/' },-->
+<!--                { title: 'twitter', icon: 'tabler-brand-twitter-filled', href: 'https://twitter.com/pixinvents' },-->
+<!--                { title: 'google', icon: 'tabler-brand-youtube-filled', href: 'https://www.youtube.com/channel/UClOcB3o1goJ293ri_Hxpklg' },-->
+<!--              ]"-->
+<!--              :key="index"-->
+<!--            >-->
+<!--              <a-->
+<!--                :href="item.href"-->
+<!--                target="_blank"-->
+<!--                rel="noopener noreferrer"-->
+<!--              >-->
+<!--                <VIcon-->
+<!--                  :icon="item.icon"-->
+<!--                  size="16"-->
+<!--                  color="white"-->
+<!--                />-->
+<!--              </a>-->
+<!--            </template>-->
+<!--          </div>-->
         </div>
       </VContainer>
     </div>
