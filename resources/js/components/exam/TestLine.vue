@@ -22,7 +22,7 @@ const linePoints = computed(() =>
   props.points.map((point) => `${point.x},${point.y}`).join(" ")
 );
 const color = "#b7b7b7";
-const mainPointColor = "red";
+const mainPointColor = "#82ff00";
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const mainPointColor = "red";
         :key="index"
         :cx="point.x"
         :cy="point.y"
-        r="3"
+        r="5"
         :fill="
           index == 0 || index == points.length - 1 ? mainPointColor : color
         "

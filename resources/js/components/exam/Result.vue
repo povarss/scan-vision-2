@@ -12,6 +12,7 @@ const props = defineProps({
 const resultData = ref({
   totalMinute: 0,
   testMinute: 0,
+  testSecond: 0,
   correctCount: {
     selected: 0,
     total: 0,
@@ -42,7 +43,7 @@ onMounted(() => {
 
 <template>
   <VRow>
-    <VCol cols="12" md="6">
+    <VCol cols="12" md="12">
       <VCardText>
         <VList class="card-list">
           <VListItem>
@@ -63,7 +64,7 @@ onMounted(() => {
             <template #append>
               <div class="d-flex gap-x-4">
                 <div class="text-body-1">
-                  {{ resultData.testMinute }}хв з {{ resultData.totalMinute }}хв
+                  {{ resultData.testMinute }}.{{resultData.testSecond}} хв з {{ resultData.totalMinute }}хв
                 </div>
               </div>
             </template>
@@ -214,7 +215,7 @@ onMounted(() => {
       </VCardText>
     </VCol>
 
-    <VCol cols="12" md="6">
+    <VCol cols="12" md="12">
       <div class="symbol-container border rounded mt-5 pa-5">
         <TestProcess :exam="exam" :is-readonly="true" />
 

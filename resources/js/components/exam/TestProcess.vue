@@ -103,12 +103,22 @@ const onTimeout = () => {
 
 const selectedPoints = ref([]);
 const myCanvas = ref();
+const canvasHeight = ref(500);
 
 const scale = computed(() => {
   if (!examParams.value.width) {
     return 0;
   }
-  return (container.value ? container.value.clientWidth : 0) / examParams.value.width;
+  return (
+    (container.value ? container.value.clientWidth : 0) / examParams.value.width
+  );
+});
+
+const wrapperHeight = computed(() => {
+  if (!examParams.value.width) {
+    return 500;
+  }
+  return examParams.value.height * scale.value;
 });
 </script>
 
@@ -127,7 +137,9 @@ const scale = computed(() => {
           position: relative;
           padding: 20px;
         "
-        :style="{ height: !isReadonly ? 'calc(100vh - 120px)' : '400px' }"
+        :style="{
+          height: !isReadonly ? 'calc(100vh - 120px)' : wrapperHeight + 'px',
+        }"
       >
         <div
           :style="{

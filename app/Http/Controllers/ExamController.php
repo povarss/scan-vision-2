@@ -73,7 +73,8 @@ class ExamController extends Controller
     public function getResultData($patientExam)
     {
         $difSeconds = Carbon::parse($patientExam->start_time)->diffInSeconds(Carbon::parse($patientExam->end_time));
-        $testMinute = intval(ceil($difSeconds / 60));
+        $testMinute = intval(floor($difSeconds / 60));
+        $testSecond = $difSeconds - $testMinute * 60;
 
         $correctTotal = 0;
         foreach ($patientExam->pattern as $row) {
@@ -109,6 +110,7 @@ class ExamController extends Controller
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
             'testMinute' => $testMinute,
+            'testSecond' => $testSecond,
             'correctCount' => $correctCount,
             'incorrectCount' => $incorrectCount,
         ];
