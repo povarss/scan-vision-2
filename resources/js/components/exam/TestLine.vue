@@ -27,7 +27,7 @@ const mainPointColor = "red";
 
 <template>
   <div style="z-index: 90; position: absolute;">
-    <svg :width="width" :height="height" style="border: none">
+    <svg :width="width" :height="height" style="border: none;">
       <polyline
         :points="linePoints"
         :stroke="color"

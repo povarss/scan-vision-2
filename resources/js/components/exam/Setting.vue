@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import miscMaskDark from "@images/card.png";
 import type { CustomInputContent } from "@core/types";
 
@@ -7,24 +7,27 @@ const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
 const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
 const cardWidth = ref(480); // Ширини в пікселях для кожного значення
 
-const ticksLabels = { 1: "1", 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
+const ticksLabels = {5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 const levels: CustomInputContent[] = [
   {
     title: "Легкий",
     desc: "Розмір стимулів 2см",
     value: "1",
+    size: 50,
     icon: { icon: "tabler-rocket", size: "28" },
   },
   {
     title: "Середній",
     desc: "Розмір стимулів 1.5см",
     value: "2",
+    size: 37,
     icon: { icon: "tabler-star", size: "28" },
   },
   {
     title: "Важкий ",
     desc: "Розмір стимулів 1см",
     value: "3",
+    size: 25,
     icon: { icon: "tabler-crown", size: "28" },
   },
 ];
@@ -50,6 +53,11 @@ const formData = ref({
   level: "1",
   mode: "1",
 });
+const stimulSize = computed(() => {
+  const svgSm = levels.find( v=> v.value == formData.value.level).size;
+  return svgSm * formData.value.svg_size /100 ;
+})
+
 onMounted(() => {});
 const emit = defineEmits(["settingsSaved"]);
 const storeSetting = () => {
@@ -138,8 +146,8 @@ const storeSetting = () => {
               <img
                 class="misc-footer-img d-none d-md-block"
                 :src="'/images/vision/' + svg + '.svg'"
-                :width="(formData.svg_size * normalSize) / 100"
-                :height="(formData.svg_size * normalSize) / 100"
+                :width="stimulSize"
+                :height="stimulSize"
               />
             </template>
           </div>

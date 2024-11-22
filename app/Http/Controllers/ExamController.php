@@ -12,19 +12,29 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function getTestPattern(PatientExam $patientExam)
+    public function getTestPattern(Request $request, PatientExam $patientExam)
     {
         $isNew = empty($patientExam->pattern);
+        // $filler = new SvgFillerService($patientExam, $patientExam->width, $patientExam->height);
+        // $filler->checkPattern();
+        // exit;
+
         if ($isNew) {
-            $filler = new SvgFillerService($patientExam);
+            $width  = intval(floor($request->width));
+            $height  = intval(floor($request->height));
+            $filler = new SvgFillerService($patientExam, $width, $height);
             $pattern = $filler->makePrint();
             $patientExam->pattern = $pattern;
             $patientExam->start_time = date('Y-m-d H:i:s');
+            $patientExam->width = $width;
+            $patientExam->height = $height;
             $patientExam->save();
         }
         return response()->json([
             'pattern' => $patientExam->pattern,
-            'selected' => $patientExam->result ?? []
+            'selected' => $patientExam->result ?? [],
+            'width' => $patientExam->width,
+            'height' => $patientExam->height,
         ]);
     }
 

@@ -19,9 +19,17 @@ const emit = defineEmits(["itemSelected", "timeout"]);
 
 let examData = ref([]);
 const loadTest = async (id) => {
-  const { data } = await useApi(`/exam/test-pattern/` + props.exam.id);
+  const { data } = await useApi(
+    `/exam/test-pattern/` +
+      props.exam.id +
+      "?width=" +
+      container.value.clientWidth +
+      "&height=" +
+      container.value.clientHeight
+  );
   if (data.value) {
     examData.value = data.value.pattern;
+    examParams.value = data.value;
     selectedItems.value = data.value.selected.map(
       (pos) => pos[0] + "_" + pos[1]
     );
@@ -69,6 +77,8 @@ const isSelected = (rowKey, colKey) => {
 };
 
 const selectedItems = ref([]);
+const examParams = ref({});
+const container = ref();
 onMounted(() => {
   loadTest();
 });
@@ -93,6 +103,13 @@ const onTimeout = () => {
 
 const selectedPoints = ref([]);
 const myCanvas = ref();
+
+const scale = computed(() => {
+  if (!examParams.value.width) {
+    return 0;
+  }
+  return (container.value ? container.value.clientWidth : 0) / examParams.value.width;
+});
 </script>
 
 <template>
@@ -101,13 +118,30 @@ const myCanvas = ref();
       <Timer :initialTime="exam.time" @timeout="onTimeout" />
     </VCol>
     <VCol cols="12" class="d-flex flex-column">
-      <div style="  display: flex;justify-content: center;">
-        <div style="position: relative; width: 400px; height: 500px">
+      <div
+        ref="container"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          padding: 20px;
+        "
+        :style="{ height: !isReadonly ? 'calc(100vh - 120px)' : '400px' }"
+      >
+        <div
+          :style="{
+            position: isReadonly ? 'absolute' : '',
+            top: isReadonly ? '0' : '',
+            left: isReadonly ? '0' : '',
+            scale: isReadonly ? scale : '',
+          }"
+        >
           <TestLine
-            v-if="isReadonly"
+            v-if="isReadonly && examParams"
             :points="selectedPoints"
-            :width="500"
-            :height="500"
+            :width="examParams.width"
+            :height="examParams.height"
           />
           <template v-for="(row, rowKey) in examData">
             <template v-for="(imgItem, colKey) in row">
