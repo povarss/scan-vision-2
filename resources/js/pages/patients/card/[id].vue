@@ -226,6 +226,9 @@ const returnToPatientList = () => {
                     "
                     >{{ examResult.final_result }}%</VChip
                   >
+                  <VChip :color="'error'" class="ml-2">{{
+                    examResult.incorrect_count
+                  }}</VChip>
                 </span>
                 <span class="app-timeline-meta">{{ examResult.date }}</span>
               </div>

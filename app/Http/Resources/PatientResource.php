@@ -33,6 +33,7 @@ class PatientResource extends JsonResource
             $data['exams'][] = [
                 'test_id' => $test->id,
                 'final_result' => $test->getCorrectPercentage(),
+                'incorrect_count' => $test->getSelectedIncorrectCount(),
                 'date' => date('Y-m-d H:i', strtotime($test->start_time))
             ];
         }

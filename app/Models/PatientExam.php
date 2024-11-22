@@ -50,6 +50,15 @@ class PatientExam extends Model
         return ceil($this->selectedCorrectCount() / $this->totalCorrectCount() * 100);
     }
 
+    public function getAllSelectedCount()
+    {
+        return count($this->result);
+    }
+    public function getSelectedIncorrectCount()
+    {
+        return $this->getAllSelectedCount() - $this->selectedCorrectCount();
+    }
+
     public function selectedCorrectCount()
     {
         $count = 0;
