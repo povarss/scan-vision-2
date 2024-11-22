@@ -1,61 +1,64 @@
 <script setup lang="ts">
-import {ref, onMounted, computed} from "vue";
+import { ref, onMounted, computed } from "vue";
 import miscMaskDark from "@images/card.png";
-import type {CustomInputContent} from "@core/types";
+import type { CustomInputContent } from "@core/types";
 
-const sizeTicksLabels = {75: "75%", 100: "100%", 125: "125%"};
-const pixelWidths: Record<number, number> = {75: 420, 100: 480, 125: 540}; // Ширини в пікселях для кожного значення
+const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
+const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
 const cardWidth = ref(480); // Ширини в пікселях для кожного значення
 
-const ticksLabels = {5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв"};
+const ticksLabels = { 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 const levels: CustomInputContent[] = [
   {
     title: "Легкий",
     desc: "Розмір стимулів 2см",
     value: "1",
     size: 50,
-    icon: {icon: "tabler-rocket", size: "28"},
-    description: '\n' +
-      '      <div>\n' +
-      '        <p>Це <strong>легкий</strong> рівень.</p>\n' +
-      '        <ul>\n' +
-      '          <li>Розмір стимулів: 2см</li>\n' +
-      '          <li>Ідеально для початківців</li>\n' +
-      '        </ul>\n' +
-      '      </div>\n' +
-      ' '
+    icon: { icon: "tabler-rocket", size: "28" },
+    description:
+      "\n" +
+      "      <div>\n" +
+      "        <p>Це <strong>легкий</strong> рівень.</p>\n" +
+      "        <ul>\n" +
+      "          <li>Розмір стимулів: 2см</li>\n" +
+      "          <li>Ідеально для початківців</li>\n" +
+      "        </ul>\n" +
+      "      </div>\n" +
+      " ",
   },
   {
     title: "Середній",
     desc: "Розмір стимулів 1.5см",
     value: "2",
     size: 37,
-    icon: {icon: "tabler-star", size: "28"},
-    description: '\n' +
-      '      <div>\n' +
-      '        <p>Це <strong>легкий</strong> рівень.</p>\n' +
-      '        <ul>\n' +
-      '          <li>Розмір стимулів: 2см</li>\n' +
-      '          <li>Ідеально для початківців</li>\n' +
-      '        </ul>\n' +
-      '      </div>\n' +
-      ' '
+    icon: { icon: "tabler-star", size: "28" },
+    description:
+      "\n" +
+      "      <div>\n" +
+      "        <p>Це <strong>легкий</strong> рівень.</p>\n" +
+      "        <ul>\n" +
+      "          <li>Розмір стимулів: 2см</li>\n" +
+      "          <li>Ідеально для початківців</li>\n" +
+      "        </ul>\n" +
+      "      </div>\n" +
+      " ",
   },
   {
     title: "Важкий ",
     desc: "Розмір стимулів 1см",
     value: "3",
     size: 25,
-    icon: {icon: "tabler-crown", size: "28"},
-    description: '\n' +
-      '      <div>\n' +
-      '        <p>Це <strong>легкий</strong> рівень.</p>\n' +
-      '        <ul>\n' +
-      '          <li>Розмір стимулів: 2см</li>\n' +
-      '          <li>Ідеально для початківців</li>\n' +
-      '        </ul>\n' +
-      '      </div>\n' +
-      ' '
+    icon: { icon: "tabler-crown", size: "28" },
+    description:
+      "\n" +
+      "      <div>\n" +
+      "        <p>Це <strong>легкий</strong> рівень.</p>\n" +
+      "        <ul>\n" +
+      "          <li>Розмір стимулів: 2см</li>\n" +
+      "          <li>Ідеально для початківців</li>\n" +
+      "        </ul>\n" +
+      "      </div>\n" +
+      " ",
   },
 ];
 const modes: CustomInputContent[] = [
@@ -63,13 +66,13 @@ const modes: CustomInputContent[] = [
     title: "Single",
     desc: "Один цільовий стимул",
     value: "1",
-    icon: {icon: "tabler-box-multiple-1", size: "28"},
+    icon: { icon: "tabler-box-multiple-1", size: "28" },
   },
   {
     title: "Dual",
     desc: "Два цільових стимули",
     value: "2",
-    icon: {icon: "tabler-box-multiple-2", size: "28"},
+    icon: { icon: "tabler-box-multiple-2", size: "28" },
   },
 ];
 const correctSvgList: string[] = ["1", "2"];
@@ -81,19 +84,23 @@ const formData = ref({
   mode: "1",
 });
 const stimulSize = computed(() => {
-  const svgSm = levels.find(v => v.value == formData.value.level).size;
-  return svgSm * formData.value.svg_size / 100;
-})
-
-onMounted(() => {
+  const svgSm = levels.find((v) => v.value == formData.value.level).size;
+  return (svgSm * formData.value.svg_size) / 100;
 });
+
+onMounted(() => {});
 const emit = defineEmits(["settingsSaved"]);
 const storeSetting = () => {
   emit("settingsSaved", formData.value);
 };
 
-const levelDialogInfo = ref(false)
-
+const levelDialogInfo = ref(false);
+const infoText = ref("");
+const infoClicked = (level) => {
+  console.log("clicked");
+  levelDialogInfo.value = true;
+  infoText.value = level.description;
+};
 </script>
 
 <template>
@@ -118,41 +125,35 @@ const levelDialogInfo = ref(false)
     <VCol cols="6">
       <div class="mb-4">
         <h5 class="text-h5 mb-1">Опис налаштувань</h5>
-        Для ефективної діагностики та реабілітації тест на чутливість адаптовано до трьох рівнів складностію. Кожен
-        рівень відповідає певним можливостям пацієнта і дозволяє поступово підвищувати когнітивне та моторне
+        Для ефективної діагностики та реабілітації тест на чутливість адаптовано
+        до трьох рівнів складностію. Кожен рівень відповідає певним можливостям
+        пацієнта і дозволяє поступово підвищувати когнітивне та моторне
         навантаження.
       </div>
 
-
-      <VDialog
-        v-model="levelDialogInfo"
-        width="500"
-      >
-
+      <VDialog v-model="levelDialogInfo" width="500">
         <!-- Dialog close btn -->
-        <DialogCloseBtn @click="levelDialogInfo = !levelDialogInfo"/>
+        <DialogCloseBtn @click="levelDialogInfo = !levelDialogInfo" />
 
         <!-- Dialog Content -->
         <VCard title="Privacy Policy">
           <VCardText>
-            Bear claw pastry cotton candy jelly toffee. Pudding chocolate cake shortbread bonbon biscuit sweet. Lemon
-            drops cupcake muffin brownie fruitcake. Pastry pastry tootsie roll jujubes chocolate cake gummi bears muffin
-            pudding caramels. Jujubes lollipop gummies croissant shortbread. Cupcake dessert marzipan topping
-            gingerbread apple pie chupa chups powder. Cake croissant halvah candy canes gummies.
+            <div v-html="infoText"></div>
           </VCardText>
 
           <VCardText class="d-flex justify-end">
-            <VBtn @click="levelDialogInfo = false">
-              I accept
-            </VBtn>
+            <VBtn @click="levelDialogInfo = false"> I accept </VBtn>
           </VCardText>
         </VCard>
       </VDialog>
 
       <div class="mb-4">
-        <h5 class="text-h5 mb-1" @click="levelDialogInfo = !levelDialogInfo">Рівень скринінгу</h5>
+        <h5 class="text-h5 mb-1" @click="levelDialogInfo = !levelDialogInfo">
+          Рівень скринінгу
+        </h5>
         <CustomRadiosWithIcon
           v-model:selected-radio="formData.level"
+          @info-clicked="infoClicked($event)"
           :radio-content="levels"
           :grid-column="{ sm: '4', cols: '12' }"
         />
@@ -161,6 +162,7 @@ const levelDialogInfo = ref(false)
         <h5 class="text-h5 mb-1">Режим скринінгу</h5>
         <CustomRadiosWithIcon
           v-model:selected-radio="formData.mode"
+          @info-clicked="infoClicked($event)"
           :radio-content="modes"
           :grid-column="{ sm: '6', cols: '12' }"
         />
@@ -193,7 +195,7 @@ const levelDialogInfo = ref(false)
               class="misc-footer-img d-none d-md-block"
               :src="miscMaskDark"
               alt="misc-footer-img"
-              :style="{ width: cardWidth * formData.svg_size/100  + 'px' }"
+              :style="{ width: (cardWidth * formData.svg_size) / 100 + 'px' }"
             />
           </div>
           <div class="d-md-block v-col-12">
@@ -219,7 +221,7 @@ const levelDialogInfo = ref(false)
     <VCol cols="12" class="d-flex align-center justify-center">
       <VBtn size="large" class="mt-5" @click="storeSetting">
         Почати
-        <VIcon end icon="tabler-play"/>
+        <VIcon end icon="tabler-play" />
       </VBtn>
     </VCol>
   </VRow>

@@ -12,14 +12,18 @@ const props = defineProps({
     type: null,
     required: false,
   },
-})
+});
 
-const emit = defineEmits(['update:selectedRadio'])
+const emit = defineEmits(["update:selectedRadio", "infoClicked"]);
 
-const updateSelectedOption = value => {
-  if (value !== null)
-    emit('update:selectedRadio', value)
-}
+const updateSelectedOption = (value) => {
+  if (value !== null) emit("update:selectedRadio", value);
+};
+
+const infoClickHandle = (level) => {
+  console.log("info handler");
+  emit("infoClicked",level);
+};
 </script>
 
 <template>
@@ -41,23 +45,19 @@ const updateSelectedOption = value => {
         >
           <!--          <div>-->
 
-
-              <VIcon
-                v-bind="props"
-                @click.stop
-                icon="tabler-info-circle"
-                class="text-high-emphasis position-absolute"
-                style="right: 0px; top:0px"
-              />
-<!--            {{ item.description }}-->
+          <VIcon
+            v-bind="props"
+            @click.stop="infoClickHandle(item)"
+            icon="tabler-info-circle"
+            class="text-high-emphasis position-absolute"
+            style="right: 0px; top: 0px"
+          />
+          <!--            {{ item.description }}-->
           <!--          </div>-->
 
           <slot :item="item">
             <div class="d-flex flex-column align-center text-center gap-2">
-              <VIcon
-                v-bind="item.icon"
-                class="text-high-emphasis"
-              />
+              <VIcon v-bind="item.icon" class="text-high-emphasis" />
               <h6 class="text-h6 font-weight-bold">
                 {{ item.title }}
               </h6>
@@ -69,7 +69,7 @@ const updateSelectedOption = value => {
           </slot>
 
           <div>
-            <VRadio :value="item.value"/>
+            <VRadio :value="item.value" />
           </div>
         </VLabel>
       </VCol>
