@@ -13,7 +13,7 @@
         ПІБ: {{ $patientExam->patient->full_name }}
     </div>
     <div>
-        Час скринінгу {{ $totals['testMinute'].'.'.$totals['testSecond'] }}хв з {{ $totals['totalMinute'] }}
+        Час скринінгу {{ $totals['testMinute']}} хв {{$totals['testSecond'] }} сек з {{ $totals['totalMinute'] }}
     </div>
     <div>
         Кількість правильних стимулів: {{ $totals['correctCount']['selected'] }} з

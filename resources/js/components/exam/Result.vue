@@ -64,7 +64,7 @@ onMounted(() => {
             <template #append>
               <div class="d-flex gap-x-4">
                 <div class="text-body-1">
-                  {{ resultData.testMinute }}.{{resultData.testSecond}} хв з {{ resultData.totalMinute }}хв
+                  {{ resultData.testMinute }}хв {{resultData.testSecond}}сек  з {{ resultData.totalMinute }}хв
                 </div>
               </div>
             </template>
