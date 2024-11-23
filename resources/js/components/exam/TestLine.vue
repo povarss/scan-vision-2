@@ -21,13 +21,22 @@ const props = defineProps({
 const linePoints = computed(() =>
   props.points.map((point) => `${point.x},${point.y}`).join(" ")
 );
+const circleColor = (index) => {
+  if (index == 0) {
+    return "red";
+  }
+  if (index == props.points.length - 1) {
+    return "#82ff00";
+  }
+  return "#b7b7b7";
+};
+
 const color = "#b7b7b7";
-const mainPointColor = "#82ff00";
 </script>
 
 <template>
-  <div style="z-index: 90; position: absolute;">
-    <svg :width="width" :height="height" style="border: none;">
+  <div style="z-index: 90; position: absolute">
+    <svg :width="width" :height="height" style="border: none">
       <polyline
         :points="linePoints"
         :stroke="color"
@@ -39,10 +48,8 @@ const mainPointColor = "#82ff00";
         :key="index"
         :cx="point.x"
         :cy="point.y"
-        r="5"
-        :fill="
-          index == 0 || index == points.length - 1 ? mainPointColor : color
-        "
+        r="10"
+        :fill="circleColor(index)"
       />
     </svg>
   </div>

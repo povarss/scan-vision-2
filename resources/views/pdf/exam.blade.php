@@ -13,7 +13,7 @@
         ПІБ: {{ $patientExam->patient->full_name }}
     </div>
     <div>
-        Час скринінгу {{ $totals['testMinute'] }}хв з {{ $totals['totalMinute'] }}
+        Час скринінгу {{ $totals['testMinute'].'.'.$totals['testSecond'] }}хв з {{ $totals['totalMinute'] }}
     </div>
     <div>
         Кількість правильних стимулів: {{ $totals['correctCount']['selected'] }} з
@@ -68,8 +68,14 @@
                     '" stroke="#b7b7b7" fill="none" stroke-width="2" />';
 
                 foreach ($points as $key => $point) {
-                    $color = $key == 0 || $key == count($points) - 1 ? '#82ff00' : 'black';
-                    $svg .= '<circle cx="' . $point['x'] . '" cy="' . $point['y'] . '" r="5" fill="' . $color . '" />';
+                    $color = '#b7b7b7';
+                    if($key == 0){
+                        $color = 'red';
+                    }
+                    if($key == count($points) - 1){
+                        $color = '#82ff00';
+                    }
+                    $svg .= '<circle cx="' . $point['x'] . '" cy="' . $point['y'] . '" r="10" fill="' . $color . '" />';
                 }
                 $svg .= '</svg>';
                 // dd($svg);
