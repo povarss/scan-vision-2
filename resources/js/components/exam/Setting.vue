@@ -13,7 +13,7 @@ const levels: CustomInputContent[] = [
     title: "Легкий",
     desc: "Розмір стимулів 2см",
     value: "1",
-    size: 50,
+    size: 76,
     icon: { icon: "tabler-rocket", size: "28" },
     description:
       "\n" +
@@ -30,7 +30,7 @@ const levels: CustomInputContent[] = [
     title: "Середній",
     desc: "Розмір стимулів 1.5см",
     value: "2",
-    size: 37,
+    size: 57,
     icon: { icon: "tabler-star", size: "28" },
     description:
       "\n" +
@@ -47,7 +47,7 @@ const levels: CustomInputContent[] = [
     title: "Важкий ",
     desc: "Розмір стимулів 1см",
     value: "3",
-    size: 25,
+    size: 38,
     icon: { icon: "tabler-crown", size: "28" },
     description:
       "\n" +

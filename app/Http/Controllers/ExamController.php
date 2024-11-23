@@ -12,12 +12,15 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
+    public function checkPattern(PatientExam $patientExam){
+        $filler = new SvgFillerService($patientExam, $patientExam->width, $patientExam->height);
+        $filler->checkPattern();
+        exit;
+
+    }
     public function getTestPattern(Request $request, PatientExam $patientExam)
     {
         $isNew = empty($patientExam->pattern);
-        // $filler = new SvgFillerService($patientExam, $patientExam->width, $patientExam->height);
-        // $filler->checkPattern();
-        // exit;
 
         if ($isNew) {
             $width  = intval(floor($request->width));
