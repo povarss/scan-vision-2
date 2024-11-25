@@ -330,25 +330,8 @@ const items = ['Новий', 'Пріоритетний']
               />
             </VRadioGroup>
           </VCol>
-          <VCol cols="12">
 
-            <AppCombobox
-              v-model="selectedItem"
-              :items="items"
-              placeholder=""
-              label="Теги"
-              multiple
-              chips
-            />
-          </VCol>
-          <VCol
-            cols="12"
-            sm="6"
-          >
-            <AppTextField
-              label="Сфера"
-            />
-          </VCol>
+
           <VCol
             cols="12"
             sm="6"
@@ -359,9 +342,33 @@ const items = ['Новий', 'Пріоритетний']
               placeholder=""
             />
           </VCol>
+
+
+          <VCol
+            cols="12"
+            sm="6"
+          >
+
+            <AppCombobox
+              v-model="selectedItem"
+              :items="items"
+              placeholder=""
+              label="Теги"
+              multiple
+              chips
+            />
+          </VCol>
+
           <VCol cols="12">
             <AppTextField
               label="Клінічний діагноз"
+            />
+          </VCol>
+          <VCol
+            cols="12"
+          >
+            <AppTextField
+              label="Коментар"
             />
           </VCol>
 

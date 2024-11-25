@@ -1,27 +1,27 @@
 <script setup>
-import userAvatar from "@images/avatars/avatar-1.png";
-import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue";
-import PatientArchiveDialog from "@/components/patient/PatientArchiveDialog.vue";
+import userAvatar from "@images/avatars/avatar-1.png"
+import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue"
+import PatientArchiveDialog from "@/components/patient/PatientArchiveDialog.vue"
 
-const route = useRoute("patients-card-id");
-const patientData = ref({});
+const route = useRoute("patients-card-id")
+const patientData = ref({})
 
-const isAddPatientVisible = ref(false);
-const isArchiveDialogVisible = ref(false);
-const router = useRouter();
+const isAddPatientVisible = ref(false)
+const isArchiveDialogVisible = ref(false)
+const router = useRouter()
 
 const loadPatientData = async (id) => {
-  const { data } = await useApi(`/patient/${id}`);
-  if (data.value) patientData.value = data.value.data;
-};
-await loadPatientData(route.params.id);
+  const { data } = await useApi(`/patient/${id}`)
+  if (data.value) patientData.value = data.value.data
+}
+await loadPatientData(route.params.id)
 
 const reloadData = () => {
-  loadPatientData(route.params.id);
-};
+  loadPatientData(route.params.id)
+}
 const returnToPatientList = () => {
-  router.push({ name: "patients" });
-};
+  router.push({ name: "patients" })
+}
 </script>
 
 <template>
@@ -39,10 +39,17 @@ const returnToPatientList = () => {
   <VCard class="mb-4">
     <VCardText class="pt-12">
       <VRow>
-        <VCol cols="5" class="d-flex flex-column">
+        <VCol cols="4" class="d-flex flex-column">
           <div class="d-flex justify-start align-start">
-            <VAvatar rounded :size="100">
-              <VImg :src="userAvatar" />
+
+
+            <VAvatar rounded :size="100" style="background: rgb(115 103 240 / 22%) !important; border-radius: 50%">
+              <!--              <VImg :src="userAvatar" />-->
+              <VIcon
+                icon="tabler-user"
+                color="primary"
+                size="100"
+              />
             </VAvatar>
             <div class="d-flex flex-column align-start justify-start ms-4">
               <h5 class="text-h5">
@@ -71,56 +78,85 @@ const returnToPatientList = () => {
             </div>
           </div>
 
-          <div>
-            <div class="d-flex justify-start gap-x-6 gap-y-2 flex-wrap mt-3">
-              <!-- 👉 Done task -->
-              <div class="d-flex align-center me-8">
-                <VAvatar
-                  :size="40"
-                  rounded
-                  :color="patientData.gender === 0 ? 'error' : 'primary'"
-                  variant="tonal"
-                  class="me-4"
-                >
-                  <VIcon icon="tabler-man" size="24" />
-                </VAvatar>
+          <!--          <div>-->
+          <!--            <div class="d-flex justify-start gap-x-6 gap-y-2 flex-wrap mt-3">-->
+          <!-- 👉 Done task -->
+          <!--              <div class="d-flex align-center me-8">-->
+          <!--                <VAvatar-->
+          <!--                  :size="40"-->
+          <!--                  rounded-->
+          <!--                  :color="patientData.gender === 0 ? 'error' : 'primary'"-->
+          <!--                  variant="tonal"-->
+          <!--                  class="me-4"-->
+          <!--                >-->
+          <!--                  <VIcon icon="tabler-man" size="24" />-->
+          <!--                </VAvatar>-->
 
-                <div>
-                  <h6 class="text-h6 text-left">Стать</h6>
+          <!--                <div>-->
+          <!--                  <h6 class="text-h6 text-left">Стать</h6>-->
 
-                  <span class="text-sm text-left">{{
-                    $t("gender." + (patientData.gender == 0 ? "woman" : "man"))
-                  }}</span>
-                </div>
-              </div>
+          <!--                  <span class="text-sm text-left">{{-->
+          <!--                    $t("gender." + (patientData.gender == 0 ? "woman" : "man"))-->
+          <!--                  }}</span>-->
+          <!--                </div>-->
+          <!--              </div>-->
 
-              <!-- 👉 Done Project -->
-              <div class="d-flex align-center me-4">
-                <VAvatar
-                  :size="38"
-                  rounded
-                  color="primary"
-                  variant="tonal"
-                  class="me-4"
-                >
-                  <VIcon icon="tabler-calendar" size="24" />
-                </VAvatar>
-                <div>
-                  <h6 class="text-h6 text-left">Вік</h6>
-                  <span class="text-sm text-left"
-                    >{{ patientData.age }} роки</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- 👉 Done Project -->
+          <!--              <div class="d-flex align-center me-4">-->
+          <!--                <VAvatar-->
+          <!--                  :size="38"-->
+          <!--                  rounded-->
+          <!--                  color="primary"-->
+          <!--                  variant="tonal"-->
+          <!--                  class="me-4"-->
+          <!--                >-->
+          <!--                  <VIcon icon="tabler-calendar" size="24" />-->
+          <!--                </VAvatar>-->
+          <!--                <div>-->
+          <!--                  <h6 class="text-h6 text-left">Вік</h6>-->
+          <!--                  <span class="text-sm text-left"-->
+          <!--                    >{{ patientData.age }} роки</span-->
+          <!--                  >-->
+          <!--                </div>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </VCol>
         <VCol cols="3" class="d-flex flex-column align-start justify-start">
-          <VList class="card-list mt-2">
+          <VList class="card-list ">
+            <VListItem class="pb-2">
+
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">
+                    Вік:
+                  </h6>
+                  <div class="d-inline-block text-body-1 text-capitalize">
+                    {{ patientData.age }} роки(ів)
+                  </div>
+                </div>
+            </VListItem>
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-h6 text-left d-flex flex-column">
-                  Теги:
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">
+                    Стать:
+                  </h6>
+                  <div class="d-inline-block text-body-1 text-capitalize">
+                    {{
+                      $t("gender." + (patientData.gender == 0 ? "woman" : "man"))
+                    }}
+                  </div>
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+
+            <VListItem>
+              <VListItemTitle>
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">
+                    Теги:
+                  </h6>
                   <div class="d-flex text-body-1 gap-1">
                     <VChip
                       color="primary"
@@ -130,39 +166,46 @@ const returnToPatientList = () => {
                       {{ tag.label }}
                     </VChip>
                   </div>
-                </h6>
-              </VListItemTitle>
-            </VListItem>
-
-            <VListItem>
-              <VListItemTitle>
-                <h6 class="text-h6 text-left d-flex flex-column">Сфера:</h6>
-                <span class="text-body-1"> {{ patientData.field }} </span>
-              </VListItemTitle>
-            </VListItem>
-
-            <VListItem>
-              <VListItemTitle>
-                <h6 class="text-h6 text-left d-flex flex-column">
-                  Область:
-                  <div class="d-inline-block text-body-1 text-capitalize">
-                    {{ patientData.region && patientData.region.label }}
-                  </div>
-                </h6>
+                </div>
               </VListItemTitle>
             </VListItem>
           </VList>
         </VCol>
-        <VCol cols="4">
-          <VList class="card-list mt-2">
+        <VCol cols="5">
+          <VList class="card-list">
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-h6 text-left d-flex flex-column">
-                  Клінічний діагноз:
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">Сфера:</h6>
+                  <div class="d-inline-block text-body-1 text-capitalize">
+                    {{ patientData.field }}
+                  </div>
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem>
+              <VListItemTitle>
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">
+                    Область:
+                  </h6>
+                  <div class="d-inline-block text-body-1 text-capitalize">
+                    {{ patientData.region && patientData.region.label }}
+                  </div>
+                </div>
+              </VListItemTitle>
+            </VListItem>
+            <VListItem>
+              <VListItemTitle>
+                <div class="d-flex align-center justify-start">
+                  <h6 class="text-h6 text-left d-flex flex-column mr-2">
+                    Клінічний діагноз:
+                  </h6>
                   <div class="d-inline-block text-body-1 text-capitalize">
                     {{ patientData.clinic_diagnose }}
                   </div>
-                </h6>
+                </div>
               </VListItemTitle>
             </VListItem>
           </VList>
@@ -224,11 +267,11 @@ const returnToPatientList = () => {
                         ? 'primary'
                         : 'success'
                     "
-                    >{{ examResult.final_result }}%</VChip
+                  >{{ examResult.final_result }}%</VChip
                   >
                   <VChip :color="'error'" class="ml-2">{{
-                    examResult.incorrect_count
-                  }}</VChip>
+                      examResult.incorrect_count
+                    }}</VChip>
                 </span>
                 <span class="app-timeline-meta">{{ examResult.date }}</span>
               </div>
@@ -240,7 +283,7 @@ const returnToPatientList = () => {
                     name: 'exam-result-id',
                     params: { id: examResult.test_id },
                   }"
-                  color="primary"
+                  color="secondary"
                 >
                   Переглянути результат
                 </VBtn>
@@ -253,3 +296,9 @@ const returnToPatientList = () => {
     </VCol>
   </VRow>
 </template>
+
+<style scoped>
+.card-list .v-list-item:not(:last-child){
+  padding-bottom: 10px!important;
+}
+</style>

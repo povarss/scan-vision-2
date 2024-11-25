@@ -125,7 +125,7 @@ onMounted(() => {
                 rounded
                 class="me-1"
               >
-                <VIcon icon="tabler-arrow-big-right" size="22" />
+                <VIcon icon="tabler-arrow-big-left" size="22" />
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">

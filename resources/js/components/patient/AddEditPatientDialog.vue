@@ -173,8 +173,17 @@ watch(
                 <VRadio :label="$t('gender.woman')" :value="0" />
               </VRadioGroup>
             </VCol>
-            <VCol cols="12">
-              <AppCombobox
+            <VCol cols="12" sm="6">
+              <AppSelect
+                :items="regions"
+                v-model="patient.region_id"
+                :label="$t('patient.region')"
+                :rules="formRules.region_id"
+                :error-messages="errors.region_id"
+              />
+            </VCol>
+            <VCol cols="12" sm="6">
+            <AppCombobox
                 v-model="patient.tags"
                 :items="tagItems"
                 placeholder=""
@@ -185,29 +194,20 @@ watch(
                 :error-messages="errors.tags"
               />
             </VCol>
-            <VCol cols="12" sm="6">
-              <AppTextField
-                :label="$t('patient.field')"
-                v-model="patient.field"
-                :rules="formRules.field"
-                :error-messages="errors.field"
-              />
-            </VCol>
-            <VCol cols="12" sm="6">
-              <AppSelect
-                :items="regions"
-                v-model="patient.region_id"
-                :label="$t('patient.region')"
-                :rules="formRules.region_id"
-                :error-messages="errors.region_id"
-              />
-            </VCol>
             <VCol cols="12">
               <AppTextField
                 :label="$t('patient.clinic_diagnose')"
                 v-model="patient.clinic_diagnose"
                 :rules="formRules.clinic_diagnose"
                 :error-messages="errors.clinic_diagnose"
+              />
+            </VCol>
+            <VCol cols="12">
+              <AppTextField
+                :label="$t('patient.comment')"
+                v-model="patient.field"
+                :rules="formRules.field"
+                :error-messages="errors.field"
               />
             </VCol>
           </VRow>

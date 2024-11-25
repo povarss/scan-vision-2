@@ -191,7 +191,7 @@ const isNotificationEnabled = ref(false)
         block
         append-icon="tabler-logout"
       >
-        Logout
+        Logout1
       </VBtn>
     </PerfectScrollbar>
   </template>

@@ -168,7 +168,7 @@ const userProfileList = [
                 append-icon="tabler-logout"
                 @click="logout"
               >
-                Logout
+                Вихід
               </VBtn>
             </div>
           </PerfectScrollbar>
