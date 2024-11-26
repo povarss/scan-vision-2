@@ -48,7 +48,7 @@ const isPasswordVisible = ref(false)
               <div class="app-logo">
                 <VNodeRenderer :nodes="themeConfig.app.logo" />
                 <h1 class="app-logo-title">
-                  Scan.vision
+                  Scan.vision3
                 </h1>
               </div>
             </RouterLink>

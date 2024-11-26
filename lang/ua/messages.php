@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'InvalidCredentials' => 'Неправилный email или пароль',
+    'InvalidCredentials' => 'Неправильний email або пароль',
     'UserAccessHasExpired' => 'Дата підписки закінчилась.',
 ];

@@ -89,8 +89,8 @@ const onSubmit = () => {
           <VCardTitle>
             <RouterLink to="/">
               <div class="app-logo">
-                <VNodeRenderer :nodes="themeConfig.app.logo" />
-                <h1 class="app-logo-title">Scan.vision</h1>
+                <VNodeRenderer :nodes="themeConfig.app.logo"  />
+<!--                <h1 class="app-logo-title">Scan.vision2</h1>-->
               </div>
             </RouterLink>
           </VCardTitle>
