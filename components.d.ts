@@ -23,7 +23,6 @@ declare module 'vue' {
     AppDrawerHeaderSection: typeof import('./resources/js/@core/components/AppDrawerHeaderSection.vue')['default']
     AppLoadingIndicator: typeof import('./resources/js/components/AppLoadingIndicator.vue')['default']
     AppMaskTextField: typeof import('./resources/js/@core/components/app-form-elements/AppMaskTextField.vue')['default']
-    AppMasktTextField: typeof import('./resources/js/@core/components/app-form-elements/AppMasktTextField.vue')['default']
     AppPricing: typeof import('./resources/js/components/AppPricing.vue')['default']
     AppSearchHeader: typeof import('./resources/js/components/AppSearchHeader.vue')['default']
     AppSelect: typeof import('./resources/js/@core/components/app-form-elements/AppSelect.vue')['default']
@@ -36,7 +35,6 @@ declare module 'vue' {
     CardStatisticsVertical: typeof import('./resources/js/@core/components/cards/CardStatisticsVertical.vue')['default']
     CardStatisticsVerticalSimple: typeof import('./resources/js/@core/components/CardStatisticsVerticalSimple.vue')['default']
     ConfirmDialog: typeof import('./resources/js/components/dialogs/ConfirmDialog.vue')['default']
-    copy: typeof import('./resources/js/@core/components/app-form-elements/AppTextField copy.vue')['default']
     CreateAppDialog: typeof import('./resources/js/components/dialogs/CreateAppDialog.vue')['default']
     CustomCheckboxes: typeof import('./resources/js/@core/components/app-form-elements/CustomCheckboxes.vue')['default']
     CustomCheckboxesWithIcon: typeof import('./resources/js/@core/components/app-form-elements/CustomCheckboxesWithIcon.vue')['default']
@@ -402,6 +400,5 @@ declare module 'vue' {
     TwoFactorAuthDialog: typeof import('./resources/js/components/dialogs/TwoFactorAuthDialog.vue')['default']
     UserInfoEditDialog: typeof import('./resources/js/components/dialogs/UserInfoEditDialog.vue')['default']
     UserUpgradePlanDialog: typeof import('./resources/js/components/dialogs/UserUpgradePlanDialog.vue')['default']
-    VueApexCharts: typeof import('vue3-apexcharts')['default']
   }
 }
