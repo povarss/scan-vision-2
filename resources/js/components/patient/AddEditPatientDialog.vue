@@ -141,12 +141,18 @@ watch(
               />
             </VCol>
             <VCol cols="12" sm="5">
-              <AppTextField
+              <AppMaskTextField
                 v-model="patient.phone"
                 :label="$t('patient.phone')"
                 :rules="formRules.phone"
                 :error-messages="errors.phone"
               />
+              <!-- <AppTextField
+                v-model="patient.phone"
+                :label="$t('patient.phone')"
+                :rules="formRules.phone"
+                :error-messages="errors.phone"
+              /> -->
             </VCol>
             <VCol cols="12" sm="6">
               <AppDateTimePicker
@@ -183,7 +189,7 @@ watch(
               />
             </VCol>
             <VCol cols="12" sm="6">
-            <AppCombobox
+              <AppCombobox
                 v-model="patient.tags"
                 :items="tagItems"
                 placeholder=""

@@ -44,8 +44,10 @@
     "vue-chartjs": "5.3.1",
     "vue-flatpickr-component": "11.0.5",
     "vue-i18n": "9.13.1",
+    "vue-inputmask": "^0.2.1",
     "vue-prism-component": "2.0.0",
     "vue-router": "4.4.0",
+    "vue-the-mask": "^0.11.1",
     "vue3-apexcharts": "1.5.3",
     "vue3-perfect-scrollbar": "2.0.0",
     "vuetify": "3.6.13",
@@ -86,6 +88,7 @@
     "eslint-plugin-sonarjs": "0.24.0",
     "eslint-plugin-unicorn": "51.0.1",
     "eslint-plugin-vue": "9.27.0",
+    "laravel-vite-plugin": "1.0",
     "msw": "2.3.4",
     "postcss-html": "1.7.0",
     "postcss-scss": "4.0.9",
@@ -104,8 +107,7 @@
     "vite-plugin-vue-layouts": "0.11.0",
     "vite-plugin-vuetify": "2.0.3",
     "vite-svg-loader": "5.1.0",
-    "vue-shepherd": "3.0.0",
-    "laravel-vite-plugin": "1.0"
+    "vue-shepherd": "3.0.0"
   },
   "resolutions": {
     "postcss": "^8",

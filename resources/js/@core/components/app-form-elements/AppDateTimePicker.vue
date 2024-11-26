@@ -10,6 +10,7 @@ import {
   VInput,
   makeVInputProps,
 } from 'vuetify/lib/components/VInput/VInput'
+import {Ukrainian} from 'flatpickr/dist/l10n/uk.js';
 
 
 import { filterInputAttrs } from 'vuetify/lib/util/helpers'
@@ -74,6 +75,7 @@ compAttrs.config = {
   ...compAttrs.config,
   prevArrow: '<i class="tabler-chevron-left v-icon" style="font-size: 20px; height: 20px; width: 20px;"></i>',
   nextArrow: '<i class="tabler-chevron-right v-icon" style="font-size: 20px; height: 20px; width: 20px;"></i>',
+  locale: Ukrainian, // locale for this instance only
 }
 
 const onClear = el => {
