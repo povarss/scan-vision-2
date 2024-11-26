@@ -33,6 +33,7 @@ const label = computed(() => useAttrs().label);
       :text="label"
     />
     <VTextField
+      placeholder="+38 00 000 0000"
       v-mask="'+38 ## ### ####'"
       v-bind="{
         ...$attrs,
