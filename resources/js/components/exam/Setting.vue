@@ -105,7 +105,8 @@ const modes: CustomInputContent[] = [
     desc: "Один цільовий стимул",
     value: "1",
     icon: { icon: "tabler-box-multiple-1", size: "28" },
-    description: " <h1 style='text-align: center'>Особливості Single Task</h1>\n" +
+    description:
+      " <h1 style='text-align: center'>Особливості Single Task</h1>\n" +
       "    \n" +
       "    <p>Пацієнт має ідентифікувати один цільовий стимул.</p>\n" +
       "    \n" +
@@ -126,15 +127,15 @@ const modes: CustomInputContent[] = [
       "        <li>\n" +
       "            <strong>Потребують поступового підвищення навантаження:</strong> Виконання однієї задачі допомагає уникнути перевантаження когнітивної системи.\n" +
       "        </li>\n" +
-      "    </ul>"
-
+      "    </ul>",
   },
   {
     title: "Dual",
     desc: "Два цільових стимули",
     value: "2",
     icon: { icon: "tabler-box-multiple-2", size: "28" },
-    description: " <h1 style='text-align: center'>Особливості Dual Task</h1>\n" +
+    description:
+      " <h1 style='text-align: center'>Особливості Dual Task</h1>\n" +
       "    \n" +
       "    <p>Пацієнт має знайти та викреслити два типи цільових стимулів одночасно.</p>\n" +
       "    \n" +
@@ -156,11 +157,10 @@ const modes: CustomInputContent[] = [
       "            <strong>Для адаптації до реального життя:</strong> Dual Task допомагає моделювати умови, які зустрічаються в побуті чи роботі, \n" +
       "            коли потрібно одночасно виконувати кілька дій.\n" +
       "        </li>\n" +
-      "    </ul>"
-
+      "    </ul>",
   },
 ];
-const correctSvgList: string[] = ["1", "2"];
+// const correctSvgList = ref(["1", "2"]);
 const normalSize = ref(50);
 const formData = ref({
   svg_size: 100,
@@ -171,6 +171,15 @@ const formData = ref({
 const stimulSize = computed(() => {
   const svgSm = levels.find((v) => v.value == formData.value.level).size;
   return (svgSm * formData.value.svg_size) / 100;
+});
+
+const correctSvgList = computed(() => {
+  if (formData.value.mode == "1") {
+    return ["1"];
+  }
+  if (formData.value.mode == "2") {
+    return ["1", "2"];
+  }
 });
 
 onMounted(() => {});
@@ -226,9 +235,9 @@ const infoClicked = (level) => {
             <div v-html="infoText"></div>
           </VCardText>
 
-<!--          <VCardText class="d-flex justify-end">-->
-<!--            <VBtn @click="levelDialogInfo = false"> I accept </VBtn>-->
-<!--          </VCardText>-->
+          <!--          <VCardText class="d-flex justify-end">-->
+          <!--            <VBtn @click="levelDialogInfo = false"> I accept </VBtn>-->
+          <!--          </VCardText>-->
         </VCard>
       </VDialog>
 
