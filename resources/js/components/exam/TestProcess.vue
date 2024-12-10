@@ -2,6 +2,10 @@
 import { ref, onMounted } from "vue";
 import Timer from "@/components/exam/Timer.vue";
 import TestLine from "@/components/exam/TestLine.vue";
+import CorrectSvg from "@/components/exam/CorrectSvg.vue";
+import levels from "./levels.js";
+import { nextTick } from "vue";
+import { correctSvgList } from "./testUtil";
 
 const props = defineProps({
   exam: {
@@ -18,7 +22,9 @@ const props = defineProps({
 const emit = defineEmits(["itemSelected", "timeout"]);
 
 let examData = ref([]);
-const loadTest = async (id) => {
+const loadTest = async () => {
+  showCorrect.value = false;
+  await nextTick()
   const { data } = await useApi(
     `/exam/test-pattern/` +
       props.exam.id +
@@ -79,8 +85,14 @@ const isSelected = (rowKey, colKey) => {
 const selectedItems = ref([]);
 const examParams = ref({});
 const container = ref();
+const showCorrect = ref(false);
+
 onMounted(() => {
-  loadTest();
+  if (!props.isReadonly) {
+    showCorrect.value = true;
+    openFullscreen();
+  }
+  setTimeout(loadTest, 5000);
 });
 const setSelected = (rowKey, colKey) => {
   if (props.isReadonly) {
@@ -102,8 +114,6 @@ const onTimeout = () => {
 };
 
 const selectedPoints = ref([]);
-const myCanvas = ref();
-const canvasHeight = ref(500);
 
 const scale = computed(() => {
   if (!examParams.value.width) {
@@ -120,68 +130,112 @@ const wrapperHeight = computed(() => {
   }
   return examParams.value.height * scale.value;
 });
+
+const openFullscreen = () => {
+  // const elem = testBlock.value;
+  var elem = document.getElementById("myvideo");
+  console.log(elem, "elem");
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE11 */
+    elem.msRequestFullscreen();
+  }
+};
+
+const svgList = computed(() => {
+  return correctSvgList(props.exam.mode);
+});
+
+/* Close fullscreen */
+// const closeFullscreen = () => {
+//   if (document.exitFullscreen) {
+//     document.exitFullscreen();
+//   } else if (document.webkitExitFullscreen) {
+//     /* Safari */
+//     document.webkitExitFullscreen();
+//   } else if (document.msExitFullscreen) {
+//     /* IE11 */
+//     document.msExitFullscreen();
+//   }
+// };
+
+const stimulSize = computed(() => {
+  const svgSm = levels.find((v) => v.value == props.exam.level).size;
+  return (svgSm * props.exam.svg_size) / 100;
+});
 </script>
 
 <template>
   <VRow>
-    <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
-      <Timer :initialTime="exam.time" @timeout="onTimeout" />
-    </VCol>
-    <VCol cols="12" class="d-flex flex-column">
-      <div
-        ref="container"
-        style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          padding: 20px;
-        "
-        :style="{
-          height: !isReadonly ? 'calc(100vh - 120px)' : wrapperHeight + 'px',
-        }"
-      >
+    <CorrectSvg
+      v-if="showCorrect"
+      :svgs="svgList"
+      :width="stimulSize"
+    ></CorrectSvg>
+    <template v-if="!showCorrect">
+      <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
+        <Timer :initialTime="exam.time" @timeout="onTimeout" />
+      </VCol>
+      <VCol cols="12" class="d-flex flex-column">
         <div
+          ref="container"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+          "
           :style="{
-            position: isReadonly ? 'absolute' : '',
-            top: isReadonly ? '0' : '',
-            left: isReadonly ? '0' : '',
-            scale: isReadonly ? scale : '',
+            height: !isReadonly ? 'calc(100vh - 120px)' : wrapperHeight + 'px',
           }"
         >
-          <TestLine
-            v-if="isReadonly && examParams"
-            :points="selectedPoints"
-            :width="examParams.width"
-            :height="examParams.height"
-          />
-          <template v-for="(row, rowKey) in examData">
-            <template v-for="(imgItem, colKey) in row">
-              <img
-                @click="setSelected(rowKey, colKey)"
-                :src="'/images/vision/' + imgItem.type + '.svg'"
-                :width="imgItem.width"
-                :height="imgItem.height"
-                style="
-                  position: absolute;
-                  padding: 2px;
-                  box-sizing: content-box;
-                  border: 2px solid transparent;
-                "
-                :class="{
-                  'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
-                }"
-                :style="{
-                  top: imgItem.y + 'px',
-                  left: imgItem.x + 'px',
-                  backgroundColor: getSectionColor(imgItem, rowKey, colKey),
-                }"
-              />
+          <div
+            :style="{
+              position: isReadonly ? 'absolute' : '',
+              top: isReadonly ? '0' : '',
+              left: isReadonly ? '0' : '',
+              scale: isReadonly ? scale : '',
+            }"
+          >
+            <TestLine
+              v-if="isReadonly && examParams"
+              :points="selectedPoints"
+              :width="examParams.width"
+              :height="examParams.height"
+            />
+            <template v-for="(row, rowKey) in examData">
+              <template v-for="(imgItem, colKey) in row">
+                <img
+                  @click="setSelected(rowKey, colKey)"
+                  :src="'/images/vision/' + imgItem.type + '.svg'"
+                  :width="imgItem.width"
+                  :height="imgItem.height"
+                  style="
+                    position: absolute;
+                    padding: 2px;
+                    box-sizing: content-box;
+                    border: 2px solid transparent;
+                  "
+                  :class="{
+                    'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
+                  }"
+                  :style="{
+                    top: imgItem.y + 'px',
+                    left: imgItem.x + 'px',
+                    backgroundColor: getSectionColor(imgItem, rowKey, colKey),
+                  }"
+                />
+              </template>
             </template>
-          </template>
+          </div>
         </div>
-      </div>
-    </VCol>
+      </VCol>
+    </template>
   </VRow>
 </template>
 

@@ -89,11 +89,11 @@ const finishTestProcces = async () => {
   currentStep.value = finishStep;
 };
 
-const returnToSettings = () =>{
+const returnToSettings = () => {
   exam.value = null;
   currentStep.value = 0;
-  isTestVisible.value = false
-}
+  isTestVisible.value = false;
+};
 </script>
 
 <template>
@@ -101,6 +101,7 @@ const returnToSettings = () =>{
     v-model="isTestVisible"
     fullscreen
     :scrim="false"
+    id="myvideo"
     transition="dialog-bottom-transition"
   >
     <!-- Dialog Content -->
@@ -116,7 +117,9 @@ const returnToSettings = () =>{
           <VSpacer />
 
           <VToolbarItems>
-            <VBtn variant="text" @click.stop="finishTestProcces"> Завершити </VBtn>
+            <VBtn variant="text" @click.stop="finishTestProcces">
+              Завершити
+            </VBtn>
           </VToolbarItems>
         </VToolbar>
       </div>
@@ -188,15 +191,19 @@ const returnToSettings = () =>{
           >
             Перейти на картку клієнта
           </VBtn>
-          <PdfButton v-if="exam" :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
+          <PdfButton
+            v-if="exam"
+            :btnLabel="'Друк PDF'"
+            :url="'/exam/print/' + exam.id"
+          />
 
-<!--          <VBtn-->
-<!--            v-if="numberedSteps.length - 1 === currentStep"-->
-<!--            :disabled="currentStep == finishStep"-->
-<!--            color="success"-->
-<!--          >-->
-<!--            Завершити-->
-<!--          </VBtn>-->
+          <!--          <VBtn-->
+          <!--            v-if="numberedSteps.length - 1 === currentStep"-->
+          <!--            :disabled="currentStep == finishStep"-->
+          <!--            color="success"-->
+          <!--          >-->
+          <!--            Завершити-->
+          <!--          </VBtn>-->
 
           <!-- <VBtn v-else @click="currentStep++">
             Далі
