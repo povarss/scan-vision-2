@@ -1,8 +1,10 @@
-export const correctSvgList = (mode) => {
-  if (mode == "1") {
-    return ["1"];
+export const correctSvgList = (mode, configs) => {
+  console.log(configs,'configs');
+  let list = configs ? configs.svgs[mode] : [];
+  if (list.length > 0) {
+    list = list.map((v) => {
+      return "/images/" + configs.folder + "/" + v + ".svg";
+    });
   }
-  if (mode == "2") {
-    return ["1", "2"];
-  }
+  return list;
 };

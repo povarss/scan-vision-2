@@ -27,7 +27,6 @@ class SvgFillerService
 
     public $sections = [];
 
-    public $isDual = false;
     public $overlapCounter = 0;
     public $patientExam;
 
@@ -86,9 +85,10 @@ class SvgFillerService
 
     public function setCorrect()
     {
+        $config = $this->getExamConfig();
+        $correctSvgs = $config['svgs'][$this->patientExam->mode];
         foreach ($this->sections as $section) {
             $setedSvg = 0;
-            $correctSvgs = $this->isDual ? [1, 2] : [1];
             foreach ($correctSvgs as $correctSvg) {
                 $setedSvg = 0;
                 while ($setedSvg < $this->correctSvgInPie) {
@@ -101,11 +101,6 @@ class SvgFillerService
                 }
             }
         }
-    }
-
-    public function setDual()
-    {
-        $this->isDual = ($this->patientExam->mode == 2);
     }
 
     function cmToPx($cm)
@@ -135,7 +130,6 @@ class SvgFillerService
 
     public function setParams()
     {
-        $this->setDual();
         // $this->setContainerWidth();
         $this->setOffset();
     }
@@ -165,15 +159,23 @@ class SvgFillerService
     {
         return ceil($this->getLevels()[$this->patientExam->level] * $this->patientExam->svg_size / 100);
     }
+
+    public function getExamConfig()
+    {
+        $configs = config('exam');
+        return $configs[$this->patientExam->exam_id];
+    }
     public function getSvgTypes()
     {
+        $config = $this->getExamConfig();
+        $correctSvgs = $config['svgs'][$this->patientExam->mode];
         $svgTypes = [];
-        for ($i = 1; $i < 12; $i++) {
-            if (in_array($i, [1, 2])) {
+        for ($i = 1; $i <= count($config['allSvgs']); $i++) {
+            if (in_array($i, $correctSvgs)) {
                 continue;
             }
             $svgTypes[] = [
-                'type' => $i,
+                'type' => $config['allSvgs'][$i - 1],
                 'width' => $this->calcWidth(),
                 'height' => $this->calcHeight(),
                 'isCorrect' => 0,

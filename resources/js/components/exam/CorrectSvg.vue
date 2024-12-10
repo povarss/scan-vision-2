@@ -3,7 +3,7 @@ const props = defineProps({
   svgs: {
     type: [Array],
   },
-  width: { type: [String] },
+  width: { type: [String, Number] },
 });
 </script>
 <template>
@@ -11,7 +11,7 @@ const props = defineProps({
     <template v-for="svg in svgs">
       <img
         class="misc-footer-img d-none d-md-block"
-        :src="'/images/vision/' + svg + '.svg'"
+        :src="svg"
         :width="width"
         :height="width"
       />

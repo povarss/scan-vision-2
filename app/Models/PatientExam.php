@@ -47,7 +47,7 @@ class PatientExam extends Model
 
     public function getCorrectPercentage()
     {
-        return ceil($this->selectedCorrectCount() / $this->totalCorrectCount() * 100);
+        return $this->totalCorrectCount() ? ceil($this->selectedCorrectCount() / $this->totalCorrectCount() * 100) : 0;
     }
 
     public function getAllSelectedCount()
@@ -73,10 +73,12 @@ class PatientExam extends Model
     public function totalCorrectCount()
     {
         $count = 0;
-        foreach ($this->pattern as $row) {
-            foreach ($row as $cell) {
-                if ($cell['isCorrect']) {
-                    $count++;
+        if (!empty($this->pattern)) {
+            foreach ($this->pattern as $row) {
+                foreach ($row as $cell) {
+                    if ($cell['isCorrect']) {
+                        $count++;
+                    }
                 }
             }
         }

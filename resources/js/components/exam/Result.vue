@@ -7,6 +7,9 @@ const props = defineProps({
     type: [Object],
     required: true,
   },
+  references: {
+    type: [Object],
+  },
 });
 
 const resultData = ref({
@@ -64,7 +67,8 @@ onMounted(() => {
             <template #append>
               <div class="d-flex gap-x-4">
                 <div class="text-body-1">
-                  {{ resultData.testMinute }}хв {{resultData.testSecond}}сек  з {{ resultData.totalMinute }}хв
+                  {{ resultData.testMinute }}хв {{ resultData.testSecond }}сек з
+                  {{ resultData.totalMinute }}хв
                 </div>
               </div>
             </template>
@@ -88,7 +92,8 @@ onMounted(() => {
             <template #append>
               <div class="d-flex gap-x-4">
                 <div class="text-body-1">
-                  {{ resultData.correctCount.selected }} з {{ resultData.correctCount.total }}
+                  {{ resultData.correctCount.selected }} з
+                  {{ resultData.correctCount.total }}
                 </div>
               </div>
             </template>
@@ -217,7 +222,7 @@ onMounted(() => {
 
     <VCol cols="12" md="12">
       <div class="symbol-container border rounded mt-5 pa-5">
-        <TestProcess :exam="exam" :is-readonly="true" />
+        <TestMapView :exam="exam" :references="references" />
 
         <!-- <img
           class="misc-footer-img d-none d-md-block"

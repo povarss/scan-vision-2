@@ -12,10 +12,8 @@ const props = defineProps({
     type: [Object],
     required: true,
   },
-  isReadonly: {
-    type: [Boolean],
-    required: false,
-    default: false,
+  references: {
+    type: [Object],
   },
 });
 
@@ -24,7 +22,7 @@ const emit = defineEmits(["itemSelected", "timeout"]);
 let examData = ref([]);
 const loadTest = async () => {
   showCorrect.value = false;
-  await nextTick()
+  await nextTick();
   const { data } = await useApi(
     `/exam/test-pattern/` +
       props.exam.id +
@@ -63,19 +61,6 @@ const getSectionColor = (imgItem, rowKey, colKey) => {
   //   default:
   //     break;
   // }
-  if (props.isReadonly) {
-    if (selectedItems.value.includes(rowKey + "_" + colKey)) {
-      if (imgItem.isCorrect == 1) {
-        color = "#00ff72";
-      } else {
-        color = "#ff6f6f";
-      }
-    } else {
-      if (imgItem.isCorrect == 1) {
-        color = "#fbf525";
-      }
-    }
-  }
   return color;
 };
 const isSelected = (rowKey, colKey) => {
@@ -88,16 +73,11 @@ const container = ref();
 const showCorrect = ref(false);
 
 onMounted(() => {
-  if (!props.isReadonly) {
-    showCorrect.value = true;
-    openFullscreen();
-  }
+  showCorrect.value = true;
+  openFullscreen();
   setTimeout(loadTest, 5000);
 });
 const setSelected = (rowKey, colKey) => {
-  if (props.isReadonly) {
-    return;
-  }
   if (!selectedItems.value.includes(rowKey + "_" + colKey)) {
     selectedItems.value.push(rowKey + "_" + colKey);
     emit("itemSelected", selectedItems.value);
@@ -147,21 +127,8 @@ const openFullscreen = () => {
 };
 
 const svgList = computed(() => {
-  return correctSvgList(props.exam.mode);
+  return correctSvgList(props.exam.mode, props.references);
 });
-
-/* Close fullscreen */
-// const closeFullscreen = () => {
-//   if (document.exitFullscreen) {
-//     document.exitFullscreen();
-//   } else if (document.webkitExitFullscreen) {
-//     /* Safari */
-//     document.webkitExitFullscreen();
-//   } else if (document.msExitFullscreen) {
-//     /* IE11 */
-//     document.msExitFullscreen();
-//   }
-// };
 
 const stimulSize = computed(() => {
   const svgSm = levels.find((v) => v.value == props.exam.level).size;
@@ -177,7 +144,7 @@ const stimulSize = computed(() => {
       :width="stimulSize"
     ></CorrectSvg>
     <template v-if="!showCorrect">
-      <VCol cols="12" class="d-flex flex-column" v-if="!isReadonly">
+      <VCol cols="12" class="d-flex flex-column">
         <Timer :initialTime="exam.time" @timeout="onTimeout" />
       </VCol>
       <VCol cols="12" class="d-flex flex-column">
@@ -191,28 +158,17 @@ const stimulSize = computed(() => {
             padding: 20px;
           "
           :style="{
-            height: !isReadonly ? 'calc(100vh - 120px)' : wrapperHeight + 'px',
+            height: 'calc(100vh - 120px)',
           }"
         >
-          <div
-            :style="{
-              position: isReadonly ? 'absolute' : '',
-              top: isReadonly ? '0' : '',
-              left: isReadonly ? '0' : '',
-              scale: isReadonly ? scale : '',
-            }"
-          >
-            <TestLine
-              v-if="isReadonly && examParams"
-              :points="selectedPoints"
-              :width="examParams.width"
-              :height="examParams.height"
-            />
+          <div>
             <template v-for="(row, rowKey) in examData">
               <template v-for="(imgItem, colKey) in row">
                 <img
                   @click="setSelected(rowKey, colKey)"
-                  :src="'/images/vision/' + imgItem.type + '.svg'"
+                  :src="
+                    '/images/' + references.folder + '/' + imgItem.type + '.svg'
+                  "
                   :width="imgItem.width"
                   :height="imgItem.height"
                   style="
@@ -222,7 +178,7 @@ const stimulSize = computed(() => {
                     border: 2px solid transparent;
                   "
                   :class="{
-                    'rounded-blue': !isReadonly && isSelected(rowKey, colKey),
+                    'rounded-blue': isSelected(rowKey, colKey),
                   }"
                   :style="{
                     top: imgItem.y + 'px',

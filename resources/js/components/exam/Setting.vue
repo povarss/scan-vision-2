@@ -5,14 +5,19 @@ import miscMaskDark from "@images/card.png";
 import levels from "./levels.js";
 import modes from "./modes.js";
 import { correctSvgList } from "./testUtil.js";
+import { useRoute } from "vue-router";
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
-const pixelWidths: Record<number, number> = { 75: 420, 100: 480, 125: 540 }; // Ширини в пікселях для кожного значення
 const cardWidth = ref(480); // Ширини в пікселях для кожного значення
+const route = useRoute("test-type-id");
 
 const ticksLabels = { 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
 
-// const correctSvgList = ref(["1", "2"]);
-const normalSize = ref(50);
+const props = defineProps({
+  references: {
+    type: [Object],
+  },
+});
+
 const formData = ref({
   svg_size: 100,
   time: 20,
@@ -25,7 +30,7 @@ const stimulSize = computed(() => {
 });
 
 const svgList = computed(() => {
-  return correctSvgList(formData.value.mode);
+  return correctSvgList(formData.value.mode, props.references);
 });
 
 onMounted(() => {});
@@ -103,7 +108,7 @@ const infoClicked = (level) => {
         <CustomRadiosWithIcon
           v-model:selected-radio="formData.mode"
           @info-clicked="infoClicked($event)"
-          :radio-content="modes"
+          :radio-content="modes[route.params.type]"
           :grid-column="{ sm: '6', cols: '12' }"
         />
       </div>
@@ -142,7 +147,7 @@ const infoClicked = (level) => {
             <template v-for="svg in svgList">
               <img
                 class="misc-footer-img d-none d-md-block"
-                :src="'/images/vision/' + svg + '.svg'"
+                :src="svg"
                 :width="stimulSize"
                 :height="stimulSize"
               />

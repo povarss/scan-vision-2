@@ -12,11 +12,17 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function checkPattern(PatientExam $patientExam){
+    public function getReferences(string $type)
+    {
+        $examConfigs = config('exam');
+
+        return response()->json($examConfigs[$type]);
+    }
+    public function checkPattern(PatientExam $patientExam)
+    {
         $filler = new SvgFillerService($patientExam, $patientExam->width, $patientExam->height);
         $filler->checkPattern();
         exit;
-
     }
     public function getTestPattern(Request $request, PatientExam $patientExam)
     {
@@ -33,11 +39,13 @@ class ExamController extends Controller
             $patientExam->height = $height;
             $patientExam->save();
         }
+        $examConfigs = config('exam');
         return response()->json([
             'pattern' => $patientExam->pattern,
             'selected' => $patientExam->result ?? [],
             'width' => $patientExam->width,
             'height' => $patientExam->height,
+            'configs' => $examConfigs[$patientExam->exam_id],
         ]);
     }
 
@@ -47,7 +55,7 @@ class ExamController extends Controller
         $patientExam = new PatientExam();
         $patientExam->fill($fields);
         $patientExam->setDraftStatus();
-        $patientExam->exam_id = $exam->getMainTest()->id;
+        $patientExam->exam_id = $request->exam_id; // $exam->getMainTest()->id;
         $patientExam->save();
 
         return response()->json([

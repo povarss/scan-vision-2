@@ -6,7 +6,7 @@ import { ref, onMounted } from "vue";
 
 const isTestVisible = ref(false);
 const router = useRouter();
-const route = useRoute("test-id");
+const route = useRoute("test-type-id");
 
 const numberedSteps = [
   {
@@ -22,14 +22,18 @@ const numberedSteps = [
 
 const currentStep = ref(0);
 const exam = ref(null);
-onMounted(() => {});
+// onMounted(() => {});
 const isLoading = ref(false);
 
 const store = async (setting) => {
   try {
     const res = await $api("/exam/setting", {
       method: "POST",
-      body: { patient_id: route.params.id, ...setting },
+      body: {
+        patient_id: route.params.id,
+        exam_id: route.params.type,
+        ...setting,
+      },
       onResponseError({ response }) {
         console.error(response._data.errors);
       },
@@ -94,6 +98,16 @@ const returnToSettings = () => {
   currentStep.value = 0;
   isTestVisible.value = false;
 };
+
+const referenceData = ref();
+const loadExamReference = async () => {
+  const { data } = await useApi(`/exam/refrences/${route.params.type}`);
+  if (data.value) referenceData.value = data.value;
+};
+
+onMounted(() => {
+  loadExamReference();
+});
 </script>
 
 <template>
@@ -128,6 +142,7 @@ const returnToSettings = () => {
         <TestProcess
           v-if="exam"
           :exam="exam"
+          :references="referenceData"
           @itemSelected="onItemSelected"
           @timeout="finishTestProcces"
         />
@@ -162,11 +177,11 @@ const returnToSettings = () => {
       <VForm>
         <VWindow v-model="currentStep" class="disable-tab-transition">
           <VWindowItem>
-            <Setting @settingsSaved="startTest" />
+            <Setting @settingsSaved="startTest" :references="referenceData" />
           </VWindowItem>
 
           <VWindowItem>
-            <Result :exam="exam" v-if="currentStep == finishStep" />
+            <Result :exam="exam" :references="referenceData" v-if="currentStep == finishStep" />
           </VWindowItem>
         </VWindow>
 
