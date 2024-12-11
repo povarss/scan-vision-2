@@ -7,10 +7,10 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div class="d-md-block v-col-12">
+  <div class="correct-wrapper">
     <template v-for="svg in svgs">
       <img
-        class="misc-footer-img d-none d-md-block"
+        class=""
         :src="svg"
         :width="width"
         :height="width"
@@ -18,3 +18,16 @@ const props = defineProps({
     </template>
   </div>
 </template>
+<style>
+.correct-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust height as needed */
+  width: 100vw;
+}
+
+.centered-item {
+  /* Additional styles for the centered item */
+}
+</style>
