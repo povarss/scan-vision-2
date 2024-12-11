@@ -71,6 +71,28 @@ const loadDoctorData = async (id) => {
   }
 };
 
+const showConfirm = () => {
+  onReset();
+  isConfirmDialogOpen.value = true;
+};
+const isConfirmDialogOpen = ref(false);
+
+const removeDoctor = async (isConfirmed) => {
+  if (isConfirmed) {
+    try {
+      const res = await $api("/doctor/delete", {
+        method: "POST",
+        body: { id: props.id },
+        onResponseError({ response }) {
+          console.log(response._data.errors);
+        },
+      });
+      afterSave(null);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 watch(
   () => props.isDialogVisible,
   () => {
@@ -129,6 +151,9 @@ watch(
         </VCardText>
 
         <VCardText class="d-flex justify-end flex-wrap gap-3">
+          <VBtn variant="tonal" color="secondary" @click="showConfirm">
+            {{ $t("btnLabel.delete") }}
+          </VBtn>
           <VBtn variant="tonal" color="secondary" @click="onReset">
             {{ $t("btnLabel.cancel") }}
           </VBtn>
@@ -139,4 +164,13 @@ watch(
       </VCard>
     </VForm>
   </VDialog>
+  <!-- Confirm Dialog -->
+  <ConfirmDialog
+    v-model:isDialogVisible="isConfirmDialogOpen"
+    :confirmation-question="$t('doctor.ConfirmDelete')"
+    @confirm="removeDoctor($event)"
+    :confirm-title="$t('doctor.Removed')"
+    :confirm-msg="$t('doctor.RemovedMsg')"
+    :show-cancel="false"
+  />
 </template>

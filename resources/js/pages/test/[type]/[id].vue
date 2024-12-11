@@ -6,7 +6,7 @@ import { ref, onMounted } from "vue";
 
 const isTestVisible = ref(false);
 const router = useRouter();
-const route = useRoute("test-id");
+const route = useRoute("test-type-id");
 
 const numberedSteps = [
   {
@@ -22,14 +22,18 @@ const numberedSteps = [
 
 const currentStep = ref(0);
 const exam = ref(null);
-onMounted(() => {});
+// onMounted(() => {});
 const isLoading = ref(false);
 
 const store = async (setting) => {
   try {
     const res = await $api("/exam/setting", {
       method: "POST",
-      body: { patient_id: route.params.id, ...setting },
+      body: {
+        patient_id: route.params.id,
+        exam_id: route.params.type,
+        ...setting,
+      },
       onResponseError({ response }) {
         console.error(response._data.errors);
       },
@@ -89,11 +93,21 @@ const finishTestProcces = async () => {
   currentStep.value = finishStep;
 };
 
-const returnToSettings = () =>{
+const returnToSettings = () => {
   exam.value = null;
   currentStep.value = 0;
-  isTestVisible.value = false
-}
+  isTestVisible.value = false;
+};
+
+const referenceData = ref();
+const loadExamReference = async () => {
+  const { data } = await useApi(`/exam/refrences/${route.params.type}`);
+  if (data.value) referenceData.value = data.value;
+};
+
+onMounted(() => {
+  loadExamReference();
+});
 </script>
 
 <template>
@@ -101,6 +115,7 @@ const returnToSettings = () =>{
     v-model="isTestVisible"
     fullscreen
     :scrim="false"
+    id="myvideo"
     transition="dialog-bottom-transition"
   >
     <!-- Dialog Content -->
@@ -116,7 +131,9 @@ const returnToSettings = () =>{
           <VSpacer />
 
           <VToolbarItems>
-            <VBtn variant="text" @click.stop="finishTestProcces"> Завершити </VBtn>
+            <VBtn variant="text" @click.stop="finishTestProcces">
+              Завершити
+            </VBtn>
           </VToolbarItems>
         </VToolbar>
       </div>
@@ -125,6 +142,7 @@ const returnToSettings = () =>{
         <TestProcess
           v-if="exam"
           :exam="exam"
+          :references="referenceData"
           @itemSelected="onItemSelected"
           @timeout="finishTestProcces"
         />
@@ -159,11 +177,11 @@ const returnToSettings = () =>{
       <VForm>
         <VWindow v-model="currentStep" class="disable-tab-transition">
           <VWindowItem>
-            <Setting @settingsSaved="startTest" />
+            <Setting @settingsSaved="startTest" :references="referenceData" />
           </VWindowItem>
 
           <VWindowItem>
-            <Result :exam="exam" v-if="currentStep == finishStep" />
+            <Result :exam="exam" :references="referenceData" v-if="currentStep == finishStep" />
           </VWindowItem>
         </VWindow>
 
@@ -188,15 +206,19 @@ const returnToSettings = () =>{
           >
             Перейти на картку клієнта
           </VBtn>
-          <PdfButton v-if="exam" :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
+          <PdfButton
+            v-if="exam"
+            :btnLabel="'Друк PDF'"
+            :url="'/exam/print/' + exam.id"
+          />
 
-<!--          <VBtn-->
-<!--            v-if="numberedSteps.length - 1 === currentStep"-->
-<!--            :disabled="currentStep == finishStep"-->
-<!--            color="success"-->
-<!--          >-->
-<!--            Завершити-->
-<!--          </VBtn>-->
+          <!--          <VBtn-->
+          <!--            v-if="numberedSteps.length - 1 === currentStep"-->
+          <!--            :disabled="currentStep == finishStep"-->
+          <!--            color="success"-->
+          <!--          >-->
+          <!--            Завершити-->
+          <!--          </VBtn>-->
 
           <!-- <VBtn v-else @click="currentStep++">
             Далі

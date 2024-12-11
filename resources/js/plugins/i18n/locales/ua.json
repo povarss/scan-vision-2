@@ -231,7 +231,9 @@
     "add":"Додати",
     "save": "Зберегти",
     "cancel" : "Відмінити",
-    "archiveConfirm" : "Так, архівувати"
+    "archiveConfirm" : "Так, архівувати",
+    "confirm" : "confirm",
+    "delete":"Delete"
   },
   "menu" : {
     "Patients" : "Користувачі",
@@ -244,5 +246,8 @@
     "email" : "Email",
     "password" : "Пароль",
     "expire_at" : "Дата закінчення підписки",
+    "ConfirmDelete" : "Are you confirm delete?",
+    "Removed" : "You are deleted doctor",
+    "RemovedMsg" : "Doctor removed",
   }
 }

@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix('exam')->group(function () {
+        Route::get('/refrences/{type}', [ExamController::class, 'getReferences']);
         Route::post('/setting', [ExamController::class, 'storeSettings']);
         Route::post('/result', [ExamController::class, 'storeResult']);
         Route::get('/info/{patientExam}', [ExamController::class, 'getInfo']);
@@ -35,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', [DoctorController::class, 'list']);
             Route::post('/', [DoctorController::class, 'store']);
             Route::get('/{user}', [DoctorController::class, 'get']);
+            Route::post('/delete', [DoctorController::class, 'delete']);
         });
     });
 });

@@ -25,6 +25,7 @@ class StoreExamSettingRequest extends FormRequest
             'time' => 'required|int',
             'level' => 'required|string',
             'mode' => 'required|string',
+            'exam_id' => 'required|string',
         ];
     }
 }
