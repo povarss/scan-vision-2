@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\PatientExam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class SvgFillerService
 {
@@ -83,20 +84,76 @@ class SvgFillerService
         return $this->items;
     }
 
+    public function getLevelCorrectCount()
+    {
+        $config = $this->getExamConfig();
+        return Arr::get($config, 'levels.' . $this->patientExam->level . '.count', $config['default_max_count']);
+    }
+
+    // public function setCorrect()
+    // {
+    //     $config = $this->getExamConfig();
+    //     $correctSvgs = $config['svgs'][$this->patientExam->mode];
+    //     $maxCount = $this->getLevelCorrectCount();
+
+    //     // $insertedCount = 0;
+    //     // dd($maxCount);
+    //     $correctSvgInPie = intval($maxCount / count($this->sections));
+    //     $canAddons = $maxCount - $correctSvgInPie * count($this->sections);
+    //     $sectionItems = [];
+    //     foreach ($this->sections as $num => $section) {
+    //         $setedSvg = 0;
+
+    //         $sectionItems = $section;
+    //         foreach ($correctSvgs as $correctSvg) {
+    //             $setedSvg = 0;
+    //             $maxInPie = $correctSvgInPie + ($num <= $canAddons ? 1 : 0);
+    //             while ($setedSvg < $maxInPie) {
+    //                 $usedRandKey = rand(0, count($sectionItems) - 1);
+
+    //                 $position = $sectionItems[$usedRandKey];
+    //                 if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
+    //                     $this->items[$position['y']][$position['x']]['type'] = $correctSvg;
+    //                     $this->items[$position['y']][$position['x']]['isCorrect'] = 1;
+    //                     $setedSvg++;
+
+    //                     unset($sectionItems[$usedRandKey]);
+    //                     $sectionItems = array_values($sectionItems);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
     public function setCorrect()
     {
         $config = $this->getExamConfig();
         $correctSvgs = $config['svgs'][$this->patientExam->mode];
-        foreach ($this->sections as $section) {
-            $setedSvg = 0;
+        $maxCount = $this->getLevelCorrectCount();
+
+        $insertedCount = 0;
+        $needFill = 0;
+        // dd($maxCount);
+        $correctSvgInPie = intval($maxCount / count($this->sections));
+        $canAddons = $maxCount - $correctSvgInPie * count($this->sections);
+
+        foreach ($this->sections as $sectionIndex => $sectionItems) {
+            $oldAdditions = $needFill - $insertedCount;
+            $maxSvgsPerSection = $correctSvgInPie + ($sectionIndex <= $canAddons ? 1 : 0);
+            $needFill += $maxSvgsPerSection;
+            $maxSvgsPerSection += $oldAdditions;
+
+            shuffle($sectionItems);
             foreach ($correctSvgs as $correctSvg) {
-                $setedSvg = 0;
-                while ($setedSvg < $this->correctSvgInPie) {
-                    $position = $section[rand(0, count($section) - 1)];
+                for ($i = 0; $i < $maxSvgsPerSection; $i++) {
+                    if (empty($sectionItems)) {
+                        break; // No more positions available in this section
+                    }
+                    $position = array_pop($sectionItems);
                     if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
                         $this->items[$position['y']][$position['x']]['type'] = $correctSvg;
                         $this->items[$position['y']][$position['x']]['isCorrect'] = 1;
-                        $setedSvg++;
+                        $insertedCount++;
                     }
                 }
             }
@@ -112,25 +169,8 @@ class SvgFillerService
         return round($pixels);
     }
 
-    public function setContainerWidth()
-    {
-        $minItems = 18;
-        $sizes = [
-            1 => 2,
-            2 => 1.5,
-            3 => 1,
-        ];
-        $sizeInSm = $sizes[$this->patientExam->level] * $minItems;
-        $this->maxWidth = $this->cmToPx($sizeInSm);
-        $this->maxHeight = $this->cmToPx($sizeInSm);
-
-        $this->maxWidth = $this->calcWidth() * $minItems;
-        $this->maxHeight = $this->calcWidth() * $minItems;
-    }
-
     public function setParams()
     {
-        // $this->setContainerWidth();
         $this->setOffset();
     }
 
@@ -140,24 +180,20 @@ class SvgFillerService
         $this->offsetYRange = intval($this->calcHeight());
     }
 
-    public function getLevels()
+    public function getLevelSize()
     {
-        return [
-            '1' => 76,
-            '2' => 57,
-            '3' => 38
-        ];
+        $config = $this->getExamConfig();
+        return Arr::get($config, 'levels.' . $this->patientExam->level . '.size', $config['default_size']);
     }
-
     public function calcWidth()
     {
 
-        return ceil($this->getLevels()[$this->patientExam->level] * $this->patientExam->svg_size / 100);
+        return ceil($this->getLevelSize() * $this->patientExam->svg_size / 100);
     }
 
     public function calcHeight()
     {
-        return ceil($this->getLevels()[$this->patientExam->level] * $this->patientExam->svg_size / 100);
+        return ceil($this->getLevelSize() * $this->patientExam->svg_size / 100);
     }
 
     public function getExamConfig()
@@ -394,8 +430,11 @@ class SvgFillerService
         $angle = 360 - intval($angle_degrees);
         $this->items[$this->curY][$this->curX]['angle'] = $angle;
         $sectionNum = intval($angle / 45) + 1;
-        $this->items[$this->curY][$this->curX]['section'] = $sectionNum < 9 ? $sectionNum : 1;
-        $this->sections[intval($angle / 45) + 1][] = ['x' => $this->curX, 'y' => $this->curY];
+        if ($sectionNum >= 9) {
+            $sectionNum = 1;
+        }
+        $this->items[$this->curY][$this->curX]['section'] = $sectionNum;
+        $this->sections[$sectionNum][] = ['x' => $this->curX, 'y' => $this->curY];
         return $angle_degrees;
     }
 

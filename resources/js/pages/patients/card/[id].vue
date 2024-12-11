@@ -255,7 +255,7 @@ const returnToPatientList = () => {
                   : 'success'
               "
               size="x-small"
-              v-for="examResult in patientData.exams"
+              v-for="examResult in patientData.exams.filter(v=> v.exam_id == 1)"
             >
               <!-- 👉 Header -->
               <div
@@ -337,7 +337,7 @@ const returnToPatientList = () => {
                   : 'success'
               "
               size="x-small"
-              v-for="examResult in patientData.exams"
+              v-for="examResult in patientData.exams.filter(v=> v.exam_id == 2)"
             >
               <!-- 👉 Header -->
               <div
