@@ -11,6 +11,7 @@ import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import NavBarI18n from '@core/components/I18n.vue'
 import { HorizontalNav2 } from '@layouts/components'
+import { hasAccessRole } from "@layouts/plugins/casl";
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
@@ -57,6 +58,6 @@ const hidePanels = true;
     </template>
 
     <!-- 👉 Customizer -->
-    <TheCustomizer />
+    <TheCustomizer v-if="hasAccessRole(['admin'])"/>
   </VerticalNavLayout>
 </template>

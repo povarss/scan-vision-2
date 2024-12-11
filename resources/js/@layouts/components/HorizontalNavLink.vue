@@ -1,11 +1,11 @@
 <script setup>
-import { layoutConfig } from '@layouts'
-import { can } from '@layouts/plugins/casl'
+import { layoutConfig } from "@layouts";
+import { can, hasAccessRole } from "@layouts/plugins/casl";
 import {
   getComputedNavLinkToProp,
   getDynamicI18nProps,
   isNavLinkActive,
-} from '@layouts/utils'
+} from "@layouts/utils";
 
 const props = defineProps({
   item: {
@@ -17,22 +17,29 @@ const props = defineProps({
     required: false,
     default: false,
   },
-})
+});
 </script>
 
 <template>
   <li
-    v-if="can(item.action, item.subject)"
+    v-if="can(item.action, item.subject) && hasAccessRole(item.roles)"
     class="nav-link"
-    :class="[{
-      'sub-item': props.isSubItem,
-      'disabled': item.disable,
-    }]"
+    :class="[
+      {
+        'sub-item': props.isSubItem,
+        disabled: item.disable,
+      },
+    ]"
   >
     <Component
       :is="item.to ? 'RouterLink' : 'a'"
       v-bind="getComputedNavLinkToProp(item)"
-      :class="{ 'router-link-active router-link-exact-active': isNavLinkActive(item, $router) }"
+      :class="{
+        'router-link-active router-link-exact-active': isNavLinkActive(
+          item,
+          $router
+        ),
+      }"
     >
       <Component
         :is="layoutConfig.app.iconRenderer || 'div'"
