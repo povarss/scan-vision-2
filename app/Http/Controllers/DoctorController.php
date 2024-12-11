@@ -65,4 +65,9 @@ class DoctorController extends Controller
     {
         return new UserResource($user);
     }
+
+    public function delete(Request $request){
+        $doctor = User::findOrFail($request->input('id'));
+        $doctor->remove();
+    }
 }
