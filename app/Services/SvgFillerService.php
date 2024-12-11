@@ -171,11 +171,12 @@ class SvgFillerService
         $correctSvgs = $config['svgs'][$this->patientExam->mode];
         $svgTypes = [];
         for ($i = 1; $i <= count($config['allSvgs']); $i++) {
-            if (in_array($i, $correctSvgs)) {
+            $curSvgName = $config['allSvgs'][$i - 1];
+            if (in_array($curSvgName, $correctSvgs)) {
                 continue;
             }
             $svgTypes[] = [
-                'type' => $config['allSvgs'][$i - 1],
+                'type' => $curSvgName,
                 'width' => $this->calcWidth(),
                 'height' => $this->calcHeight(),
                 'isCorrect' => 0,

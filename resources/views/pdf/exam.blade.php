@@ -174,7 +174,7 @@
                         }
                     }
                 @endphp
-                <img src="{{ public_path('/images/vision/' . $imgItem['type'] . '.svg') }}"
+                <img src="{{ public_path('/images/'.$config['folder'].'/' . $imgItem['type'] . '.svg') }}"
                      width="{{ $imgItem['width'] }}" height="{{ $imgItem['width'] }}"
                      style="position: absolute;padding: 2px;
                     top: {{ $imgItem['y'] . 'px' }}; left: {{ $imgItem['x'] . 'px' }}; background-color: {{ $color }}"
