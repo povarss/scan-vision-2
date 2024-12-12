@@ -60,18 +60,18 @@
         </td>
     </tr>
     <tr style=" ">
-        <td style="width: 50%">
-            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-right: 20px">
-                <span style="text-transform: uppercase;padding-right: 20px">Клінічний діагноз</span>
-                <div>
-                                        {{ $patientExam->patient->clinic_diagnose }}
+{{--        <td style="width: 50%">--}}
+{{--            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-right: 20px">--}}
+{{--                <span style="text-transform: uppercase;padding-right: 20px">Клінічний діагноз</span>--}}
+{{--                <div>--}}
+{{--                                        {{ $patientExam->patient->clinic_diagnose }}--}}
 {{--                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A at aut commodi delectus deleniti dolores--}}
 {{--                    eos exercitationem facere fuga, fugiat in ipsam, maxime officia omnis optio repellendus unde?--}}
 {{--                    Explicabo, maxime.--}}
-                </div>
-            </div>
+{{--                </div>--}}
+{{--            </div>--}}
 
-        </td>
+{{--        </td>--}}
         <td style="width: 50%; vertical-align: top">
             <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0;   margin-left: 20px">
                 <span style="text-transform: uppercase;padding-right: 20px">Стать</span>
