@@ -16,6 +16,8 @@ class ExamController extends Controller
     {
         $examConfigs = config('exam');
 
+        $examType = Exam::where('id', $type)->first();
+        $examConfigs[$type]['title'] = $examType ? $examType->label : '';
         return response()->json($examConfigs[$type]);
     }
     public function checkPattern(PatientExam $patientExam)
@@ -137,7 +139,7 @@ class ExamController extends Controller
         // return view('pdf.exam', compact('patientExam', 'totals'));
         $examConfigs = config('exam');
         $config = $examConfigs[$patientExam->exam_id];
-        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals','config'))->setWarnings(true);
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config'))->setWarnings(true);
         return $pdf->stream();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Exam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,7 +28,8 @@ class PatientResource extends JsonResource
             'field' => $this->field,
             'clinic_diagnose' => $this->clinic_diagnose,
             'tags' => $this->tags,
-            'exams' => []
+            'exams' => [],
+            'examTypes' => Exam::get()
         ];
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [

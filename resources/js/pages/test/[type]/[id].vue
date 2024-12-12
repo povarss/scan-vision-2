@@ -156,7 +156,7 @@ onMounted(() => {
 
   <VCard>
     <VCardItem class="pb-4">
-      <VCardTitle>Неглект скринінг</VCardTitle>
+      <VCardTitle>{{ referenceData?.title }}</VCardTitle>
     </VCardItem>
     <VDivider />
 
@@ -181,7 +181,11 @@ onMounted(() => {
           </VWindowItem>
 
           <VWindowItem>
-            <Result :exam="exam" :references="referenceData" v-if="currentStep == finishStep" />
+            <Result
+              :exam="exam"
+              :references="referenceData"
+              v-if="currentStep == finishStep"
+            />
           </VWindowItem>
         </VWindow>
 

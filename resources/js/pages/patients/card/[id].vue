@@ -221,7 +221,13 @@ const returnToPatientList = () => {
       <VCard>
         <VCardItem class="notification-section">
           <div class="d-flex align-center justify-start">
-            <h4 class="text-h4">Неглект тест</h4>
+            <h4 class="text-h4">
+              {{
+                patientData
+                  ? patientData.examTypes.find((v) => v.id == 1).label
+                  : ""
+              }}
+            </h4>
 
             <VBtn
               variant="elevated"
@@ -255,7 +261,9 @@ const returnToPatientList = () => {
                   : 'success'
               "
               size="x-small"
-              v-for="examResult in patientData.exams.filter(v=> v.exam_id == 1)"
+              v-for="examResult in patientData.exams.filter(
+                (v) => v.exam_id == 1
+              )"
             >
               <!-- 👉 Header -->
               <div
@@ -303,7 +311,13 @@ const returnToPatientList = () => {
       <VCard>
         <VCardItem class="notification-section">
           <div class="d-flex align-center justify-start">
-            <h4 class="text-h4">Неглект тест</h4>
+            <h4 class="text-h4">
+              {{
+                patientData
+                  ? patientData.examTypes.find((v) => v.id == 2).label
+                  : ""
+              }}
+            </h4>
 
             <VBtn
               variant="elevated"
@@ -337,7 +351,9 @@ const returnToPatientList = () => {
                   : 'success'
               "
               size="x-small"
-              v-for="examResult in patientData.exams.filter(v=> v.exam_id == 2)"
+              v-for="examResult in patientData.exams.filter(
+                (v) => v.exam_id == 2
+              )"
             >
               <!-- 👉 Header -->
               <div

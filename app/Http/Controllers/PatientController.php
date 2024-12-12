@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Resources\PatientResource;
+use App\Models\Exam;
 use App\Models\Patient;
 use App\Models\PatientExam;
 use App\Models\Tag;
@@ -28,15 +29,24 @@ class PatientController extends Controller
                     ->orWhereLike('phone', '%' . $request->q . '%');
             });
         }
+        $examTypes = Exam::get();
         return DataTables::eloquent($model)
             ->only(['id', 'full_name', 'phone', 'first_test', 'last_test'])
-            ->addColumn('first_test', function (Patient $patient) {
-                $exam = PatientExam::where('patient_id', $patient->id)->orderBy('id', 'asc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                return 'Неглет тест ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '');
+            ->addColumn('first_test', function (Patient $patient) use ($examTypes) {
+                $title = '';
+                foreach ($examTypes as $examType) {
+                    $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'asc')->where('status', PatientExam::STATUS_FINISHED)->first();
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                }
+                return $title;
             })
-            ->addColumn('last_test', function (Patient $patient) {
-                $exam = PatientExam::where('patient_id', $patient->id)->orderBy('id', 'desc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                return 'Неглет тест ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '');
+            ->addColumn('last_test', function (Patient $patient) use ($examTypes) {
+                $title = '';
+                foreach ($examTypes as $examType) {
+                    $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'desc')->where('status', PatientExam::STATUS_FINISHED)->first();
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                }
+                return $title;
             })
             ->toJson();
     }
