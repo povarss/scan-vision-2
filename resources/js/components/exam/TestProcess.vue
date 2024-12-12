@@ -150,6 +150,7 @@ const stimulSize = computed(() => {
       <VCol cols="12" class="d-flex flex-column">
         <div
           ref="container"
+          class="custom-cursor"
           style="
             display: flex;
             justify-content: center;
@@ -203,5 +204,13 @@ const stimulSize = computed(() => {
 .rounded-blue {
   border-radius: 50%;
   border-color: #857e7e !important;
+}
+.custom-cursor img{
+  user-select: none;
+
+}
+.custom-cursor{
+
+  cursor: url("@images/cursor.svg") 42 42, move;
 }
 </style>
