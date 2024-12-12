@@ -27,6 +27,7 @@ const resultData = ref({
     left: 0,
     right: 0,
   },
+  typeLabel: "",
 });
 const emit = defineEmits(["dataLoaded"]);
 

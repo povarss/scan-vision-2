@@ -67,7 +67,6 @@ const afterSave = (patientId) => {
 
 const store = async () => {
   try {
-    console.log(patient.value, "patient.value");
     const res = await $api("/patient", {
       method: "POST",
       body: { id: props.id, ...patient.value },

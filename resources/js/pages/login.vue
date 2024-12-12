@@ -31,7 +31,6 @@ const refVForm = ref()
 
 const login = async () => {
   try {
-    console.log(form,'form')
     const res = await $api("/login", {
       method: "POST",
       body: {

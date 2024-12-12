@@ -21,8 +21,7 @@ const updateSelectedOption = (value) => {
 };
 
 const infoClickHandle = (level) => {
-  console.log("info handler");
-  emit("infoClicked",level);
+  emit("infoClicked", level);
 };
 </script>
 
@@ -58,13 +57,18 @@ const infoClickHandle = (level) => {
           <slot :item="item">
             <div class="d-flex flex-column align-center text-center gap-2">
               <VIcon v-bind="item.icon" class="text-high-emphasis" />
-              <h6 class="text-h6 font-weight-bold">
-                {{ item.title }}
-              </h6>
+              <template v-if="item.image">
+                <img :src="'/images/' + item.image" style="width: 100px; height: 100px;" />
+              </template>
+              <template v-else>
+                <h6 class="text-h6 font-weight-bold">
+                  {{ item.title }}
+                </h6>
 
-              <p class="text-body-2 mb-0">
-                {{ item.desc }}
-              </p>
+                <p class="text-body-2 mb-0">
+                  {{ item.desc }}
+                </p>
+              </template>
             </div>
           </slot>
 

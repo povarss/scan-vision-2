@@ -42,7 +42,6 @@ const storeSetting = () => {
 const levelDialogInfo = ref(false);
 const infoText = ref("");
 const infoClicked = (level) => {
-  console.log("clicked");
   levelDialogInfo.value = true;
   infoText.value = level.description;
 };

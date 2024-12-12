@@ -126,6 +126,8 @@ class ExamController extends Controller
             'testSecond' => $testSecond,
             'correctCount' => $correctCount,
             'incorrectCount' => $incorrectCount,
+            'type' => $patientExam->exam_id,
+            'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
         ];
     }
     public function getInfo(PatientExam $patientExam)

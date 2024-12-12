@@ -63,6 +63,7 @@ const modes = {
   2: [
     {
       title: "1",
+      image:'vision2/Alpaca1.svg',
       desc: "1",
       value: "1",
       icon: { icon: "tabler-box-multiple-1", size: "28" },
@@ -92,8 +93,8 @@ const modes = {
     },
     {
       title: "2",
-      desc: "2",
       value: "2",
+      image:'vision2/Deer2.svg',
       icon: { icon: "tabler-box-multiple-2", size: "28" },
       description:
         " <h1 style='text-align: center'>Особливості Dual Task</h1>\n" +
@@ -122,7 +123,7 @@ const modes = {
     },
     {
       title: "3",
-      desc: "3",
+      image:'vision2/Horse3.svg',
       value: "3",
       icon: { icon: "tabler-box-multiple-2", size: "28" },
       description:
@@ -152,7 +153,7 @@ const modes = {
     },
     {
       title: "4",
-      desc: "4",
+      image:'vision2/Monkey4.svg',
       value: "4",
       icon: { icon: "tabler-box-multiple-2", size: "28" },
       description:
@@ -182,7 +183,7 @@ const modes = {
     },
     {
       title: "5",
-      desc: "5",
+      image:'vision2/Pig5.svg',
       value: "5",
       icon: { icon: "tabler-box-multiple-2", size: "28" },
       description:

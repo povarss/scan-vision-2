@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import TestProcess from "@/components/exam/TestProcess.vue";
 import Result from "@/components/exam/Result.vue";
-import Setting from "@/components/exam/Setting.vue";
 import { ref, onMounted } from "vue";
 
 const route = useRoute("exam-result-id");
@@ -25,11 +23,12 @@ onMounted(() => {
 });
 const isLoading = ref(false);
 
-const result = ref([]);
 const patientId = ref("0");
+const title = ref();
 
 const onDataLoad = (data) => {
   patientId.value = data.patientId;
+  title.value = data.typeLabel;
 };
 </script>
 
@@ -40,7 +39,7 @@ const onDataLoad = (data) => {
 
   <VCard>
     <VCardItem class="pb-4">
-      <VCardTitle>Неглект скринінг</VCardTitle>
+      <VCardTitle>{{ title }}</VCardTitle>
     </VCardItem>
     <VDivider />
 
@@ -61,7 +60,6 @@ const onDataLoad = (data) => {
       <VForm>
         <VWindow v-model="currentStep" class="disable-tab-transition">
           <VWindowItem> </VWindowItem>
-
 
           <VWindowItem>
             <Result
@@ -93,13 +91,13 @@ const onDataLoad = (data) => {
             Перейти на картку клієнта
           </VBtn>
           <PdfButton :btnLabel="'Друк PDF'" :url="'/exam/print/' + exam.id" />
-<!--          <VBtn-->
-<!--            v-if="numberedSteps.length - 1 === currentStep"-->
-<!--            :disabled="true"-->
-<!--            color="success"-->
-<!--          >-->
-<!--            Завершити-->
-<!--          </VBtn>-->
+          <!--          <VBtn-->
+          <!--            v-if="numberedSteps.length - 1 === currentStep"-->
+          <!--            :disabled="true"-->
+          <!--            color="success"-->
+          <!--          >-->
+          <!--            Завершити-->
+          <!--          </VBtn>-->
         </div>
       </VForm>
     </VCardText>
