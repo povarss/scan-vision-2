@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Exam;
+use App\Models\Reference;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,7 +27,7 @@ class PatientResource extends JsonResource
             'region_id' => $this->region_id,
             'region' => $this->region,
             'field' => $this->field,
-            'clinic_diagnose' => $this->clinic_diagnose,
+            'clinic_diagnose' => Reference::getRefLabel($this->clinic_diagnose),
             'tags' => $this->tags,
             'exams' => [],
             'examTypes' => Exam::get()
