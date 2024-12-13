@@ -73,7 +73,7 @@
 
 {{--        </td>--}}
         <td style="width: 50%; vertical-align: top">
-            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0;   margin-left: 20px">
+            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0;   margin-right: 20px">
                 <span style="text-transform: uppercase;padding-right: 20px">Стать</span>
                 {{ ($patientExam->patient->gender == 0 ? 'Жінка' : 'Чоловік') }}
 
