@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExamSettingRequest;
 use App\Models\Exam;
 use App\Models\PatientExam;
+use App\Models\Reference;
 use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -141,7 +142,9 @@ class ExamController extends Controller
         // return view('pdf.exam', compact('patientExam', 'totals'));
         $examConfigs = config('exam');
         $config = $examConfigs[$patientExam->exam_id];
-        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config'))->setWarnings(true);
+        $reference = Reference::get()->keyBy('id')->groupBy('key_',true);
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config','reference'))->setWarnings(true);
+        // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'))->setWarnings(true);
         return $pdf->stream();
     }
 }

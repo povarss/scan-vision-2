@@ -26,7 +26,7 @@ class StorePatientRequest extends FormRequest
             'gender' => 'required|integer|in:0,1',
             'region_id' => 'nullable|integer',
             'field' => 'nullable|string',
-            'clinic_diagnose' => 'nullable|string',
+            'clinic_diagnose' => 'nullable',
             'tags' => 'nullable|array',
         ];
     }

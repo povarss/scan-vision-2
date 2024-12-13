@@ -41,13 +41,15 @@ const refPatientForm = ref();
 const regions = ref([]);
 
 const tagItems = ref([]);
+const references = ref({});
 
 const loadReferences = async () => {
   const res = await $api("/reference-by-key", {
     method: "POST",
-    body: { keys: ["region", "tag"] },
+    body: { keys: ["region", "tag", "diagnose"] },
   });
 
+  references.value = res;
   regions.value = res.region;
   tagItems.value = res.tag;
 };
@@ -200,12 +202,21 @@ watch(
               />
             </VCol>
             <VCol cols="12">
-              <AppTextField
+              <AppSelect
+                v-if="references.diagnose"
+                :items="references.diagnose"
                 :label="$t('patient.clinic_diagnose')"
                 v-model="patient.clinic_diagnose"
                 :rules="formRules.clinic_diagnose"
                 :error-messages="errors.clinic_diagnose"
               />
+              <!--
+              <AppTextField
+                :label="$t('patient.clinic_diagnose')"
+                v-model="patient.clinic_diagnose"
+                :rules="formRules.clinic_diagnose"
+                :error-messages="errors.clinic_diagnose"
+              /> -->
             </VCol>
             <VCol cols="12">
               <AppTextField

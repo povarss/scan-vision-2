@@ -12,11 +12,13 @@ class Reference extends Model
     ];
 
     const KEY_REGION = 'region';
+    const KEY_DIAGNOSE = 'diagnose';
 
     public function getAvailableKeys()
     {
         return [
-            self::KEY_REGION
+            self::KEY_REGION,
+            self::KEY_DIAGNOSE,
         ];
     }
     public function getRefItems($refKey)
@@ -25,10 +27,18 @@ class Reference extends Model
             return ['title' => $item->label, 'value' => $item->id];
         });
     }
+
+    public static function getRefLabel($id)
+    {
+        $ref =  Reference::where(['id' => $id])->first();
+        return !empty($ref) ?  $ref->label : '';
+    }
+
     public static function getInitValues()
     {
         return [
-            self::KEY_REGION => self::getDefinedRegions()
+            self::KEY_REGION => self::getDefinedRegions(),
+            self::KEY_DIAGNOSE => self::getDefinedDiagnoses(),
         ];
     }
     public static function getDefinedRegions()
@@ -59,6 +69,13 @@ class Reference extends Model
             'Черкаська',
             'Чернівецька',
             'Чернігівська',
+        ];
+    }
+
+    public static function getDefinedDiagnoses()
+    {
+        return [
+            'Диагноз',
         ];
     }
 }
