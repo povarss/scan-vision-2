@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\ExamResultDto;
 use App\Http\Requests\StoreExamSettingRequest;
 use App\Models\Exam;
 use App\Models\PatientExam;
 use App\Models\Reference;
+use App\Services\GetRecommendationService;
 use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -90,16 +92,22 @@ class ExamController extends Controller
         $testMinute = intval(floor($difSeconds / 60));
         $testSecond = $difSeconds - $testMinute * 60;
 
-        $correctTotal = 0;
+
+        $correctTotals = ['total' => 0, 'left' => 0, 'right' => 0];
         foreach ($patientExam->pattern as $row) {
             foreach ($row as $item) {
                 if ($item['isCorrect']) {
-                    $correctTotal++;
+                    $correctTotals['total'] = $correctTotals['total'] + 1;
+                    if (in_array($item['section'], [1, 2, 7, 8])) {
+                        $correctTotals['right'] = $correctTotals['right'] + 1;
+                    } else {
+                        $correctTotals['left'] = $correctTotals['left'] + 1;
+                    }
                 }
             }
         }
 
-        $correctCount = ['left' => 0, 'right' => 0, 'total' => $correctTotal, 'selected' => 0];
+        $correctCount = ['left' => 0, 'right' => 0, 'total' => $correctTotals['total'], 'selected' => 0];
         $incorrectCount = ['left' => 0, 'right' => 0, 'total' => 0];
 
         foreach ($patientExam->result as $key => $position) {
@@ -120,6 +128,17 @@ class ExamController extends Controller
                 }
             }
         }
+        $examResultDto = new ExamResultDto(
+            $patientExam->exam_id,
+            $correctTotals['total'] - $correctCount['selected'],
+            $correctTotals['left'] - $correctCount['right'],
+            $correctTotals['right'] - $correctCount['right'],
+
+            $incorrectCount['total'],
+            $incorrectCount['left'],
+            $incorrectCount['right']
+        );
+        $analyzeInfo = (new GetRecommendationService($examResultDto))->getInformation();
         return [
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
@@ -129,6 +148,7 @@ class ExamController extends Controller
             'incorrectCount' => $incorrectCount,
             'type' => $patientExam->exam_id,
             'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
+            'analyzeInfo' => $analyzeInfo,
         ];
     }
     public function getInfo(PatientExam $patientExam)
@@ -142,9 +162,9 @@ class ExamController extends Controller
         // return view('pdf.exam', compact('patientExam', 'totals'));
         $examConfigs = config('exam');
         $config = $examConfigs[$patientExam->exam_id];
-        $reference = Reference::get()->keyBy('id')->groupBy('key_',true);
-        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config','reference'))->setWarnings(true);
-        // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'))->setWarnings(true);
+        $reference = Reference::get()->keyBy('id')->groupBy('key_', true);
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference'))->setWarnings(true);
+        // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'));
         return $pdf->stream();
     }
 }
