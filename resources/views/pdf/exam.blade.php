@@ -50,33 +50,35 @@
                         style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-right: 20px">
                         <span style="text-transform: uppercase;padding-right: 20px">ПІБ</span>
 
-                {{ $patientExam->patient->full_name }}
-            </div>
-        </td>
-        <td style="width: 50%">
-            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-left: 20px">
-                <span style="text-transform: uppercase;padding-right: 20px">Дата народження</span>
-                {{ date('d.m.Y', strtotime($patientExam->patient->born_date)) }}
-            </div>
-        </td>
-    </tr>
-    <tr style=" ">
-{{--        <td style="width: 50%">--}}
-{{--            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-right: 20px">--}}
-{{--                <span style="text-transform: uppercase;padding-right: 20px">Клінічний діагноз</span>--}}
-{{--                <div>--}}
-{{--                                        {{ $patientExam->patient->clinic_diagnose ? $reference->get('diagnose')->get($patientExam->patient->clinic_diagnose)->label : '' }}--}}
-{{--                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A at aut commodi delectus deleniti dolores--}}
-{{--                    eos exercitationem facere fuga, fugiat in ipsam, maxime officia omnis optio repellendus unde?--}}
-{{--                    Explicabo, maxime.--}}
-{{--                </div>--}}
-{{--            </div>--}}
+                        {{ $patientExam->patient->full_name }}
+                    </div>
+                </td>
+                <td style="width: 50%">
+                    <div
+                        style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-left: 20px">
+                        <span style="text-transform: uppercase;padding-right: 20px">Дата народження</span>
+                        {{ date('d.m.Y', strtotime($patientExam->patient->born_date)) }}
+                    </div>
+                </td>
+            </tr>
+            <tr style=" ">
+                {{--        <td style="width: 50%"> --}}
+                {{--            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0; margin-bottom: 20px; margin-right: 20px"> --}}
+                {{--                <span style="text-transform: uppercase;padding-right: 20px">Клінічний діагноз</span> --}}
+                {{--                <div> --}}
+                {{--                                        {{ $patientExam->patient->clinic_diagnose ? $reference->get('diagnose')->get($patientExam->patient->clinic_diagnose)->label : '' }} --}}
+                {{--                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A at aut commodi delectus deleniti dolores --}}
+                {{--                    eos exercitationem facere fuga, fugiat in ipsam, maxime officia omnis optio repellendus unde? --}}
+                {{--                    Explicabo, maxime. --}}
+                {{--                </div> --}}
+                {{--            </div> --}}
 
-{{--        </td>--}}
-        <td style="width: 50%; vertical-align: top">
-            <div style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0;   margin-right: 20px">
-                <span style="text-transform: uppercase;padding-right: 20px">Стать</span>
-                {{ ($patientExam->patient->gender == 0 ? 'Жінка' : 'Чоловік') }}
+                {{--        </td> --}}
+                <td style="width: 50%; vertical-align: top">
+                    <div
+                        style="border-bottom: 4px solid #0080f6; padding-bottom: 10px;color: #0058a0;   margin-right: 20px">
+                        <span style="text-transform: uppercase;padding-right: 20px">Стать</span>
+                        {{ $patientExam->patient->gender == 0 ? 'Жінка' : 'Чоловік' }}
 
                     </div>
                 </td>
@@ -84,7 +86,8 @@
         </tbody>
     </table>
 
-    <h3 style="color: #0058a0; text-transform: uppercase; margin-bottom: 10px; ">Висновок</h3>
+    <h3 style="color: #0058a0; text-transform: uppercase; margin-bottom: 10px; ">Висновок {{ $totals['exam_type_recommend'] }}
+    </h3>
 
     <div>
         <div class="container">

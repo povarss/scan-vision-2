@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExamSettingRequest extends FormRequest
+class StartExamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,13 +20,9 @@ class StoreExamSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|int',
-            // 'patient_id' => 'required|int',
-            'svg_size' => 'required|int',
-            'time' => 'required|int',
-            'level' => 'required|string',
-            'mode' => 'required|string',
-            // 'exam_id' => 'required|string',
+            'patient_id' => 'required|int',
+            'type' => 'required|int',
+            'exam_id' => 'required|int',
         ];
     }
 }

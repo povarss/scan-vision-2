@@ -35,6 +35,7 @@ class PatientResource extends JsonResource
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [
                 'test_id' => $test->id,
+                'type_result_label' => $test->getExamTypeResultLabel(),
                 'exam_id' => $test->exam_id,
                 'final_result' => $test->getCorrectPercentage(),
                 'incorrect_count' => $test->getSelectedIncorrectCount(),

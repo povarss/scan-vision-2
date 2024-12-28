@@ -75,9 +75,6 @@ class SvgFillerService
 
             $this->generateSvgObject();
             $num++;
-            // if($num ==30){
-            //     break;
-            // }
         }
         $this->setCorrect();
 
@@ -89,41 +86,6 @@ class SvgFillerService
         $config = $this->getExamConfig();
         return Arr::get($config, 'levels.' . $this->patientExam->level . '.count', $config['default_max_count']);
     }
-
-    // public function setCorrect()
-    // {
-    //     $config = $this->getExamConfig();
-    //     $correctSvgs = $config['svgs'][$this->patientExam->mode];
-    //     $maxCount = $this->getLevelCorrectCount();
-
-    //     // $insertedCount = 0;
-    //     // dd($maxCount);
-    //     $correctSvgInPie = intval($maxCount / count($this->sections));
-    //     $canAddons = $maxCount - $correctSvgInPie * count($this->sections);
-    //     $sectionItems = [];
-    //     foreach ($this->sections as $num => $section) {
-    //         $setedSvg = 0;
-
-    //         $sectionItems = $section;
-    //         foreach ($correctSvgs as $correctSvg) {
-    //             $setedSvg = 0;
-    //             $maxInPie = $correctSvgInPie + ($num <= $canAddons ? 1 : 0);
-    //             while ($setedSvg < $maxInPie) {
-    //                 $usedRandKey = rand(0, count($sectionItems) - 1);
-
-    //                 $position = $sectionItems[$usedRandKey];
-    //                 if (!$this->items[$position['y']][$position['x']]['isCorrect']) {
-    //                     $this->items[$position['y']][$position['x']]['type'] = $correctSvg;
-    //                     $this->items[$position['y']][$position['x']]['isCorrect'] = 1;
-    //                     $setedSvg++;
-
-    //                     unset($sectionItems[$usedRandKey]);
-    //                     $sectionItems = array_values($sectionItems);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
 
     public function setCorrect()
     {
@@ -317,9 +279,6 @@ class SvgFillerService
         foreach ($checkSvgs as $key => $checkSvg) {
             list($isOverlaped, $newPos) = $this->checkIsOverlap($curSvg, $checkSvg);
             if ($isOverlaped) {
-                // if ($this->isCheckNum($curSvg)) {
-                //     dd($checkSvg, $curSvg);
-                // }
                 $curSvg['x'] = $newPos[0];
                 $curSvg['y'] = $newPos[1];
                 $isOverlap = true;
@@ -354,18 +313,6 @@ class SvgFillerService
                 }
             }
         }
-        // if ($this->curY == 1) {
-        //     dd($checkSvgs, $xPos, $yPos, $this->map);
-        // }
-        // for ($i = -3; $i < 8; $i++) {
-        //     $checkSvg = $this->getItemByPosition($this->curX + $i, $this->curY - 1);
-        //     if (!empty($checkSvg)) {
-        //         $checkSvgs[] = $checkSvg;
-        //         if ($checkSvg['x'] > $svg['x']) {
-        //             break;
-        //         }
-        //     }
-        // }
         return $checkSvgs;
     }
 
@@ -421,7 +368,6 @@ class SvgFillerService
 
         $angle_radians = atan2($dy, $dx);
         $angle_degrees = rad2deg($angle_radians);
-        // dd($angle_degrees);
         // Adjust the angle to be in the range of 0 to 360 degrees
         if ($angle_degrees < 0) {
             $angle_degrees += 360;
@@ -507,5 +453,50 @@ class SvgFillerService
         }
 
         return [$x, $y];
+    }
+
+    public function makeDots()
+    {
+        $dots = [];
+        $slices_x = 10; //(int)floor($this->maxHeight / $slice_width);
+        $slices_y = 10; //(int)floor($height / $slice_height);
+        $slice_width = (int)floor($this->maxWidth / $slices_x);
+        $slice_height = (int)floor($this->maxHeight / $slices_y);
+        $num_dots = $this->patientExam->custom_settings['dot_count'];
+        $radius = 11;
+        // Calculate approximate dots per slice
+        $dots_per_slice = (int)ceil($num_dots / ($slices_x * $slices_y));
+
+        for ($i = 0; $i < $slices_x; $i++) {
+            $slice_x_start = $i * $slice_width;
+            $slice_x_end = $slice_x_start + $slice_width;
+            for ($j = 0; $j < $slices_y; $j++) {
+                $slice_y_start = $j * $slice_height;
+                $slice_y_end = $slice_y_start + $slice_height;
+                // echo $slice_height.' '.$slice_width.' '. $slice_y_start.' '.$slice_x_start.' end ';
+
+                $maxDots = ($i * $slices_x * $dots_per_slice)  + ($j + 1) * $dots_per_slice;
+                // echo $maxDots.' ';
+                while (count($dots) < $maxDots) {
+                    $x = rand($slice_x_start, $slice_x_end - 1);
+                    $y = rand($slice_y_start, $slice_y_end - 1);
+
+                    // Check for overlap (adjust distance as needed)
+                    $overlap = false;
+                    foreach ($dots as $dot) {
+                        if (abs($x - $dot[0]) < $radius && abs($y - $dot[1]) < $radius) {
+                            $overlap = true;
+                            break;
+                        }
+                    }
+
+                    if (!$overlap) {
+                        $dots[] = [$x, $y, $slice_x_start, $slice_x_end, $slice_y_start, $slice_y_end, $i, $j];
+                    }
+                }
+            }
+        }
+
+        return $dots;
     }
 }

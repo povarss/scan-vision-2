@@ -16,19 +16,29 @@ class PatientExam extends Model
         'time',
         'svg_size',
         'level',
-        'mode'
+        'mode',
+        'type',
+        'pattern_additional_items',
     ];
 
     protected function casts(): array
     {
         return [
             'pattern' => 'array',
+            'pattern_additional_items' => 'array',
             'result' => 'array',
+            'custom_settings' => 'array',
         ];
     }
 
     const STATUS_DRAFT = 'draft';
     const STATUS_FINISHED = 'finished';
+
+    const TYPE_STANDARD = 1;
+
+    const TYPE_TRAINING = 2;
+
+    const TYPE_WITH_DOTS = 3;
 
     public function patient()
     {
@@ -83,5 +93,26 @@ class PatientExam extends Model
             }
         }
         return  $count;
+    }
+
+    public function createDraft($patientId, $type, $examId)
+    {
+        $draftExam =  new self();
+        $draftExam->patient_id = $patientId;
+        $draftExam->setDraftStatus();
+        $draftExam->type = $type;
+        $draftExam->exam_id = $examId;
+        $draftExam->save();
+        return $draftExam;
+    }
+
+    public function getExamTypeResultLabel()
+    {
+        return !empty($this->type) ? __('labels.exam_type_result.' . $this->type) : '';
+    }
+
+    public function getExamTypeRecommendLabel()
+    {
+        return !empty($this->type) ? __('labels.exam_type_recommend.' . $this->type) : '';
     }
 }

@@ -11,12 +11,12 @@ class GetRecommendationService
     public $recommendations = [];
     public function getInformation()
     {
-        if ($this->examResultDto->examType == 2) {
-            return [
-                'messages' => $this->messages,
-                'recommendations' => $this->recommendations
-            ];
-        }
+        // if ($this->examResultDto->examType == 2) {
+        //     return [
+        //         'messages' => $this->messages,
+        //         'recommendations' => $this->recommendations
+        //     ];
+        // }
 
         $this->addMessage($this->getLeftCorrect());
         $this->addMessage($this->getRightCorrect());
@@ -36,12 +36,15 @@ class GetRecommendationService
         $this->addRecommend($this->getRecommend4());
         $this->addRecommend($this->getRecommend5());
 
+        return $this->getResult();
+    }
+
+    public function getResult(){
         return [
             'messages' => $this->messages,
             'recommendations' => $this->recommendations
         ];
     }
-
     public function addMessage($message)
     {
         if (!empty($message)) {

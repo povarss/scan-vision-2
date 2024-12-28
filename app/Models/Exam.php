@@ -9,6 +9,7 @@ class Exam extends Model
 {
     use SoftDeletes;
     protected $fillable = [
+        'id',
         'label',
     ];
 

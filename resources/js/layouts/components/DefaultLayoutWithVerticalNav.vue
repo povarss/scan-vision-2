@@ -58,6 +58,6 @@ const hidePanels = true;
     </template>
 
     <!-- 👉 Customizer -->
-    <TheCustomizer v-if="hasAccessRole(['admin'])"/>
+    <TheCustomizer v-if="hasAccessRole(['admin']) && false"/>
   </VerticalNavLayout>
 </template>

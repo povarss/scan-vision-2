@@ -30,8 +30,7 @@ const store = async (setting) => {
     const res = await $api("/exam/setting", {
       method: "POST",
       body: {
-        patient_id: route.params.id,
-        exam_id: route.params.type,
+        id: route.params.id,
         ...setting,
       },
       onResponseError({ response }) {
@@ -101,7 +100,7 @@ const returnToSettings = () => {
 
 const referenceData = ref();
 const loadExamReference = async () => {
-  const { data } = await useApi(`/exam/refrences/${route.params.type}`);
+  const { data } = await useApi(`/exam/refrences/${route.params.id}`);
   if (data.value) referenceData.value = data.value;
 };
 
