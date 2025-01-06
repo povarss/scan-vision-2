@@ -203,6 +203,6 @@ const stimulSize = computed(() => {
   user-select: none;
 }
 .custom-cursor {
-  cursor: url("@images/cursor.svg") 42 42, move;
+  cursor: url("@images/cursor.svg") 30 30, move;
 }
 </style>

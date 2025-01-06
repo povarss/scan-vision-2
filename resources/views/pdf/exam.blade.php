@@ -102,7 +102,7 @@
         {{--            <img src="{{ public_path('/images/1.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Час виконання {{ $totals['testMinute'] }}
+            Час виконання: {{ $totals['testMinute'] }}
             хв {{ $totals['testSecond'] }} секунд з {{ $totals['totalMinute'] }}
         </div>
     </div>
@@ -120,7 +120,7 @@
         {{--            <img src="{{ public_path('/images/3.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Правильні цілі з правого боку:{{ $totals['correctCount']['right'] }}
+            Правильні цілі з правого боку: {{ $totals['correctCount']['right'] }}
         </div>
     </div>
     <div class="container">
@@ -128,7 +128,7 @@
         {{--            <img src="{{ public_path('/images/4.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Правильні цілі з лівого боку:{{ $totals['correctCount']['left'] }}
+            Правильні цілі з лівого боку: {{ $totals['correctCount']['left'] }}
         </div>
     </div>
     <div class="container">
@@ -136,7 +136,7 @@
         {{--            <img src="{{ public_path('/images/5.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні стимули:{{ $totals['incorrectCount']['total'] }}
+            Неправильні стимули: {{ $totals['incorrectCount']['total'] }}
         </div>
     </div>
     <div class="container">
@@ -144,7 +144,7 @@
         {{--            <img src="{{ public_path('/images/3.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні цілі з правого боку:{{ $totals['incorrectCount']['right'] }}
+            Неправильні цілі з правого боку: {{ $totals['incorrectCount']['right'] }}
         </div>
     </div>
     <div class="container">
@@ -152,7 +152,7 @@
         {{--            <img src="{{ public_path('/images/4.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні цілі з лівого боку:{{ $totals['incorrectCount']['total'] }}
+            Неправильні цілі з лівого боку: {{ $totals['incorrectCount']['total'] }}
         </div>
     </div>
 </div>

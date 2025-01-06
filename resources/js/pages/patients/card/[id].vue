@@ -169,7 +169,7 @@ const goToTestSettings = (id) => {
               <div class="d-flex align-center justify-start">
                 <h6 class="text-h6 text-left d-flex flex-column mr-2">Вік:</h6>
                 <div class="d-inline-block text-body-1 text-capitalize">
-                  {{ patientData.age }} роки(ів)
+                  {{ patientData.age }} <span style="text-transform: lowercase">роки(ів)</span>
                 </div>
               </div>
             </VListItem>
