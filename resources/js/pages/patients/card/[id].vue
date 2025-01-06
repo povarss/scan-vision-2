@@ -22,6 +22,46 @@ const reloadData = () => {
 const returnToPatientList = () => {
   router.push({ name: "patients" });
 };
+
+const types = ref([
+  {
+    id: 1,
+    label: "Тест",
+  },
+  {
+    id: 2,
+    label: "Тренування",
+  },
+  {
+    id: 3,
+    label: "Оптокінетичне тренування",
+  },
+]);
+const makeDraft = async (type, examId) => {
+  try {
+    const res = await $api("/exam/make-draft", {
+      method: "POST",
+      body: {
+        patient_id: route.params.id,
+        exam_id: examId,
+        type: type,
+      },
+      onResponseError({ response }) {
+        console.error(response._data.errors);
+      },
+    });
+
+    if (res.id) {
+      goToTestSettings(res.id);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const goToTestSettings = (id) => {
+  router.push({ name: "test-id", params: { id: id } });
+};
 </script>
 
 <template>
@@ -216,30 +256,29 @@ const returnToPatientList = () => {
   </VCard>
 
   <VRow>
-    <VCol cols="6">
+    <VCol
+      :cols="12 / patientData.examTypes.length"
+      v-for="examType in patientData.examTypes"
+    >
       <!-- 👉 User Activity timeline -->
       <VCard>
         <VCardItem class="notification-section">
           <div class="d-flex align-center justify-start">
             <h4 class="text-h4">
               {{
-                patientData
-                  ? patientData.examTypes.find((v) => v.id == 1).label
-                  : ""
+                examType.label
               }}
             </h4>
-
-            <VBtn
-              variant="elevated"
-              visible="true"
-              class="ms-4"
-              :to="{
-                name: 'test-type-id',
-                params: { type: 1, id: patientData.id },
-              }"
-            >
-              Почати тест
-            </VBtn>
+            <template v-for="type in types">
+              <VBtn
+                variant="elevated"
+                visible="true"
+                class="ms-4"
+                @click="makeDraft(type.id, examType.id)"
+              >
+                {{ type.label }}
+              </VBtn>
+            </template>
           </div>
         </VCardItem>
 
@@ -262,7 +301,7 @@ const returnToPatientList = () => {
               "
               size="x-small"
               v-for="examResult in patientData.exams.filter(
-                (v) => v.exam_id == 1
+                (v) => v.exam_id == examType.id
               )"
             >
               <!-- 👉 Header -->
@@ -270,97 +309,7 @@ const returnToPatientList = () => {
                 class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
               >
                 <span class="app-timeline-title">
-                  Результат:
-                  <VChip
-                    :color="
-                      examResult.final_result < 34
-                        ? 'error'
-                        : examResult.final_result < 67
-                        ? 'primary'
-                        : 'success'
-                    "
-                    >{{ examResult.final_result }}%</VChip
-                  >
-                  <VChip :color="'error'" class="ml-2">{{
-                    examResult.incorrect_count
-                  }}</VChip>
-                </span>
-                <span class="app-timeline-meta">{{ examResult.date }}</span>
-              </div>
-
-              <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
-                <VBtn
-                  :to="{
-                    name: 'exam-result-id',
-                    params: { id: examResult.test_id },
-                  }"
-                  color="secondary"
-                >
-                  Переглянути результат
-                </VBtn>
-              </div>
-            </VTimelineItem>
-            <!-- !SECTION -->
-          </VTimeline>
-        </VCardText>
-      </VCard>
-    </VCol>
-    <VCol cols="6">
-      <!-- 👉 User Activity timeline -->
-      <VCard>
-        <VCardItem class="notification-section">
-          <div class="d-flex align-center justify-start">
-            <h4 class="text-h4">
-              {{
-                patientData
-                  ? patientData.examTypes.find((v) => v.id == 2).label
-                  : ""
-              }}
-            </h4>
-
-            <VBtn
-              variant="elevated"
-              visible="true"
-              class="ms-4"
-              :to="{
-                name: 'test-type-id',
-                params: { type: 2, id: patientData.id },
-              }"
-            >
-              Почати тест
-            </VBtn>
-          </div>
-        </VCardItem>
-
-        <VCardText>
-          <VTimeline
-            side="end"
-            align="start"
-            line-inset="8"
-            truncate-line="start"
-            density="compact"
-          >
-            <!-- SECTION Timeline Item: Flight -->
-            <VTimelineItem
-              :dot-color="
-                examResult.final_result < 34
-                  ? 'error'
-                  : examResult.final_result < 67
-                  ? 'primary'
-                  : 'success'
-              "
-              size="x-small"
-              v-for="examResult in patientData.exams.filter(
-                (v) => v.exam_id == 2
-              )"
-            >
-              <!-- 👉 Header -->
-              <div
-                class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
-              >
-                <span class="app-timeline-title">
-                  Результат:
+                  {{ examResult.type_result_label }}:
                   <VChip
                     :color="
                       examResult.final_result < 34

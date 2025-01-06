@@ -5,7 +5,7 @@ import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue"
 const searchQuery = ref("");
 
 // Data table options
-const itemsPerPage = ref(10);
+const itemsPerPage = ref(50);
 const page = ref(1);
 const sortBy = ref();
 const orderBy = ref();
@@ -93,8 +93,8 @@ const afterSave = (patientId) => {
       <VDivider />
 
       <VCardText class="d-flex flex-wrap gap-4">
-        <div class="me-3 d-flex gap-3">
-          <AppSelect
+        <div class=" d-flex gap-3">
+          <!-- <AppSelect
             :model-value="itemsPerPage"
             :items="[
               { value: 10, title: '10' },
@@ -105,30 +105,39 @@ const afterSave = (patientId) => {
             ]"
             style="inline-size: 6.25rem"
             @update:model-value="itemsPerPage = parseInt($event, 10)"
-          />
+          /> -->
         </div>
-        <VSpacer />
+        <VRow>
+          <VCol cols="10" class="d-flex flex-column">
+            <div
+              class="app-user-search-filter d-flex align-center flex-wrap gap-4"
+            >
+              <!-- 👉 Search  -->
+              <div style="inline-size: 15.625rem; width: 100%;">
+                <AppTextField v-model="searchQuery" placeholder="Пошук ..." />
+              </div>
 
-        <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
-          <!-- 👉 Search  -->
-          <div style="inline-size: 15.625rem">
-            <AppTextField v-model="searchQuery" placeholder="Пошук ..." />
-          </div>
+              <!--          &lt;!&ndash; 👉 Export button &ndash;&gt;-->
+              <!--          <VBtn-->
+              <!--            variant="tonal"-->
+              <!--            color="secondary"-->
+              <!--            prepend-icon="tabler-upload"-->
+              <!--          >-->
+              <!--            Export-->
+              <!--          </VBtn>-->
 
-          <!--          &lt;!&ndash; 👉 Export button &ndash;&gt;-->
-          <!--          <VBtn-->
-          <!--            variant="tonal"-->
-          <!--            color="secondary"-->
-          <!--            prepend-icon="tabler-upload"-->
-          <!--          >-->
-          <!--            Export-->
-          <!--          </VBtn>-->
-
-          <!-- 👉 Add user button -->
-          <VBtn prepend-icon="tabler-plus" @click="isAddPatientVisible = true">
-            Додати користувача
-          </VBtn>
-        </div>
+              <!-- 👉 Add user button -->
+            </div>
+          </VCol>
+          <VCol cols="2" class="d-flex flex-column">
+            <VBtn
+              prepend-icon="tabler-plus"
+              @click="isAddPatientVisible = true"
+            >
+              Додати користувача
+            </VBtn>
+          </VCol>
+        </VRow>
       </VCardText>
 
       <VDivider />

@@ -1,16 +1,14 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed } from "vue";
 import miscMaskDark from "@images/card.png";
 // import type { CustomInputContent } from "@core/types";
 import levels from "./levels.js";
-import modes from "./modes.js";
 import { correctSvgList } from "./testUtil.js";
-import { useRoute } from "vue-router";
 const sizeTicksLabels = { 75: "75%", 100: "100%", 125: "125%" };
 const cardWidth = ref(480); // Ширини в пікселях для кожного значення
-const route = useRoute("test-type-id");
 
 const ticksLabels = { 5: "5хв", 10: "10хв", 15: "15хв", 20: "20хв" };
+const accelTickLabels = { 20: "20", 50: "50", 70: "70", 100: "100" };
 
 const props = defineProps({
   references: {
@@ -23,6 +21,10 @@ const formData = ref({
   time: 20,
   level: "1",
   mode: "1",
+  color: "#000000",
+  direction: 1,
+  speed: 50,
+  dot_count: 50,
 });
 const stimulSize = computed(() => {
   const svgSm = levels.find((v) => v.value == formData.value.level).size;
@@ -31,6 +33,10 @@ const stimulSize = computed(() => {
 
 const svgList = computed(() => {
   return correctSvgList(formData.value.mode, props.references);
+});
+
+const modeInfo = computed(() => {
+  return props.references?.modes;
 });
 
 onMounted(() => {});
@@ -45,6 +51,28 @@ const infoClicked = (level) => {
   levelDialogInfo.value = true;
   infoText.value = level.description;
 };
+
+watch(
+  () => props.references,
+  () => {
+    if (!props.references.storedValues) {
+      return;
+    }
+
+    if (props.references.storedValues.direction) {
+      formData.value.direction = props.references.storedValues.direction;
+    }
+    if (props.references.storedValues.color) {
+      formData.value.color = props.references.storedValues.color;
+    }
+    if (props.references.storedValues.speed) {
+      formData.value.speed = props.references.storedValues.speed;
+    }
+    if (props.references.storedValues.dot_count) {
+      formData.value.dot_count = props.references.storedValues.dot_count;
+    }
+  }
+);
 </script>
 
 <template>
@@ -102,14 +130,69 @@ const infoClicked = (level) => {
           :grid-column="{ sm: '4', cols: '12' }"
         />
       </div>
-      <div class="mb-4">
+      <div class="mb-4" v-if="modeInfo">
         <h5 class="text-h5 mb-1">Режим скринінгу</h5>
         <CustomRadiosWithIcon
           v-model:selected-radio="formData.mode"
           @info-clicked="infoClicked($event)"
-          :radio-content="modes[route.params.type]"
+          :radio-content="modeInfo"
           :grid-column="{ sm: '6', cols: '12' }"
         />
+      </div>
+      <div v-if="props.references && props.references.type == 3">
+        <div class="mb-4">
+          <h5 class="text-h5 mb-1">Напрямок руху</h5>
+          <CustomRadiosWithIcon
+            v-model:selected-radio="formData.direction"
+            @info-clicked="infoClicked($event)"
+            :radio-content="props.references.options.directions"
+            :grid-column="{ sm: '6', cols: '12' }"
+          />
+        </div>
+        <div class="mb-4">
+          <h5 class="text-h5 mb-4 mt-4">Швидкість руху</h5>
+          <div class="w-100">
+            <VSlider
+              v-model="formData.speed"
+              :step="10"
+              :min="20"
+              :max="100"
+              :ticks="accelTickLabels"
+              show-ticks="always"
+              tick-size="4"
+            >
+              <template #thumb-label="{ modelValue }">
+                <div>{{ modelValue }}</div>
+              </template>
+            </VSlider>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h5 class="text-h5 mb-4 mt-4">Кількість точок</h5>
+          <div class="w-100">
+            <VSlider
+              v-model="formData.dot_count"
+              :step="10"
+              :min="20"
+              :max="100"
+              :ticks="accelTickLabels"
+              show-ticks="always"
+              tick-size="4"
+            >
+              <template #thumb-label="{ modelValue }">
+                <div>{{ modelValue }}</div>
+              </template>
+            </VSlider>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h5 class="text-h5 mb-1">колір та прозорість</h5>
+          <VColorPicker
+            v-model="formData.color"
+            mode="hexa"
+            :modes="['hexa']"
+          />
+        </div>
       </div>
     </VCol>
     <VCol cols="6">

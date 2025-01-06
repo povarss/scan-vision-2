@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import Timer from "@/components/exam/Timer.vue";
 import TestLine from "@/components/exam/TestLine.vue";
+import dots from "@/components/exam/Dots.vue";
 import CorrectSvg from "@/components/exam/CorrectSvg.vue";
 import levels from "./levels.js";
 import { nextTick } from "vue";
@@ -49,18 +50,6 @@ const loadTest = async () => {
 
 const getSectionColor = (imgItem, rowKey, colKey) => {
   let color = null;
-  // switch (imgItem.section) {
-  //   case 1:color = '#c7c7f5';break;
-  //   case 2:color = '#eac7f5';break;
-  //   case 3:color = '#cf88f3';break;
-  //   case 4:color = '#8476ff';break;
-  //   case 5:color = '#c7f5ef';break;
-  //   case 6:color = '#dbf5c7';break;
-  //   case 7:color = '#e5da4e';break;
-  //   case 8:color = '#fb5151';break;
-  //   default:
-  //     break;
-  // }
   return color;
 };
 const isSelected = (rowKey, colKey) => {
@@ -71,11 +60,11 @@ const selectedItems = ref([]);
 const examParams = ref({});
 const container = ref();
 const showCorrect = ref(false);
-
+const previewCorrectTime = ref(5);
 onMounted(() => {
   showCorrect.value = true;
   openFullscreen();
-  setTimeout(loadTest, 5000);
+  setTimeout(loadTest, previewCorrectTime.value * 1000);
 });
 const setSelected = (rowKey, colKey) => {
   if (!selectedItems.value.includes(rowKey + "_" + colKey)) {
@@ -142,6 +131,7 @@ const stimulSize = computed(() => {
       v-if="showCorrect"
       :svgs="svgList"
       :width="stimulSize"
+      :timer="previewCorrectTime"
     ></CorrectSvg>
     <template v-if="!showCorrect">
       <VCol cols="12" class="d-flex flex-column">
@@ -163,6 +153,9 @@ const stimulSize = computed(() => {
           }"
         >
           <div>
+            <template v-if="examParams.type == 3">
+              <dots :examParams="examParams"></dots>
+            </template>
             <template v-for="(row, rowKey) in examData">
               <template v-for="(imgItem, colKey) in row">
                 <img
@@ -177,6 +170,7 @@ const stimulSize = computed(() => {
                     padding: 2px;
                     box-sizing: content-box;
                     border: 2px solid transparent;
+                    z-index: 90;
                   "
                   :class="{
                     'rounded-blue': isSelected(rowKey, colKey),
@@ -205,12 +199,10 @@ const stimulSize = computed(() => {
   border-radius: 50%;
   border-color: #857e7e !important;
 }
-.custom-cursor img{
+.custom-cursor img {
   user-select: none;
-
 }
-.custom-cursor{
-
+.custom-cursor {
   cursor: url("@images/cursor.svg") 42 42, move;
 }
 </style>

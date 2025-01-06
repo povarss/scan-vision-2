@@ -9,6 +9,15 @@ defineOptions({
 // import VueTheMask from 'vue-the-mask';
 // Vue.use(VueTheMask);
 
+const attrs = computed(() => {
+  return useAttrs();
+})
+
+const emit = defineEmits([
+  'update:modelValue',
+])
+
+
 const elementId = computed(() => {
   const attrs = useAttrs();
   const _elementIdToken = attrs.id || attrs.label;
@@ -21,6 +30,16 @@ const elementId = computed(() => {
 });
 
 const label = computed(() => useAttrs().label);
+
+watch(
+  () => attrs.modelValue,
+  () => {
+    if (!attrs.modelValue) {
+      emit('update:modelValue', "+38")
+      attrs.modelValue = "+38";
+    }
+  },{ immediate: true }
+);
 </script>
 
 <template>
@@ -35,6 +54,7 @@ const label = computed(() => useAttrs().label);
     <VTextField
       placeholder="+38 00 000 0000"
       v-mask="'+38 ## ### ####'"
+      :persistent-placeholder="true"
       v-bind="{
         ...$attrs,
         class: null,

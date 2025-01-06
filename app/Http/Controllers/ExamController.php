@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Dto\ExamResultDto;
+use App\Http\Requests\StartExamRequest;
 use App\Http\Requests\StoreExamSettingRequest;
 use App\Models\Exam;
 use App\Models\PatientExam;
+use App\Models\PatientSettings;
 use App\Models\Reference;
 use App\Services\GetRecommendationService;
 use App\Services\SvgFillerService;
@@ -15,13 +17,28 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function getReferences(string $type)
+    public function getReferences(string $id)
     {
+        $patientExam = PatientExam::where('id', $id)->first();
+        if ($patientExam->status !== PatientExam::STATUS_DRAFT) {
+            abort(500, 'Test finished');
+        }
         $examConfigs = config('exam');
+        $examOptionConfigs = config('exam_options');
+        $patientSettingValue = PatientSettings::where('patient_id', $patientExam->patient_id)->first();
 
-        $examType = Exam::where('id', $type)->first();
-        $examConfigs[$type]['title'] = $examType ? $examType->label : '';
-        return response()->json($examConfigs[$type]);
+        $examType = Exam::where('id', $patientExam->exam_id)->first();
+
+        $resultOptions = $examConfigs[$patientExam->exam_id];
+        $resultOptions['title'] = $examType ? $examType->label : '';
+        $resultOptions['type'] = $patientExam->type;
+        $resultOptions['options'] = $examOptionConfigs;
+        if (!empty($patientExam->custom_settings)) {
+            $resultOptions['storedValues'] =  $patientExam->custom_settings ?? [];
+        } else {
+            $resultOptions['storedValues'] =  $patientSettingValue?->settings ?? [];
+        }
+        return response()->json($resultOptions);
     }
     public function checkPattern(PatientExam $patientExam)
     {
@@ -39,6 +56,11 @@ class ExamController extends Controller
             $filler = new SvgFillerService($patientExam, $width, $height);
             $pattern = $filler->makePrint();
             $patientExam->pattern = $pattern;
+            if ($patientExam->type == PatientExam::TYPE_WITH_DOTS) {
+                $patientExam->pattern_additional_items = [
+                    'dots' => $filler->makeDots()
+                ];
+            }
             $patientExam->start_time = date('Y-m-d H:i:s');
             $patientExam->width = $width;
             $patientExam->height = $height;
@@ -47,20 +69,42 @@ class ExamController extends Controller
         $examConfigs = config('exam');
         return response()->json([
             'pattern' => $patientExam->pattern,
+            'type' => $patientExam->type,
             'selected' => $patientExam->result ?? [],
             'width' => $patientExam->width,
             'height' => $patientExam->height,
             'configs' => $examConfigs[$patientExam->exam_id],
+            'custom_settings' => $patientExam->custom_settings,
+            'pattern_additional_items' => $patientExam->pattern_additional_items,
         ]);
+    }
+
+    public function makeDraft(StartExamRequest $request, PatientExam $patientExam)
+    {
+        $newExam = $patientExam->createDraft($request->input('patient_id'), $request->input('type'), $request->input('exam_id'));
+        return response()->json(['id' => $newExam->id]);
     }
 
     public function storeSettings(StoreExamSettingRequest $request, Exam $exam)
     {
         $fields = $request->validated();
-        $patientExam = new PatientExam();
+        $patientExam = PatientExam::where('id', $request->id)->first();
         $patientExam->fill($fields);
         $patientExam->setDraftStatus();
-        $patientExam->exam_id = $request->exam_id; // $exam->getMainTest()->id;
+        if ($patientExam->type == PatientExam::TYPE_WITH_DOTS) {
+            $custom_settings = [];
+            $props = [
+                PatientSettings::ST_DIRECTION,
+                PatientSettings::ST_SPEED,
+                PatientSettings::ST_COLOR,
+                PatientSettings::ST_DOT_COUNT
+            ];
+            foreach ($props as $prop) {
+                $custom_settings[$prop] = $request->input($prop);
+            }
+            $patientExam->custom_settings = $custom_settings;
+            PatientSettings::storeParams($patientExam->patient_id, $patientExam->custom_settings);
+        }
         $patientExam->save();
 
         return response()->json([
@@ -148,6 +192,7 @@ class ExamController extends Controller
             'incorrectCount' => $incorrectCount,
             'type' => $patientExam->exam_id,
             'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
+            'exam_type_recommend' => $patientExam->getExamTypeRecommendLabel(),
             'analyzeInfo' => $analyzeInfo,
         ];
     }
