@@ -256,8 +256,8 @@ const goToTestSettings = (id) => {
   </VCard>
 
   <VRow>
-    <VCol
-      :cols="12 / patientData.examTypes.length"
+<!--    <VCol :cols="12 / patientData.examTypes.length"-->
+    <VCol cols="6"
       v-for="examType in patientData.examTypes"
     >
       <!-- 👉 User Activity timeline -->
@@ -283,31 +283,32 @@ const goToTestSettings = (id) => {
         </VCardItem>
 
         <VCardText>
-          <VTimeline
-            side="end"
-            align="start"
-            line-inset="8"
-            truncate-line="start"
-            density="compact"
-          >
-            <!-- SECTION Timeline Item: Flight -->
-            <VTimelineItem
-              :dot-color="
+          <div class="scrollable">
+            <VTimeline
+              side="end"
+              align="start"
+              line-inset="8"
+              truncate-line="start"
+              density="compact"
+            >
+              <!-- SECTION Timeline Item: Flight -->
+              <VTimelineItem
+                :dot-color="
                 examResult.final_result < 34
                   ? 'error'
                   : examResult.final_result < 67
                   ? 'primary'
                   : 'success'
               "
-              size="x-small"
-              v-for="examResult in patientData.exams.filter(
+                size="x-small"
+                v-for="examResult in patientData.exams.filter(
                 (v) => v.exam_id == examType.id
               )"
-            >
-              <!-- 👉 Header -->
-              <div
-                class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
               >
+                <!-- 👉 Header -->
+                <div
+                  class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
+                >
                 <span class="app-timeline-title">
                   {{ examResult.type_result_label }}:
                   <VChip
@@ -318,30 +319,32 @@ const goToTestSettings = (id) => {
                         ? 'primary'
                         : 'success'
                     "
-                    >{{ examResult.final_result }}%</VChip
+                  >{{ examResult.final_result }}%</VChip
                   >
                   <VChip :color="'error'" class="ml-2">{{
-                    examResult.incorrect_count
-                  }}</VChip>
+                      examResult.incorrect_count
+                    }}</VChip>
                 </span>
-                <span class="app-timeline-meta">{{ examResult.date }}</span>
-              </div>
+                  <span class="app-timeline-meta">{{ examResult.date }}</span>
+                </div>
 
-              <!-- 👉 Content -->
-              <div class="app-timeline-text mt-1">
-                <VBtn
-                  :to="{
+                <!-- 👉 Content -->
+                <div class="app-timeline-text mt-1">
+                  <VBtn
+                    :to="{
                     name: 'exam-result-id',
                     params: { id: examResult.test_id },
                   }"
-                  color="secondary"
-                >
-                  Переглянути результат
-                </VBtn>
-              </div>
-            </VTimelineItem>
-            <!-- !SECTION -->
-          </VTimeline>
+                    color="secondary"
+                  >
+                    Переглянути результат
+                  </VBtn>
+                </div>
+              </VTimelineItem>
+              <!-- !SECTION -->
+            </VTimeline>
+
+          </div>
         </VCardText>
       </VCard>
     </VCol>
@@ -351,5 +354,12 @@ const goToTestSettings = (id) => {
 <style scoped>
 .card-list .v-list-item:not(:last-child) {
   padding-bottom: 10px !important;
+}
+.scrollable {
+  height: 260px;
+  overflow-y: auto;
+  //border: 1px solid #ccc;
+  padding: 6px 10px 0px 0;
+  box-sizing: border-box;
 }
 </style>

@@ -183,7 +183,7 @@ onMounted(() => {
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">
-              Кількість файльш цілей з правого боку
+              Кількість помилкових цілей з правого боку
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
@@ -207,7 +207,7 @@ onMounted(() => {
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">
-              Кількість файльш цілей з лівого боку
+              Кількість помилкових цілей з лівого боку
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">

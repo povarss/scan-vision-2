@@ -210,7 +210,7 @@
       }
     }
   },
-  "paginationMeta": "Показано {start} до {end} із {total} записів",
+  "paginationMeta": "Показано від {start} до {end} із {total} записів",
   "patient":{
     "full_name" : "ПІБ",
     "phone" : "Телефон",

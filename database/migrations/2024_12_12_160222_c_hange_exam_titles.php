@@ -12,7 +12,7 @@ return new class extends Migration
     {
         $exam = Exam::where('id', 1)->first();
         if (!empty($exam)) {
-            $exam->label = 'Неклект тест';
+            $exam->label = 'Неглект тест';
             $exam->save();
         }
 

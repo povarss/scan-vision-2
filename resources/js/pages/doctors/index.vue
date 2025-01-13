@@ -30,7 +30,7 @@ const headers = [
     key: "email",
   },
   {
-    title: "Дата окончание",
+    title: "Дата закінчення підписки",
     key: "expire_at",
   },
   {

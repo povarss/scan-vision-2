@@ -182,7 +182,7 @@ const afterSave = (patientId) => {
 
         <!-- Plan -->
         <template #item.first_test="{ item }">
-          <div class="text-body-1 text-high-emphasis text-capitalize">
+          <div class="text-body-1 text-high-emphasis">
             {{ item.first_test }}
           </div>
         </template>

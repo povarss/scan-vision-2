@@ -186,7 +186,7 @@ watch(
           </div>
         </div>
         <div class="mb-4">
-          <h5 class="text-h5 mb-1">колір та прозорість</h5>
+          <h5 class="text-h5 mb-1">Колір та прозорість</h5>
           <VColorPicker
             v-model="formData.color"
             mode="hexa"
