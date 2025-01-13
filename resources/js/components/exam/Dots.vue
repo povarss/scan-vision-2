@@ -35,24 +35,23 @@ const startMovement = () => {
       accelerated.value.period = 100;
     }
     dots.value.forEach((div, index) => {
-      // console.log(examParams.custom_settings,'examParams.custom_settings')
       let direction = 0;
       if (props.examParams.custom_settings.direction == 1) {
         direction = -speed.value;
       } else if (props.examParams.custom_settings.direction == 2) {
         direction = speed.value;
       } else if (props.examParams.custom_settings.direction == 3) {
-        direction = -speed.value;
-      } else if (props.examParams.custom_settings.direction == 4) {
         direction = speed.value;
+      } else if (props.examParams.custom_settings.direction == 4) {
+        direction = -speed.value;
       }
 
       if (accelerated.value.item == index) {
-        direction += accelerated.value.period / 3; // Increase speed for the randomly selected div
+        direction += ( [1,4].includes(props.examParams.custom_settings.direction) ? -1 : 1 ) * accelerated.value.period / 3; // Increase speed for the randomly selected div
       }
 
       // Update div position based on direction
-      if (props.examParams.custom_settings.direction % 2 === 1) {
+      if (props.examParams.custom_settings.direction < 3) {
         // Horizontal movement
         div[0] += direction;
       } else {
