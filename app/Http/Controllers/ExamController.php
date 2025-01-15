@@ -175,7 +175,7 @@ class ExamController extends Controller
         $examResultDto = new ExamResultDto(
             $patientExam->exam_id,
             $correctTotals['total'] - $correctCount['selected'],
-            $correctTotals['left'] - $correctCount['right'],
+            $correctTotals['left'] - $correctCount['left'],
             $correctTotals['right'] - $correctCount['right'],
 
             $incorrectCount['total'],
