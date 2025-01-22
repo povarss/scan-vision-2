@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    '[id]': typeof import('./resources/js/components/patient/[id].vue')['default']
     AddAuthenticatorAppDialog: typeof import('./resources/js/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./resources/js/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditDoctorDialog: typeof import('./resources/js/components/doctor/AddEditDoctorDialog.vue')['default']
@@ -383,6 +384,7 @@ declare module 'vue' {
     PdfButton: typeof import('./resources/js/components/exam/PdfButton.vue')['default']
     PricingPlanDialog: typeof import('./resources/js/components/dialogs/PricingPlanDialog.vue')['default']
     ProductDescriptionEditor: typeof import('./resources/js/@core/components/ProductDescriptionEditor.vue')['default']
+    Profile: typeof import('./resources/js/components/patient/Profile.vue')['default']
     ReferAndEarnDialog: typeof import('./resources/js/components/dialogs/ReferAndEarnDialog.vue')['default']
     Result: typeof import('./resources/js/components/exam/Result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

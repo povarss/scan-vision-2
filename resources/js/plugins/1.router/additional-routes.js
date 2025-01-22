@@ -12,7 +12,7 @@ export const redirects = [
       const userData = useCookie("userData");
       const userRole = userData.value?.role;
       if (["admin", "doctor"].includes(userRole)) return { name: "patients" };
-      if (userRole == "patient") return { name: "patients" };
+      if (userRole == "patient") return { name: "profile" };
 
       return { name: "login", query: to.query };
     },
