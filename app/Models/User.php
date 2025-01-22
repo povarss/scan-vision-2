@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -17,11 +18,14 @@ class User extends Authenticatable
     const ROLE_ADMIN = 'admin';
     const ROLE_DOCTOR = 'doctor';
 
+    const ROLE_PATIENT = 'patient';
+
     public static function getRoles()
     {
         return [
             self::ROLE_ADMIN,
-            self::ROLE_DOCTOR
+            self::ROLE_DOCTOR,
+            self::ROLE_PATIENT,
         ];
     }
     /**
@@ -60,7 +64,21 @@ class User extends Authenticatable
         ];
     }
 
-    public function remove(){
+    public function remove()
+    {
         $this->delete();
+    }
+
+    public static function createPatientUser($nickName, $email, $password, $expireDay)
+    {
+        $user = new User();
+        $user->name = $nickName;
+        $user->email = $email;
+        $user->password = Hash::make($password);
+        $user->expire_at = $expireDay;
+        $user->save();
+
+        $user->assignRole(self::ROLE_PATIENT);
+        return $user;
     }
 }

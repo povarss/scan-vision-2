@@ -4,11 +4,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/checkFirst', [RegisterController::class, 'checkFirst']);
+Route::post('/checkSecond', [RegisterController::class, 'checkSecond']);
+Route::post('/store', [RegisterController::class, 'store']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -38,6 +44,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/', [DoctorController::class, 'store']);
             Route::get('/{user}', [DoctorController::class, 'get']);
             Route::post('/delete', [DoctorController::class, 'delete']);
+        });
+
+        Route::prefix('promo-code')->controller(PromoCodeController::class)->group(function () {
+            Route::get('/',  'list');
+            Route::post('/',  'store');
+            Route::get('/{promoCode}',  'get');
+            Route::post('/delete',  'delete');
         });
     });
 });

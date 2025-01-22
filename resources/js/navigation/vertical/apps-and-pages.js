@@ -10,6 +10,12 @@ export default [
     roles: ['admin'],
     to: 'doctors',
   },
+  {
+    title: 'menu.PromoCodes',
+    icon: { icon: 'tabler-rosette-discount-check' },
+    roles: ['admin'],
+    to: 'promo-codes',
+  },
   // {
   //   title: 'Авторизація',
   //   icon: { icon: 'tabler-user' },
