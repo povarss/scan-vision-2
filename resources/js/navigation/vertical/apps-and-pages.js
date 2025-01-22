@@ -2,6 +2,7 @@ export default [
   {
     title: 'menu.Patients',
     icon: { icon: 'tabler-users' },
+    roles: ['admin','doctor'],
     to: 'patients',
   },
   {

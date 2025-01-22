@@ -1,18 +1,12 @@
 <script setup>
 import Profile from "@/components/patient/Profile.vue";
 const userData = useCookie("userData");
-const router = useRouter();
-
-const route = useRoute("patients-card-id");
-onMounted(() => {
-  if (userData.value.role == "patient") {
-    router.push({ name: "profile" });
-  }
-});
 </script>
 
 <template>
-  <Profile :patient-id="route.params.id" />
+  <div v-if="userData.id">
+    <Profile :patient-id="userData.id" :show-patient-detail="false" />
+  </div>
 </template>
 
 <style scoped>
@@ -22,7 +16,6 @@ onMounted(() => {
 .scrollable {
   height: 260px;
   overflow-y: auto;
-  //border: 1px solid #ccc;
   padding: 6px 10px 0px 0;
   box-sizing: border-box;
 }
