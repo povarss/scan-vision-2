@@ -262,5 +262,21 @@
     "promoCodes" : "Промокоды",
     "addTitle" : "Додати промокоды",
     "editTitle" : "Редактировать промокод",
-  }
+  },
+  "register": {
+    "Personal Information" : "Персоналные данные",
+    "name" : "Ім’я",
+    "nick_name" : "Прізвище",
+    "phone":"Телефон  (де є телеграм)",
+    "region":"Область",
+    "Questions" : "Скарги",
+    "Acccount information" : "Пользовательские данные",
+    "email" : "Email",
+    "promoCode": "Промокод",
+    "password" : "Пароль",
+    "Confirm Password" : "Повторіть пароль",
+  },
+  "Previous" : "Предидущий",
+  "submit" : "Отправить",
+  "Next" : "Следующий",
 }

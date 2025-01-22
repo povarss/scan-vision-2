@@ -46,6 +46,6 @@ export const canNavigate = (to) => {
   const ability = useAbility();
 
   return to.matched.some((route) =>
-    ability.can(route.meta.action, route.meta.subject)
+    ability.can(route.meta.action, route.meta.subject) && hasAccessRole(route.meta.roles)
   );
 };

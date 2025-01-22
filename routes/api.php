@@ -14,7 +14,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/checkFirst', [RegisterController::class, 'checkFirst']);
 Route::post('/checkSecond', [RegisterController::class, 'checkSecond']);
-Route::post('/store', [RegisterController::class, 'store']);
+Route::post('/register', [RegisterController::class, 'store']);
+Route::post('/reference-by-key-guest', [ReferenceController::class, 'getByKeyGuest']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

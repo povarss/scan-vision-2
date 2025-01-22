@@ -43,15 +43,32 @@ class RegisterController extends Controller
 
         $promoCode->activate($patient);
 
-        foreach ($request->answers as $answer) {
+        foreach ($request->answers as $questionId => $answerId) {
             $patientAnswer = new PatientAnswer();
             $patientAnswer->patient_id = $patient->id;
-            $patientAnswer->question_id = $answer['question_id'];
-            $patientAnswer->answer_id = $answer['answer_id'];
+            $patientAnswer->question_id = $questionId;
+            $patientAnswer->answer_id = $answerId;
             $patientAnswer->save();
         }
 
 
         DB::commit();
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'accessToken' => $token,
+            'token_type' => 'Bearer',
+            'userData' => [
+                'id' => $user->id,
+                'fullName' => $user->name,
+                'role' => $user->roles->first()->name
+            ],
+            'userAbilityRules' => [
+                [
+                    'action' => 'manage',
+                    'subject' => 'all',
+                ]
+            ]
+        ], 200);
     }
 }

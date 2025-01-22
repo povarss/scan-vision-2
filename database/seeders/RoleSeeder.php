@@ -14,7 +14,9 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         foreach (User::getRoles() as $role) {
-            Role::create(['name' => $role]);
+            if(!Role::where('name' , $role)->exists()){
+                Role::create(['name' => $role]);
+            }
         }
     }
 }

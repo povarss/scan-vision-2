@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Question;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegistrationSecondStageRequest extends FormRequest
 {
@@ -19,10 +21,30 @@ class RegistrationSecondStageRequest extends FormRequest
      */
     public function rules(): array
     {
+        $questionsCount = Question::count();
         return [
-            'answers' => 'required|array',
-            'answers.*.question_id' => 'required|integer',
-            'answers.*.answers_id' => 'required|integer',
+            'answers' => [
+                'required',
+                'array',
+                Rule::requiredIf(function () use ($questionsCount) {
+                    // Get all questions
+                    return $questionsCount > 0; // Check if there are any questions
+                }),
+                function ($attribute, $value, $fail) use ($questionsCount) {
+                    if (count($value) !== $questionsCount) {
+                        $fail(__('validation.All questions need bee answered'));
+                    }
+                },
+            ],
+            'answers.*' => 'required|integer',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'answers.required' => __('validation.Need answer to all questions'),
+            'answers.*.required' => __('validation.Answer the question'),
         ];
     }
 }

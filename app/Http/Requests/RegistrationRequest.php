@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\PromoCode;
+use App\Models\Question;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,15 +22,27 @@ class RegistrationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $questionsCount = Question::count();
         return [
             'name' => 'required|string|max:255',
             'nick_name' => 'required|string|max:255',
-            'phone' => ['required', 'string', Rule::unique('users')],
+            'phone' => 'required|string|max:20|min:12',
             'region_id' => 'required|integer',
 
-            'answers' => 'required|array',
-            'answers.*.question_id' => 'required|integer',
-            'answers.*.answers_id' => 'required|integer',
+            'answers' => [
+                'required',
+                'array',
+                Rule::requiredIf(function () use ($questionsCount) {
+                    // Get all questions
+                    return $questionsCount > 0; // Check if there are any questions
+                }),
+                function ($attribute, $value, $fail) use ($questionsCount) {
+                    if (count($value) !== $questionsCount) {
+                        $fail(__('validation.All questions need bee answered'));
+                    }
+                },
+            ],
+            'answers.*' => 'required|integer',
 
             'email' => ['required', 'email', Rule::unique('users')],
             'password' => 'required|confirmed|min:6',
@@ -40,11 +53,11 @@ class RegistrationRequest extends FormRequest
                     if ($value) {
                         $promocode = PromoCode::where('code', $value)
                             ->where('status', PromoCode::STATUS_ACTIVE)
-                            ->whereNull('user_id')
+                            ->where('patient_id', 0)
                             ->first();
 
                         if (!$promocode) {
-                            $fail('The entered promocode is invalid or already used.');
+                            $fail(__('validation.The entered promocode is invalid or already used.'));
                         }
                     }
                 },

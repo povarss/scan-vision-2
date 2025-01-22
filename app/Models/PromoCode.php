@@ -21,6 +21,7 @@ class PromoCode extends Model
         return [
             'created_at' => 'datetime',
             'activated_at' => 'datetime',
+            'end_date' => 'datetime',
         ];
     }
 
@@ -38,8 +39,8 @@ class PromoCode extends Model
     public function activate($patient)
     {
         $this->patient_id = $patient->id;
-        $this->activated_at = Carbon::now()->format('Y-m-d');
-        $this->end_date = Carbon::now()->addDays($this->days)->format('Y-m-d');
+        $this->activated_at = Carbon::now();
+        $this->end_date = Carbon::now()->addDays($this->days);
         $this->save();
     }
 

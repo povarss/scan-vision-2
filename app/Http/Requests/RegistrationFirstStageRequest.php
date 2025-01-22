@@ -22,7 +22,7 @@ class RegistrationFirstStageRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'nick_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|max:20|min:12',
             'region_id' => 'required|integer',
         ];
     }
