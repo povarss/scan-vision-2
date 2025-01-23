@@ -40,6 +40,11 @@ class User extends Authenticatable
         'expire_at',
     ];
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

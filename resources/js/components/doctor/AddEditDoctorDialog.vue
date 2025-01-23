@@ -20,6 +20,7 @@ const doctor = ref({
   email: null,
   password: null,
   expire_at: null,
+  minutes: null,
 });
 const errors = ref({});
 const refDoctorForm = ref();
@@ -145,6 +146,14 @@ watch(
                 v-model="doctor.expire_at"
                 :label="$t('doctor.expire_at')"
                 :error-messages="errors.expire_at"
+              />
+            </VCol>
+            <VCol cols="12" sm="7">
+              <AppTextField
+                v-model="doctor.minutes"
+                type="number"
+                :label="$t('doctor.minutes')"
+                :error-messages="errors.minutes"
               />
             </VCol>
           </VRow>

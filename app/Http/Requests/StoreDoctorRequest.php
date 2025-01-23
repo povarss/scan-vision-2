@@ -25,7 +25,8 @@ class StoreDoctorRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($userId)],
             'password' => ($userId ? '' : 'required|') . 'string',
-            'expire_at' => 'nullable|date',
+            'expire_at' => 'required|date',
+            'minutes' => 'required|integer',
         ];
     }
 }

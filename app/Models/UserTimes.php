@@ -45,6 +45,7 @@ class UserTimes extends Model
             ->whereDate('started_at', $date)
             ->sum('used_seconds');
         $timeInfo->used_time = $usedSeconds;
+        //todo
         $timeInfo->limited_time = 0;
         $timeInfo->save();
     }
