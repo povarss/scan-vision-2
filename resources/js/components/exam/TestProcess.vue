@@ -24,13 +24,15 @@ let examData = ref([]);
 const loadTest = async () => {
   showCorrect.value = false;
   await nextTick();
+  startTimer();
   const { data } = await useApi(
     `/exam/test-pattern/` +
       props.exam.id +
       "?width=" +
       container.value.clientWidth +
       "&height=" +
-      container.value.clientHeight
+      container.value.clientHeight +
+      "&isStart=1"
   );
   if (data.value) {
     examData.value = data.value.pattern;
@@ -61,6 +63,7 @@ const examParams = ref({});
 const container = ref();
 const showCorrect = ref(false);
 const previewCorrectTime = ref(5);
+const timer = ref();
 onMounted(() => {
   showCorrect.value = true;
   openFullscreen();
@@ -122,6 +125,31 @@ const svgList = computed(() => {
 const stimulSize = computed(() => {
   const svgSm = levels.find((v) => v.value == props.exam.level).size;
   return (svgSm * props.exam.svg_size) / 100;
+});
+
+const setExamTime = () => {
+  try {
+    $api("/exam/set-time/" + props.exam.id, {
+      method: "POST",
+      onResponseError({ response }) {
+        console.error(response._data.errors);
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const startTimer = () => {
+  timer.value = setInterval(() => {
+    setExamTime();
+  }, 1000); // 30 seconds in milliseconds
+};
+
+onBeforeUnmount(() => {
+  if (timer.value) {
+    clearInterval(timer.value);
+  }
 });
 </script>
 

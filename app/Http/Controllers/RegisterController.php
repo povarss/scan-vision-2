@@ -39,6 +39,7 @@ class RegisterController extends Controller
         $patient->nick_name = $request->nick_name;
         $patient->phone = $request->phone;
         $patient->region_id = $request->region_id;
+        $patient->user_id = $user->id;
         $patient->save();
 
         $promoCode->activate($patient);

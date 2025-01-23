@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('patients', function (Blueprint $table) {
             $table->integer('doctor_id')->nullable()->default(0)->change();
             $table->string('nick_name')->nullable();
+            $table->integer('user_id')->nullable()->default(0);
         });
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
@@ -33,10 +34,10 @@ return new class extends Migration
             $table->integer('answer_id');
             $table->timestamps();
         });
-        Schema::create('patient_times', function (Blueprint $table) {
+        Schema::create('user_times', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->integer('patient_id');
+            $table->integer('user_id');
             $table->integer('used_time');
             $table->integer('limited_time');
             $table->timestamps();
