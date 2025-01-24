@@ -20,6 +20,7 @@ const patient = ref({
   password: null,
   expire_date: null,
   minutes: null,
+  comment: null,
 });
 
 const errors = ref({});
@@ -131,6 +132,13 @@ watch(
                 v-model="patient.minutes"
                 :label="$t('patient.minutes')"
                 :error-messages="errors.minutes"
+              />
+            </VCol>
+            <VCol cols="12" sm="6">
+              <AppTextField
+                v-model="patient.comment"
+                :label="$t('patient.comment')"
+                :error-messages="errors.comment"
               />
             </VCol>
           </VRow>

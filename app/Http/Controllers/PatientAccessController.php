@@ -20,6 +20,7 @@ class PatientAccessController extends Controller
 
 
         $patient = Patient::findOrFail($request->id);
+        $patient->comment = $request->comment;
         $patient->save();
 
         if (empty($patient->user_id)) {

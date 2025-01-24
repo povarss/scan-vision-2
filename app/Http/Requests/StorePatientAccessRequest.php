@@ -30,6 +30,7 @@ class StorePatientAccessRequest extends FormRequest
             'password' => ($userId ? '' : 'required|'),
             'expire_at' => 'required|date',
             'minutes' => 'required|integer',
+            'comment' => 'nullable',
         ];
     }
 }
