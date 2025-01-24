@@ -31,7 +31,7 @@ class CheckTestAccessService
         return $this->getPromo($date);
     }
 
-    public function getPromo($date)
+    private function getPromo($date)
     {
         if (!$this->user->hasRole(User::ROLE_PATIENT)) {
             return null;
@@ -40,8 +40,8 @@ class CheckTestAccessService
         $patient = Patient::where('user_id', $this->user->id)->first();
 
         $promoCode = PromoCode::where('patient_id', $patient->id)
-            ->where('activated_at', '>=', $date)
-            ->where('end_date', '<=', $date)
+            ->whereDate('activated_at', '<=', $date)
+            ->whereDate('end_date', '>=', $date)
             ->first();
 
         if (!empty($promoCode)) {

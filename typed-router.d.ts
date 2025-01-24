@@ -136,6 +136,7 @@ declare module 'vue-router/auto-routes' {
     'pages-user-profile-tab': RouteRecordInfo<'pages-user-profile-tab', '/pages/user-profile/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
     'patients': RouteRecordInfo<'patients', '/patients', Record<never, never>, Record<never, never>>,
     'patients-card-id': RouteRecordInfo<'patients-card-id', '/patients/card/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'patients-all': RouteRecordInfo<'patients-all', '/patients-all', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
     'promo-codes': RouteRecordInfo<'promo-codes', '/promoCodes', Record<never, never>, Record<never, never>>,
     'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\PatientAllController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\ReferenceController;
@@ -54,6 +55,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/',  'store');
             Route::get('/{promoCode}',  'get');
             Route::post('/delete',  'delete');
+        });
+
+        Route::prefix('patient-all')->group(function () {
+            Route::get('/', [PatientAllController::class, 'list']);
+            Route::post('/', [PatientAllController::class, 'store']);
+            Route::post('/archive', [PatientAllController::class, 'archive']);
+            Route::get('/{patient}', [PatientAllController::class, 'get']);
         });
     });
 });

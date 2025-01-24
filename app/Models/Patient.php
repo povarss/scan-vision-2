@@ -31,6 +31,21 @@ class Patient extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function patient_answers()
+    {
+        return $this->hasMany(PatientAnswer::class);
+    }
+
     public function tests()
     {
         return $this->hasMany(PatientExam::class);
