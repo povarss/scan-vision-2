@@ -94,7 +94,7 @@ onMounted(() => {
   <VCard class="mb-4" v-if="showPatientDetail">
     <VCardText class="pt-12">
       <VRow>
-        <VCol cols="4" class="d-flex flex-column">
+        <VCol cols="3" class="d-flex flex-column">
           <div class="d-flex justify-start align-start">
             <VAvatar
               rounded
@@ -226,7 +226,7 @@ onMounted(() => {
             </VListItem>
           </VList>
         </VCol>
-        <VCol cols="5">
+        <VCol cols="3">
           <VList class="card-list">
             <VListItem>
               <VListItemTitle>
@@ -260,12 +260,34 @@ onMounted(() => {
                     Клінічний діагноз:
                   </h6>
                   <div class="d-inline-block text-body-1 text-capitalize">
-                    {{ patientData.clinic_diagnose }}
+                    {{ patientData.clinic_diagnose_title }}
                   </div>
                 </div>
               </VListItemTitle>
             </VListItem>
           </VList>
+        </VCol>
+        <VCol cols="3">
+          <table class="w-100">
+            <thead>
+              <tr>
+                <td>
+                  {{ $t("promo.code") }}
+                </td>
+                <td>
+                  {{ $t("promo.activated_at") }}
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="promoCode in patientData.promoCodes">
+                <td>{{ promoCode.code }}</td>
+                <td>
+                  {{ promoCode.activated_at }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </VCol>
       </VRow>
     </VCardText>

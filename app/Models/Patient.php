@@ -51,6 +51,11 @@ class Patient extends Model
         return $this->hasMany(PatientExam::class);
     }
 
+    public function promoCodes()
+    {
+        return $this->hasMany(PromoCode::class);
+    }
+
     public function region()
     {
         return $this->belongsTo(Reference::class)->where('key_', Reference::KEY_REGION);

@@ -27,10 +27,12 @@ class PatientResource extends JsonResource
             'region_id' => $this->region_id,
             'region' => $this->region,
             'field' => $this->field,
-            'clinic_diagnose' => Reference::getRefLabel($this->clinic_diagnose),
+            'clinic_diagnose' => $this->clinic_diagnose, //Reference::getRefLabel($this->clinic_diagnose),
+            'clinic_diagnose_title' => Reference::getRefLabel($this->clinic_diagnose),
             'tags' => $this->tags,
             'exams' => [],
-            'examTypes' => Exam::get()
+            'examTypes' => Exam::get(),
+            'promoCodes' => PartientPromoCodeResource::collection($this->promoCodes()->get()),
         ];
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [
