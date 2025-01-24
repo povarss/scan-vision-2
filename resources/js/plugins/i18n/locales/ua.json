@@ -222,6 +222,10 @@
     "clinic_diagnose" : "Клінічний діагноз",
     "addTitle" : "Додати користувача",
     "editTitle": "Редагувати користувача",
+    "email" : "Email",
+    "password" : "Пароль",
+    "expire_at" : "Дата закінчення підписки",
+    "minutes" : "Доступный на день"
   },
   "gender":{
     "man":"Чоловік",
@@ -264,6 +268,9 @@
     "promoCodes" : "Промокоды",
     "addTitle" : "Додати промокоды",
     "editTitle" : "Редактировать промокод",
+    "endDate" : "Активен до",
+    "today" : "Сегодня",
+    "LimitTimeToOneDay" : "Доступный на день"
   },
   "register": {
     "Personal Information" : "Персоналные данные",

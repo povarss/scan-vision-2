@@ -39,4 +39,8 @@ class Subscription extends Model
     {
         return self::where('end_date', '>=', $date)->where('user_id', $user->id)->first();
     }
+
+    public static function getByUser($userId){
+        return self::where('user_id', $userId)->first();
+    }
 }

@@ -1,6 +1,8 @@
 <script setup>
 import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue";
 import PatientArchiveDialog from "@/components/patient/PatientArchiveDialog.vue";
+import EditPatientAccess from "@/components/patient/EditPatientAccess.vue";
+import { hasAccessRole } from "@layouts/plugins/casl";
 
 const props = defineProps({
   patientId: {
@@ -19,6 +21,7 @@ const patientData = ref({});
 
 const isAddPatientVisible = ref(false);
 const isArchiveDialogVisible = ref(false);
+const isEditAccessOpen = ref(false);
 const router = useRouter();
 
 const loadPatientData = async (id) => {
@@ -73,6 +76,14 @@ const goToTestSettings = (id) => {
   router.push({ name: "test-id", params: { id: id } });
 };
 
+const openEdit = () => {
+  if (hasAccessRole(["admin"])) {
+    isEditAccessOpen.value = true;
+  } else {
+    isAddPatientVisible.value = true;
+  }
+};
+
 onMounted(() => {
   loadPatientData(props.patientId);
 });
@@ -88,6 +99,11 @@ onMounted(() => {
   <AddEditPatientDialog
     :id="patientData.id"
     v-model:is-dialog-visible="isAddPatientVisible"
+    @saved="reloadData"
+  />
+  <EditPatientAccess
+    :id="patientData.id"
+    v-model:is-dialog-visible="isEditAccessOpen"
     @saved="reloadData"
   />
 
@@ -114,11 +130,24 @@ onMounted(() => {
               <h6 class="text-h6">
                 {{ patientData.phone }}
               </h6>
+              <h6
+                class="text-h6"
+                v-if="patientData.accessDetail && hasAccessRole(['admin'])"
+              >
+                {{ $t("promo.endDate") }}
+                {{ patientData.accessDetail.end_date }} <br />
+                {{ $t("promo.today") }}
+                {{ patientData.accessDetail.used_minutes }}<br />
+                {{ $t("promo.LimitTimeToOneDay") }}
+
+                {{ patientData.accessDetail.minutes }}
+              </h6>
               <div class="d-flex justify-center gap-x-4 mt-2">
                 <VBtn
                   variant="elevated"
+                  size="small"
                   visible="true"
-                  @click="isAddPatientVisible = !isAddPatientVisible"
+                  @click="openEdit()"
                 >
                   Редагувати
                 </VBtn>
@@ -126,6 +155,7 @@ onMounted(() => {
                 <VBtn
                   variant="tonal"
                   color="error"
+                  size="small"
                   @click="isArchiveDialogVisible = !isArchiveDialogVisible"
                 >
                   Архівувати

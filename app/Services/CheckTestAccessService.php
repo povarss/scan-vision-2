@@ -7,23 +7,35 @@ use App\Models\Patient;
 use App\Models\PromoCode;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\UserTimes;
+use Carbon\Carbon;
 
 class CheckTestAccessService
 {
     public function __construct(public User $user) {}
 
 
+    public int $usedTimes = 0;
+
     public function handle()
     {
+        if (empty($this->user)) {
+            return null;
+        }
         $date = date('Y-m-d');
         $subscription = Subscription::hasActive($this->user, $date);
 
+        $userTime = UserTimes::where(['user_id' => $this->user->id, 'date' => Carbon::now()->format('Y-m-d')])->first();
+        if (!empty($userTime)) {
+            $this->usedTimes = $userTime->used_time;
+        }
         if (!empty($subscription)) {
             return new TestAccessDto(
                 null,
                 $subscription->end_date,
-                0,
+                $subscription->end_date->diffinDays($subscription->created_at),
                 $subscription->minutes,
+                $this->usedTimes,
                 Subscription::class
             );
         }
@@ -50,6 +62,7 @@ class CheckTestAccessService
                 $promoCode->end_date,
                 $promoCode->days,
                 $promoCode->minutes,
+                $this->usedTimes,
                 PromoCode::class
             );
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
+use App\Http\Resources\PatientAccessResource;
 use App\Http\Resources\PatientResource;
 use App\Models\Exam;
 use App\Models\Patient;
@@ -97,5 +98,10 @@ class PatientController extends Controller
     public function get(Patient $patient)
     {
         return new PatientResource($patient);
+    }
+
+    public function getAccess(Patient $patient)
+    {
+        return new PatientAccessResource($patient);
     }
 }

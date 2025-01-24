@@ -4,12 +4,25 @@ namespace App\Http\Resources;
 
 use App\Models\Exam;
 use App\Models\Reference;
+use App\Models\UserTimes;
+use App\Services\CheckTestAccessService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PatientResource extends JsonResource
 {
+    function secondsToMinutesSeconds($seconds)
+    {
+        $minutes = floor($seconds / 60); // Calculate whole minutes
+        $remainingSeconds = $seconds % 60; // Calculate remaining seconds
+
+        // Format with leading zero for seconds
+        $formattedSeconds = str_pad($remainingSeconds, 2, '0', STR_PAD_LEFT);
+
+        return "$minutes:$formattedSeconds";
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -17,6 +30,9 @@ class PatientResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($this->user);
+        $access = $this->user_id ? (new CheckTestAccessService($this->user))->handle() : null;
+
         $data =  [
             'id' => $this->id,
             'full_name' => $this->full_name,
@@ -33,6 +49,11 @@ class PatientResource extends JsonResource
             'exams' => [],
             'examTypes' => Exam::get(),
             'promoCodes' => PartientPromoCodeResource::collection($this->promoCodes()->get()),
+            'accessDetail' => [
+                'end_date' => $access->endDate->format('d.m.Y'),
+                'minutes' => $access->minutes,
+                'used_minutes' => $this->secondsToMinutesSeconds($access->usedMinutes),
+            ],
         ];
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [

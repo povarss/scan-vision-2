@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\PatientAccessController;
 use App\Http\Controllers\PatientAllController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PromoCodeController;
@@ -62,6 +63,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/', [PatientAllController::class, 'store']);
             Route::post('/archive', [PatientAllController::class, 'archive']);
             Route::get('/{patient}', [PatientAllController::class, 'get']);
+        });
+
+        Route::prefix('patient-access')->controller(PatientAccessController::class)->group(function () {
+            Route::post('/', 'store');
+            Route::get('/{patient}', 'get');
         });
     });
 });
