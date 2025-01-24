@@ -239,6 +239,7 @@
     "Patients" : "Користувачі",
     "Doctors" : "Лікарі",
     "PromoCodes" : "Промокоды",
+    "AllPatients" : "Все пользователи",
   },
   "doctor":{
     "addTitle" : "Додати лікаря",

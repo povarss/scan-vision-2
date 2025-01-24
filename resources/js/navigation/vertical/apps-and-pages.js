@@ -17,6 +17,12 @@ export default [
     roles: ['admin'],
     to: 'promo-codes',
   },
+  {
+    title: 'menu.AllPatients',
+    icon: { icon: 'tabler-users' },
+    roles: ['admin'],
+    to: 'patients-all',
+  },
   // {
   //   title: 'Авторизація',
   //   icon: { icon: 'tabler-user' },
