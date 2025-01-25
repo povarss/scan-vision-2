@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use App\Models\Exam;
 use App\Models\Reference;
-use App\Models\UserTimes;
 use App\Services\CheckTestAccessService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -35,6 +34,7 @@ class PatientResource extends JsonResource
 
         $data =  [
             'id' => $this->id,
+            'doctor_id' => $this->doctor_id,
             'full_name' => $this->full_name,
             'phone' => $this->phone,
             'born_date' => $this->born_date?->format('Y-m-d'),
@@ -48,12 +48,13 @@ class PatientResource extends JsonResource
             'tags' => $this->tags,
             'exams' => [],
             'examTypes' => Exam::get(),
-            'promoCodes' => PartientPromoCodeResource::collection($this->promoCodes()->get()),
-            'accessDetail' => [
+            'promoCodes' => PatientPromoCodeResource::collection($this->promoCodes()->get()),
+            'accessDetail' => $access ? [
                 'end_date' => $access->endDate->format('d.m.Y'),
                 'minutes' => $access->minutes,
-                'used_minutes' => $this->secondsToMinutesSeconds($access->usedMinutes),
-            ],
+                'used_minutes' => $this->secondsToMinutesSeconds($access->usedSeconds),
+                'end_minutes' => $this->secondsToMinutesSeconds($access->minutes * 60 - $access->usedSeconds),
+            ] :  null,
         ];
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [

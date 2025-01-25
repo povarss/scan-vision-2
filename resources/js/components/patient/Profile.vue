@@ -3,6 +3,8 @@ import AddEditPatientDialog from "@/components/patient/AddEditPatientDialog.vue"
 import PatientArchiveDialog from "@/components/patient/PatientArchiveDialog.vue";
 import EditPatientAccess from "@/components/patient/EditPatientAccess.vue";
 import { hasAccessRole } from "@layouts/plugins/casl";
+import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
+const { t } = useI18n();
 
 const props = defineProps({
   patientId: {
@@ -18,6 +20,7 @@ const props = defineProps({
 });
 
 const patientData = ref({});
+const notifyStore = useNotifyStore();
 
 const isAddPatientVisible = ref(false);
 const isArchiveDialogVisible = ref(false);
@@ -78,7 +81,9 @@ const goToTestSettings = (id) => {
 
 const openEdit = () => {
   if (hasAccessRole(["admin"])) {
-    isEditAccessOpen.value = true;
+    if (patientData.doctor_id == 0) {
+      isEditAccessOpen.value = true;
+    }
   } else {
     isAddPatientVisible.value = true;
   }
@@ -87,6 +92,7 @@ const openEdit = () => {
 onMounted(() => {
   loadPatientData(props.patientId);
 });
+
 </script>
 
 <template>
@@ -130,18 +136,7 @@ onMounted(() => {
               <h6 class="text-h6">
                 {{ patientData.phone }}
               </h6>
-              <h6
-                class="text-h6"
-                v-if="patientData.accessDetail && hasAccessRole(['admin'])"
-              >
-                {{ $t("promo.endDate") }}
-                {{ patientData.accessDetail.end_date }} <br />
-                {{ $t("promo.today") }}
-                {{ patientData.accessDetail.used_minutes }}<br />
-                {{ $t("promo.LimitTimeToOneDay") }}
-
-                {{ patientData.accessDetail.minutes }}
-              </h6>
+              <ProfileAccess :accessDetail="patientData.accessDetail" />
               <div class="d-flex justify-center gap-x-4 mt-2">
                 <VBtn
                   variant="elevated"
@@ -323,6 +318,17 @@ onMounted(() => {
     </VCardText>
   </VCard>
 
+  <VCard class="mb-4" v-if="!showPatientDetail">
+    <VCardText class="pt-12">
+      <VRow>
+        <VCol cols="12" class="d-flex flex-column">
+          <ProfileAccess
+            :accessDetail="patientData.accessDetail"
+          ></ProfileAccess>
+        </VCol>
+      </VRow>
+    </VCardText>
+  </VCard>
   <VRow>
     <!--    <VCol :cols="12 / patientData.examTypes.length"-->
     <VCol cols="6" v-for="examType in patientData.examTypes">

@@ -10,7 +10,7 @@ class TestAccessDto
         public $endDate,
         public $days,
         public $minutes,
-        public $usedMinutes,
+        public $usedSeconds,
 
         public string $type,
     ) {}

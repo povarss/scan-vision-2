@@ -57,10 +57,10 @@ class AuthController extends Controller
             // return response()->json(['errors' => 'Invalid credentials'], 401);
         }
 
-        if ($this->checkIsExpired($user)) {
-            throw ValidationException::withMessages(['email' => __('messages.UserAccessHasExpired')]);
-            // return response()->json(['error' => 'User access has expired'], 403);
-        }
+        // if ($this->checkIsExpired($user)) {
+        //     throw ValidationException::withMessages(['email' => __('messages.UserAccessHasExpired')]);
+        //     // return response()->json(['error' => 'User access has expired'], 403);
+        // }
 
         $token = $user->createToken('authToken')->plainTextToken;
 

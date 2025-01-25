@@ -9,6 +9,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -22,6 +23,8 @@ Route::post('/reference-by-key-guest', [ReferenceController::class, 'getByKeyGue
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reference-by-key', [ReferenceController::class, 'getByKey']);
+
+    Route::get('/user-access', [UserController::class, 'getAccess']);
 
     Route::prefix('patient')->group(function () {
         Route::get('/', [PatientController::class, 'list']);
