@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->hasOne(Subscription::class);
     }
 
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -22,6 +22,7 @@ class PromoCode extends Model
             'created_at' => 'datetime',
             'activated_at' => 'datetime',
             'end_date' => 'datetime',
+            'start_at' => 'date',
         ];
     }
 
@@ -38,9 +39,19 @@ class PromoCode extends Model
 
     public function activate($patient)
     {
+        $activePromo = PromoCode::where('patient_id', $patient->id)
+            ->whereDate('end_date', '>=', Carbon::now()->format('Y-m-d'))
+            ->orderBy('end_date')
+            ->first();
         $this->patient_id = $patient->id;
         $this->activated_at = Carbon::now();
-        $this->end_date = Carbon::now()->addDays($this->days);
+        if (empty($activePromo)) {
+            $this->start_at = Carbon::now();
+            $this->end_date = Carbon::now()->addDays($this->days);
+        } else {
+            $this->start_at = $activePromo->end_date->format('Y-m-d');
+            $this->end_date = $activePromo->end_date->addDays($this->days);
+        }
         $this->save();
     }
 

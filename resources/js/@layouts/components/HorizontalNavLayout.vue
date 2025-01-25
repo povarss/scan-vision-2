@@ -49,6 +49,7 @@ const notifyStore = useNotifyStore();
       v-model:isDrawerOpen="notifyStore.isOpen"
       :message="notifyStore.message"
       :title="notifyStore.title"
+      :show-ok="notifyStore.showOk"
     />
 
     <!-- 👉 Footer -->

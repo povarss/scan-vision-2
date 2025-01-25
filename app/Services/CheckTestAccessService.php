@@ -54,6 +54,7 @@ class CheckTestAccessService
         $promoCode = PromoCode::where('patient_id', $patient->id)
             ->whereDate('activated_at', '<=', $date)
             ->whereDate('end_date', '>=', $date)
+            ->orderBy('end_date')
             ->first();
 
         if (!empty($promoCode)) {

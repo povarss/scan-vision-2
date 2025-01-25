@@ -8,12 +8,23 @@ const props = defineProps({
     default: () => null,
   },
 });
+
+const isShowPromoDialog = ref(false);
+
+const promoActivated = () => {
+  location.reload();
+};
+
+
+const openActivation = () => {
+  isShowPromoDialog.value = true;
+};
 </script>
 
 <template>
   <div>
     <h6 class="text-h6" v-if="accessDetail && hasAccessRole(['admin'])">
-      <span v-if="$access">
+      <span v-if="accessDetail.has_access">
         {{ $t("promo.endDate") }}
         {{ accessDetail.end_date }} <br />
         {{ $t("promo.today") }}
@@ -26,12 +37,25 @@ const props = defineProps({
       </span>
     </h6>
     <h6 class="text-h6" v-if="hasAccessRole(['patient'])">
-      <span v-if="accessDetail">
-        {{ $t("promo.todayEnd") }}: {{ accessDetail.end_minutes }} <br />
-      </span>
-      <span v-else>
-        {{ $t("promo.youHaveNotAccess") }}
-      </span>
+      <VRow>
+        <VCol cols="10">
+          <span v-if="accessDetail.has_access">
+            {{ $t("promo.todayEnd") }}: {{ accessDetail.end_minutes }} <br />
+          </span>
+          <span v-else>
+            {{ $t("promo.youHaveNotAccess") }}
+          </span>
+        </VCol>
+        <VCol cols="2">
+          <VBtn size="small" @click="openActivation">
+            {{ $t("promo.ActivatePromoCode") }}
+          </VBtn>
+        </VCol>
+      </VRow>
     </h6>
+    <ActivatePromoCodeDialog
+      v-model:isDialogVisible="isShowPromoDialog"
+      @saved="promoActivated"
+    />
   </div>
 </template>

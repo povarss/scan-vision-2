@@ -237,7 +237,8 @@
     "cancel" : "Відмінити",
     "archiveConfirm" : "Так, архівувати",
     "confirm" : "Підтвердити",
-    "delete":"Видалити"
+    "delete":"Видалити",
+    "ok" : "OK"
   },
   "menu" : {
     "Patients" : "Користувачі",
@@ -273,7 +274,10 @@
     "LimitTimeToOneDay" : "Доступный на день",
     "todayEnd" : "На  сегодня оставшихся минут",
     "youHaveNotAccess" : "У вас нет доступа к тесту",
-    "userAccessExpired" : "У пользователья нет доступ к тесту"
+    "userAccessExpired" : "У пользователья нет доступ к тесту",
+    "activate" :"Активация промокода",
+    "ActivatePromoCode" : "Активировать промокод",
+    "AccessMinutesExceeded" : "Нажаль час тренувань на сьогодні вичерпаний :( Чекаємо Вас завтра :)",
   },
   "register": {
     "Personal Information" : "Персоналные данные",

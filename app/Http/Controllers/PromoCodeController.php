@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PromoActivateRequest;
 use App\Http\Requests\StorePromoCodesRequest;
 use App\Http\Resources\PromoCodeResource;
 use App\Models\PromoCode;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,7 +26,7 @@ class PromoCodeController extends Controller
         }
 
         return DataTables::eloquent($model)
-            ->only(['id', 'status', 'code', 'created_at', 'activated_at', 'user_email', 'days', 'minutes','isActive'])
+            ->only(['id', 'status', 'code', 'created_at', 'activated_at', 'user_email', 'days', 'minutes', 'isActive'])
             ->editColumn('status', function (PromoCode $promoCode) {
                 return $promoCode->isActive() ? __('labels.Active') : __('labels.InActive');
             })
@@ -87,5 +89,16 @@ class PromoCodeController extends Controller
             return response(['message' => __('PromoCode already activated')], 500);
         }
         $promoCode->remove();
+    }
+
+    public function activate(PromoActivateRequest $request)
+    {
+        DB::beginTransaction();
+        $promoCode  = PromoCode::where('code', $request->promoCode)->first();
+        $user = Auth::user();
+        $promoCode->activate($user->patient);
+        DB::commit();
+
+        return 1;
     }
 }

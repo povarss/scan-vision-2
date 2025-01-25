@@ -23,6 +23,7 @@ const configStore = useLayoutConfigStore();
 const isOverlayNavActive = ref(false);
 const isLayoutOverlayVisible = ref(false);
 const toggleIsOverlayNavActive = useToggle(isOverlayNavActive);
+const isShowPromoDialog = ref(false);
 
 // ℹ️ This is alternative to below two commented watcher
 
@@ -56,14 +57,19 @@ const verticalNavAttrs = computed(() => {
   };
 });
 const notifyStore = useNotifyStore();
+const isAccessPromoNeedShow = ref(true);
 
 const loadUserAccessData = async (id) => {
   const user = useCookie("userData");
   if (hasAccessRole(["doctor", "patient"])) {
     const { data } = await useApi(`/user-access`);
-    console.log(data.value.data,'data.value');
-    if(!data.value.data.has_access){
-      notifyStore.showNotification(t('AccessExpired'), t("AccessExpiredDetail"));
+    if (!data.value.data.has_access) {
+      isAccessPromoNeedShow.value = true;
+      notifyStore.showNotification(
+        t("AccessExpired"),
+        t("AccessExpiredDetail"),
+        true
+      );
     }
     // if (data.value) {
     //   patientData.value = data.value.data;
@@ -72,9 +78,22 @@ const loadUserAccessData = async (id) => {
 };
 
 onMounted(() => {
-  loadUserAccessData()
-})
+  loadUserAccessData();
+});
 
+watch(
+  () => notifyStore.isOpen,
+  (val) => {
+    if (isAccessPromoNeedShow.value && !val && hasAccessRole(["patient"])) {
+      isShowPromoDialog.value = true;
+    }
+    isAccessPromoNeedShow.value = false;
+  }
+);
+
+const promoActivated = () => {
+  location.reload();
+};
 </script>
 
 <template>
@@ -124,8 +143,12 @@ onMounted(() => {
         v-model:isDrawerOpen="notifyStore.isOpen"
         :message="notifyStore.message"
         :title="notifyStore.title"
+        :show-ok="notifyStore.showOk"
       />
-
+      <ActivatePromoCodeDialog
+        v-model:isDialogVisible="isShowPromoDialog"
+        @saved="promoActivated"
+      />
       <footer class="layout-footer">
         <div class="footer-content-container">
           <slot name="footer" />

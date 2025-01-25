@@ -26,12 +26,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user-access', [UserController::class, 'getAccess']);
 
-    Route::prefix('patient')->group(function () {
-        Route::get('/', [PatientController::class, 'list']);
-        Route::post('/', [PatientController::class, 'store']);
-        Route::post('/archive', [PatientController::class, 'archive']);
-        Route::get('/{patient}', [PatientController::class, 'get']);
+    Route::prefix('patient')->controller(PatientController::class)->group(function () {
+        Route::group(['middleware' => ['role:admin|doctor']], function () {
+
+            Route::get('/',  'list');
+            Route::post('/',  'store');
+            Route::post('/archive',  'archive');
+        });
+        Route::get('/{patient}',  'get');
     });
+
+    Route::post('/promo/activate', [PromoCodeController::class, 'activate']);
 
     Route::prefix('exam')->group(function () {
         Route::get('/refrences/{type}', [ExamController::class, 'getReferences']);

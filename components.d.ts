@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     '[id]': typeof import('./resources/js/components/patient/[id].vue')['default']
+    ActivatePromoCodeDialog: typeof import('./resources/js/components/patient/ActivatePromoCodeDialog.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./resources/js/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./resources/js/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditDoctorDialog: typeof import('./resources/js/components/doctor/AddEditDoctorDialog.vue')['default']

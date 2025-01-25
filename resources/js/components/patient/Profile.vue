@@ -53,6 +53,17 @@ const types = ref([
     label: "Оптокінетичне тренування",
   },
 ]);
+
+const startTest = (type, examId) => {
+  if (patientData.value.accessDetail.has_access) {
+    if (patientData.value.accessDetail.has_minutes > 0) {
+      makeDraft(type, examId);
+    } else {
+      notifyStore.showNotification("", t("promo.AccessMinutesExceeded"));
+    }
+  }
+};
+
 const makeDraft = async (type, examId) => {
   try {
     const res = await $api("/exam/make-draft", {
@@ -92,7 +103,6 @@ const openEdit = () => {
 onMounted(() => {
   loadPatientData(props.patientId);
 });
-
 </script>
 
 <template>
@@ -344,7 +354,7 @@ onMounted(() => {
                 variant="elevated"
                 visible="true"
                 class="ms-4"
-                @click="makeDraft(type.id, examType.id)"
+                @click="startTest(type.id, examType.id)"
               >
                 {{ type.label }}
               </VBtn>
