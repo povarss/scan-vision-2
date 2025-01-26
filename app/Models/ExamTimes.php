@@ -58,6 +58,7 @@ class ExamTimes extends Model
         $examTime->used_seconds = $examTime->started_at->diffInSeconds($examTime->counted_at);
         $examTime->save();
 
-        UserTimeCalcJob::dispatch($patientExam->patient->user);
+        return UserTimes::calc($patientExam->patient->doctor_id > 0 ? $patientExam->patient->doctor : $patientExam->patient->user);
+        // UserTimeCalcJob::dispatch($patientExam->patient->user);
     }
 }

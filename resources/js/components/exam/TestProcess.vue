@@ -127,14 +127,17 @@ const stimulSize = computed(() => {
   return (svgSm * props.exam.svg_size) / 100;
 });
 
-const setExamTime = () => {
+const setExamTime = async () => {
   try {
-    $api("/exam/set-time/" + props.exam.id, {
+    let resp = await $api("/exam/set-time/" + props.exam.id, {
       method: "POST",
       onResponseError({ response }) {
         console.error(response._data.errors);
       },
     });
+    if(resp.left_seconds <=0 ){
+      emit("timeout");
+    }
   } catch (err) {
     console.error(err);
   }

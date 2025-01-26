@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CheckTestAccessService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,9 +46,10 @@ class UserTimes extends Model
             ->whereDate('started_at', $date)
             ->sum('used_seconds');
         $timeInfo->used_time = $usedSeconds;
-        //todo
-        $timeInfo->limited_time = 0;
+        $checkTimes = (new CheckTestAccessService($user))->handle();
+        $timeInfo->limited_time = $checkTimes->minutes * 60;
         $timeInfo->save();
+        return $timeInfo;
     }
 
     public static function setTime(PatientExam $patientExam, $isClose = false)

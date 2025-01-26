@@ -15,7 +15,6 @@ const promoActivated = () => {
   location.reload();
 };
 
-
 const openActivation = () => {
   isShowPromoDialog.value = true;
 };
@@ -24,7 +23,7 @@ const openActivation = () => {
 <template>
   <div>
     <h6 class="text-h6" v-if="accessDetail && hasAccessRole(['admin'])">
-      <span v-if="accessDetail.has_access">
+      <span v-if="accessDetail?.has_access">
         {{ $t("promo.endDate") }}
         {{ accessDetail.end_date }} <br />
         {{ $t("promo.today") }}
@@ -39,7 +38,7 @@ const openActivation = () => {
     <h6 class="text-h6" v-if="hasAccessRole(['patient'])">
       <VRow>
         <VCol cols="10">
-          <span v-if="accessDetail.has_access">
+          <span v-if="accessDetail?.has_access">
             {{ $t("promo.todayEnd") }}: {{ accessDetail.end_minutes }} <br />
           </span>
           <span v-else>

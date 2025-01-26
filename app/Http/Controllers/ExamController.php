@@ -225,6 +225,9 @@ class ExamController extends Controller
 
     public function setTime(PatientExam $patientExam)
     {
-        ExamTimes::setTime($patientExam);
+        $userTime = ExamTimes::setTime($patientExam);
+        return [
+            'left_seconds' => $userTime->limited_time - $userTime->used_time
+        ];
     }
 }
