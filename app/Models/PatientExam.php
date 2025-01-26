@@ -19,6 +19,7 @@ class PatientExam extends Model
         'mode',
         'type',
         'pattern_additional_items',
+        'double_clicks'
     ];
 
     protected function casts(): array
@@ -28,6 +29,7 @@ class PatientExam extends Model
             'pattern_additional_items' => 'array',
             'result' => 'array',
             'custom_settings' => 'array',
+            'double_clicks' => 'array',
         ];
     }
 

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import TestProcess from "@/components/exam/TestProcess.vue";
 import Result from "@/components/exam/Result.vue";
 import Setting from "@/components/exam/Setting.vue";
@@ -53,6 +53,7 @@ const storeResult = async () => {
       body: {
         id: exam.value?.id || "",
         result: result.value,
+        double_clicks: doubleCLicks.value,
       },
       onResponseError({ response }) {
         console.error(response._data.errors);
@@ -68,6 +69,7 @@ const storeResult = async () => {
 };
 
 const result = ref([]);
+const doubleCLicks = ref([]);
 const onItemSelected = (items) => {
   result.value = items.map((pos) => {
     const [part1, part2] = pos.split("_");
@@ -75,6 +77,14 @@ const onItemSelected = (items) => {
     const intValue2 = parseInt(part2, 10);
     return [intValue1, intValue2];
   });
+};
+
+const onDoubleClicked = (item) => {
+  if (
+    !doubleCLicks.value.some((v) => v[0] == item.rowKey && v[1] == item.colKey)
+  ) {
+    doubleCLicks.value.push([parseInt(item.rowKey), parseInt(item.colKey)]);
+  }
 };
 
 const startTest = async (setting) => {
@@ -143,6 +153,7 @@ onMounted(() => {
           :exam="exam"
           :references="referenceData"
           @itemSelected="onItemSelected"
+          @doubleClickItem="onDoubleClicked"
           @timeout="finishTestProcces"
         />
       </div>
