@@ -99,14 +99,14 @@ watch(
       <VCard :title="$t('patient.' + (props.id ? 'editTitle' : 'addTitle'))">
         <VCardText>
           <VRow>
-            <VCol cols="12" sm="7">
+            <VCol cols="12" sm="6">
               <AppTextField
                 v-model="patient.full_name"
                 :label="$t('patient.full_name')"
                 :error-messages="errors.full_name"
               />
             </VCol>
-            <VCol cols="12" sm="5">
+            <VCol cols="12" sm="6">
               <AppTextField
                 v-model="patient.email"
                 :label="$t('patient.email')"

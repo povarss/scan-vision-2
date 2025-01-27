@@ -92,7 +92,7 @@ const goToTestSettings = (id) => {
 
 const openEdit = () => {
   if (hasAccessRole(["admin"])) {
-    if (patientData.doctor_id == 0) {
+    if (patientData.value.doctor_id == 0) {
       isEditAccessOpen.value = true;
     }
   } else {
