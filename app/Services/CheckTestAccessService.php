@@ -22,6 +22,18 @@ class CheckTestAccessService
         if (empty($this->user)) {
             return null;
         }
+
+        if($this->user->hasRole(User::ROLE_ADMIN)){
+            $days = 365;
+            return new TestAccessDto(
+                null,
+                Carbon::now()->addDays($days),
+                $days,
+                60 * 24,
+                0,
+                'admin'
+            );
+        }
         $date = date('Y-m-d');
         $subscription = Subscription::hasActive($this->user, $date);
 

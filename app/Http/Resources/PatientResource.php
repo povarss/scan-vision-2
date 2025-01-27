@@ -19,7 +19,7 @@ class PatientResource extends JsonResource
     public function toArray(Request $request): array
     {
         // dd($this->user);
-        $access = $this->user_id ? (new CheckTestAccessService($this->user))->handle() : null;
+        // $access = $this->user_id ? (new CheckTestAccessService($this->user))->handle() : null;
 
         $data =  [
             'id' => $this->id,
@@ -38,7 +38,7 @@ class PatientResource extends JsonResource
             'exams' => [],
             'examTypes' => Exam::get(),
             'promoCodes' => PatientPromoCodeResource::collection($this->promoCodes()->get()),
-            'accessDetail' => new UserAccessResource($this->user),
+            'accessDetail' => new UserAccessResource($this->doctor_id > 0 ? $this->doctor : $this->user),
         ];
         foreach ($this->tests()->where('status', 'finished')->orderBy('start_time', 'desc')->get() as $test) {
             $data['exams'][] = [
