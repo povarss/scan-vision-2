@@ -17,7 +17,7 @@ class PromoCodeController extends Controller
     // Register a new user
     public function list(Request $request)
     {
-        $model = PromoCode::with('user');
+        $model = PromoCode::with('patient');
 
         if (!empty($request->q)) {
             $model->where(function (Builder $query) use ($request) {
@@ -40,7 +40,7 @@ class PromoCodeController extends Controller
                 return !empty($promoCode->activated_at) ? $promoCode->activated_at->format('d.m.Y H:i') : '';
             })
             ->addColumn('user_email', function (PromoCode $promoCode) {
-                return !empty($promoCode->user_id) ? $promoCode->user->email : '';
+                return !empty($promoCode->patient_id) ? $promoCode->patient->user->email : '';
             })
             ->toJson();
     }
