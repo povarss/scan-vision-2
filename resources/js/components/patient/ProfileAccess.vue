@@ -24,12 +24,12 @@ const openActivation = () => {
   <div>
     <h6 class="text-h6" v-if="accessDetail && hasAccessRole(['admin'])">
       <span v-if="accessDetail?.has_access">
-        {{ $t("promo.endDate") }}
+        {{ $t("promo.endDate") }}:
         {{ accessDetail.end_date }} <br />
-        {{ $t("promo.today") }}
-        {{ accessDetail.used_minutes }}<br />
-        {{ $t("promo.LimitTimeToOneDay") }}
-        {{ accessDetail.minutes }}
+        {{ $t("promo.today") }}:
+        {{ accessDetail.used_minutes }} хв<br />
+        {{ $t("promo.LimitTimeToOneDay") }}:
+        {{ accessDetail.minutes }} хв
       </span>
       <span v-else>
         {{ $t("promo.userAccessExpired") }}

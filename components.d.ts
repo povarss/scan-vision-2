@@ -7,17 +7,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    '[id]': typeof import('./resources/js/components/patient/[id].vue')['default']
     ActivatePromoCodeDialog: typeof import('./resources/js/components/patient/ActivatePromoCodeDialog.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./resources/js/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./resources/js/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditDoctorDialog: typeof import('./resources/js/components/doctor/AddEditDoctorDialog.vue')['default']
-    AddEditPatientAccess: typeof import('./resources/js/components/patient/AddEditPatientAccess.vue')['default']
     AddEditPatientDialog: typeof import('./resources/js/components/patient/AddEditPatientDialog.vue')['default']
     AddEditPermissionDialog: typeof import('./resources/js/components/dialogs/AddEditPermissionDialog.vue')['default']
     AddEditRoleDialog: typeof import('./resources/js/components/dialogs/AddEditRoleDialog.vue')['default']
     AddPaymentMethodDialog: typeof import('./resources/js/components/dialogs/AddPaymentMethodDialog.vue')['default']
-    AddPromocodeDialog: typeof import('./resources/js/components/promoCodes/AddPromocodeDialog.vue')['default']
     AddPromoCodeDialog: typeof import('./resources/js/components/promoCodes/AddPromoCodeDialog.vue')['default']
     AppAutocomplete: typeof import('./resources/js/@core/components/app-form-elements/AppAutocomplete.vue')['default']
     AppBarSearch: typeof import('./resources/js/@core/components/AppBarSearch.vue')['default']
@@ -40,7 +37,6 @@ declare module 'vue' {
     CardStatisticsVertical: typeof import('./resources/js/@core/components/cards/CardStatisticsVertical.vue')['default']
     CardStatisticsVerticalSimple: typeof import('./resources/js/@core/components/CardStatisticsVerticalSimple.vue')['default']
     ConfirmDialog: typeof import('./resources/js/components/dialogs/ConfirmDialog.vue')['default']
-    copy: typeof import('./resources/js/components/patient/Profile copy.vue')['default']
     CorrectSvg: typeof import('./resources/js/components/exam/CorrectSvg.vue')['default']
     CreateAppDialog: typeof import('./resources/js/components/dialogs/CreateAppDialog.vue')['default']
     CustomCheckboxes: typeof import('./resources/js/@core/components/app-form-elements/CustomCheckboxes.vue')['default']
@@ -412,6 +408,5 @@ declare module 'vue' {
     TwoFactorAuthDialog: typeof import('./resources/js/components/dialogs/TwoFactorAuthDialog.vue')['default']
     UserInfoEditDialog: typeof import('./resources/js/components/dialogs/UserInfoEditDialog.vue')['default']
     UserUpgradePlanDialog: typeof import('./resources/js/components/dialogs/UserUpgradePlanDialog.vue')['default']
-    VueApexCharts: typeof import('vue3-apexcharts')['default']
   }
 }

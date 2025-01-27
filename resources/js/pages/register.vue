@@ -144,19 +144,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterLink to="/">
-    <div class="auth-logo d-flex align-center gap-x-3">
+<!--  <RouterLink to="/">-->
+<!--    <div class="auth-logo d-flex align-center gap-x-3">-->
       <!-- <VNodeRenderer :nodes="themeConfig.app.logo" /> -->
-      <h1 class="auth-title">
-        {{ themeConfig.app.title }}
-      </h1>
-    </div>
-  </RouterLink>
+<!--      <h1 class="auth-title">-->
+<!--        {{ themeConfig.app.title }}-->
+
+<!--      </h1>-->
+<!--    </div>-->
+<!--  </RouterLink>-->
 
   <VRow no-gutters class="auth-wrapper">
     <VCol md="4" class="d-none d-md-flex">
-      <!-- here your illustration -->
-      <div class="d-flex justify-center align-center w-100 position-relative">
+      <!-- here your illustrationццц -->
+      <div class="d-flex flex-column justify-center align-center w-100 position-relative">
+        <VNodeRenderer :nodes="themeConfig.app.logo"  class=" flip-in-rtl" style="max-width: 350px" />
+
         <VImg
           :src="registerMultiStepIllustration"
           class="illustration-image flip-in-rtl"
@@ -231,7 +234,7 @@ onMounted(() => {
             </VWindowItem>
 
             <VWindowItem>
-              <h4 class="text-h4">{{ $t("Questions") }}</h4>
+              <h4 class="text-h4">{{ $t("register.Questions") }}</h4>
               <p class="text-danger">
                 {{ errors?.answers ? errors?.answers[0] : "" }}
               </p>
@@ -274,7 +277,7 @@ onMounted(() => {
             </VWindowItem>
 
             <VWindowItem>
-              <h4 class="text-h4">{{ $t("Acccount information") }}</h4>
+              <h4 class="text-h4">{{ $t("register.Acccount information") }}</h4>
               <VRow>
                 <VCol cols="12" md="6">
                   <AppTextField

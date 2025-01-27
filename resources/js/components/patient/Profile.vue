@@ -341,7 +341,7 @@ onMounted(() => {
   </VCard>
   <VRow>
     <!--    <VCol :cols="12 / patientData.examTypes.length"-->
-    <VCol cols="6" v-for="examType in patientData.examTypes">
+    <VCol cols="12" v-for="examType in patientData.examTypes">
       <!-- 👉 User Activity timeline -->
       <VCard>
         <VCardItem class="notification-section">
@@ -359,6 +359,15 @@ onMounted(() => {
                 {{ type.label }}
               </VBtn>
             </template>
+
+            <VBtn
+              variant="elevated"
+              visible="true"
+              class="ms-auto"
+              @click="startTest(type.id, examType.id)"
+            >
+             розгорннути
+            </VBtn>
           </div>
         </VCardItem>
 
@@ -440,5 +449,10 @@ onMounted(() => {
   //border: 1px solid #ccc;
   padding: 6px 10px 0px 0;
   box-sizing: border-box;
+}
+
+.active {
+  /* Додайте ваші стилі для активного стану */
+  background-color: red;
 }
 </style>

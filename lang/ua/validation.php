@@ -189,10 +189,10 @@ return [
     |
     */
 
-    'Need answer to all questions' => 'Нужно ответить на вопросы',
-    'All questions need bee answered' => 'На все вопросы нужно ответить',
-    'Answer the question' => 'Ответ на вопрос',
-    'The entered promocode is invalid or already used.' => 'Промокод активирован или некоректный код',
+    'Need answer to all questions' => 'Дайте відповідь на питання',
+    'All questions need bee answered' => 'Потрібно відповісти на всі питання',
+    'Answer the question' => 'Виберіть один з варіантів',
+    'The entered promocode is invalid or already used.' => 'Промокод активовано або недійсний',
 
     'attributes' => [
         'full_name' => 'ПІБ',

@@ -151,9 +151,50 @@ const onSubmit = () => {
 
               <VCol cols="12" class="d-flex align-center">
                 <VDivider />
-                <!--                <span class="mx-4 text-high-emphasis">or</span>-->
+                                <span class="mx-4 text-high-emphasis">або</span>
                 <VDivider />
               </VCol>
+
+
+              <!-- create account -->
+              <VCol
+                cols="12"
+                class="text-center"
+              >
+                <VBtn block type="submit" color="secondary" :to="{ name: 'register' }">
+                  Зареєструватись </VBtn>
+
+                <!--                <RouterLink-->
+                <!--                  class="text-primary ms-1"-->
+                <!--                  :to="{ name: 'register' }"-->
+                <!--                >-->
+                <!--                  Create an account-->
+                <!--                </RouterLink>-->
+
+<!--                <span>New on our platform?</span>-->
+<!--                <RouterLink-->
+<!--                  class="text-primary ms-1"-->
+<!--                  :to="{ name: 'register' }"-->
+<!--                >-->
+<!--                  Create an account-->
+<!--                </RouterLink>-->
+              </VCol>
+<!--              <VCol-->
+<!--                cols="12"-->
+<!--                class="d-flex align-center"-->
+<!--              >-->
+<!--                <VDivider />-->
+<!--                <span class="mx-4">or</span>-->
+<!--                <VDivider />-->
+<!--              </VCol>-->
+
+<!--              &lt;!&ndash; auth providers &ndash;&gt;-->
+<!--              <VCol-->
+<!--                cols="12"-->
+<!--                class="text-center"-->
+<!--              >-->
+<!--                <AuthProvider />-->
+<!--              </VCol>-->
             </VRow>
           </VForm>
         </VCardText>

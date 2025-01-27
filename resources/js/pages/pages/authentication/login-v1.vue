@@ -93,7 +93,7 @@ const isPasswordVisible = ref(false)
                 <div class="d-flex align-center justify-space-between flex-wrap my-6">
                   <VCheckbox
                     v-model="form.remember"
-                    label="Запам'ятати мене"
+                    label="Запам'ятати мене333"
                   />
 
                 </div>

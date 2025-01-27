@@ -90,7 +90,7 @@ const onReset = () => {
             <VCol cols="12" sm="12">
               <AppTextarea
                 v-model="formData.codes"
-                :label="$t('promo.promoCodes')"
+                :label="$t('promo.promoCodesNewLine')"
                 :error-messages="errors.codes"
                 auto-grow
               />
