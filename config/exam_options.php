@@ -10,19 +10,19 @@ return [
             'icon' => ['icon' => "tabler-arrow-left", 'size' => "40"],
         ],
         [
-           'title' => "Неглект",
+           'title' => "",
             'value' => PatientExamOptions::DIRECTION_LEFT_RIGHT,
             'icon' => ['icon' => "tabler-arrow-right", 'size' => "40"],
 
         ],
         [
-           'title' => "Неглект",
+           'title' => "",
             'value' => PatientExamOptions::DIRECTION_TOP_BOTTOM,
             'icon' => ['icon' => "tabler-arrow-down", 'size' => "40"],
 
         ],
         [
-           'title' => "Неглект",
+           'title' => "",
             'value' => PatientExamOptions::DIRECTION_BOTTOM_TOP,
             'icon' => ['icon' => "tabler-arrow-up", 'size' => "40"],
 

@@ -160,7 +160,7 @@
         {{--            <img src="{{ public_path('/images/5.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні стимули c двойним кликом: {{ $totals['incorrectCount']['double_total'] }}
+            Неправильні стимули з подвійним кліком: {{ $totals['incorrectCount']['double_total'] }}
         </div>
     </div>
     <div class="container">
@@ -168,7 +168,7 @@
         {{--            <img src="{{ public_path('/images/3.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні цілі з правого боку c двойним кликом: {{ $totals['incorrectCount']['right_double'] }}
+            Неправильні цілі з правого боку з подвійним кліком: {{ $totals['incorrectCount']['right_double'] }}
         </div>
     </div>
     <div class="container">
@@ -176,7 +176,7 @@
         {{--            <img src="{{ public_path('/images/4.png') }}"/> --}}
         {{--        </div> --}}
         <div class="text" style="color: #0058a0; text-transform: uppercase;">
-            Неправильні цілі з лівого боку c двойним кликом: {{ $totals['incorrectCount']['left_double'] }}
+            Неправильні цілі з лівого боку з подвійним кліком: {{ $totals['incorrectCount']['left_double'] }}
         </div>
     </div>
 </div>

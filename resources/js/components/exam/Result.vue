@@ -234,7 +234,7 @@ onMounted(() => {
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">
-              Кількість неправильних стимулів c двойним кликом:
+              Кількість неправильних стимулів з подвійним кліком:
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
@@ -258,7 +258,7 @@ onMounted(() => {
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">
-              Кількість помилкових цілей з правого боку c двойним кликом
+              Кількість помилкових цілей з правого боку з подвійним кліком
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
@@ -282,7 +282,7 @@ onMounted(() => {
               </VAvatar>
             </template>
             <VListItemTitle class="font-weight-medium me-4">
-              Кількість помилкових цілей з лівого боку c двойним кликом
+              Кількість помилкових цілей з лівого боку з подвійним кліком
             </VListItemTitle>
             <template #append>
               <div class="d-flex gap-x-4">
