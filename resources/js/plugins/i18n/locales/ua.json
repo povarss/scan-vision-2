@@ -241,6 +241,7 @@
     "ok" : "OK"
   },
   "menu" : {
+    "Profile" : "Профиль",
     "Patients" : "Користувачі",
     "Doctors" : "Лікарі",
     "PromoCodes" : "Промокоди",

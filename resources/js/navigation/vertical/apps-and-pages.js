@@ -1,5 +1,11 @@
 export default [
   {
+    title: 'menu.Profile',
+    icon: { icon: 'tabler-user' },
+    roles: ['patient'],
+    to: 'profile',
+  },
+  {
     title: 'menu.Patients',
     icon: { icon: 'tabler-users' },
     roles: ['admin','doctor'],

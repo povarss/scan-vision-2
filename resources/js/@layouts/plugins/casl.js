@@ -23,7 +23,7 @@ export const hasAccessRole = (roles) => {
     return true;
   }
   const user = useCookie("userData");
-  return roles.includes(user.value.role);
+  return user.value && roles.includes(user.value.role);
 };
 
 /**
