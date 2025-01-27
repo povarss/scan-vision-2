@@ -43,7 +43,7 @@ watch(
 
 const changed = useDebounceFn((val) => {
   // useDebounceFn((val) => {
-  console.log(val, "val");
+  // console.log(val, "val");
   emit("update:modelValue", val);
   // }, 100);
 }, 100);
@@ -60,8 +60,8 @@ const changed = useDebounceFn((val) => {
       :text="label"
     />
     <VTextField
-      placeholder="+38 00 000 0000"
-      v-mask="'+38 ## ### ####'"
+      placeholder="+38 00 000 00000"
+      v-mask="'+38 ## ### #####'"
       @input="changed($event.target.value)"
       :persistent-placeholder="true"
       v-bind="{
