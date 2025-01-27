@@ -26,6 +26,7 @@ const isAddPatientVisible = ref(false);
 const isArchiveDialogVisible = ref(false);
 const isEditAccessOpen = ref(false);
 const router = useRouter();
+const clickedTypes = ref([]);
 
 const loadPatientData = async (id) => {
   const { data } = await useApi(`/patient/${id}`);
@@ -61,7 +62,7 @@ const startTest = (type, examId) => {
     } else {
       notifyStore.showNotification("", t("promo.AccessMinutesExceeded"));
     }
-  }else{
+  } else {
     notifyStore.showNotification("", t("promo.userAccessExpired"));
   }
 };
@@ -102,6 +103,13 @@ const openEdit = () => {
   }
 };
 
+const onTypeClicked = (typeId) => {
+  if (clickedTypes.value.some((v) => v == typeId)) {
+    clickedTypes.value = clickedTypes.value.filter((v) => v != typeId);
+  } else {
+    clickedTypes.value.push(typeId);
+  }
+};
 onMounted(() => {
   loadPatientData(props.patientId);
 });
@@ -366,9 +374,10 @@ onMounted(() => {
               variant="elevated"
               visible="true"
               class="ms-auto"
-              @click="startTest(type.id, examType.id)"
+              :class="{ 'bg-danger': clickedTypes.includes(examType.id) }"
+              @click="onTypeClicked(examType.id)"
             >
-             розгорннути
+              розгорннути
             </VBtn>
           </div>
         </VCardItem>

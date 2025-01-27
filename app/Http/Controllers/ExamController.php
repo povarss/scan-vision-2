@@ -15,6 +15,7 @@ use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ExamController extends Controller
 {
@@ -193,6 +194,8 @@ class ExamController extends Controller
             $incorrectCount['right']
         );
         $analyzeInfo = (new GetRecommendationService($examResultDto))->getInformation();
+        $timeExpiredExamId = Cache::pull('time_expired_exam_id');
+        // dd($timeExpiredExamId);
         return [
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
@@ -204,6 +207,7 @@ class ExamController extends Controller
             'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
             'exam_type_recommend' => $patientExam->getExamTypeRecommendLabel(),
             'analyzeInfo' => $analyzeInfo,
+            'showTimeNotification' => ($timeExpiredExamId ==  $patientExam->id ? 1 : 0)
         ];
     }
     public function getInfo(PatientExam $patientExam)
@@ -226,8 +230,14 @@ class ExamController extends Controller
     public function setTime(PatientExam $patientExam)
     {
         $userTime = ExamTimes::setTime($patientExam);
+        $leftSeconds = $userTime->limited_time - $userTime->used_time;
+
+        if ($leftSeconds <= 0) {
+            Cache::put('time_expired_exam_id', $patientExam->id);
+        }
+
         return [
-            'left_seconds' => $userTime->limited_time - $userTime->used_time
+            'left_seconds' => $leftSeconds
         ];
     }
 }

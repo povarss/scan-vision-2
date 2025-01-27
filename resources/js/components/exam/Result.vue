@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import testImg from "@images/test_img.png";
+import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
+const { t } = useI18n();
 
 const props = defineProps({
   exam: {
@@ -30,12 +32,16 @@ const resultData = ref({
   typeLabel: "",
 });
 const emit = defineEmits(["dataLoaded"]);
+const notifyStore = useNotifyStore();
 
 const getResult = async () => {
   const { data } = await useApi(`/exam/info/` + props.exam.id);
   if (data.value) {
     resultData.value = data.value;
     emit("dataLoaded", data.value);
+    if(resultData.value.showTimeNotification == 1){
+      notifyStore.showNotification("", t("promo.AccessMinutesExceeded"));
+    }
   }
   console.log(resultData.value, "resultData");
 };
