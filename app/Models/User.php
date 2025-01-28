@@ -91,4 +91,9 @@ class User extends Authenticatable
         $user->assignRole(self::ROLE_PATIENT);
         return $user;
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->hasRole(self::ROLE_PATIENT) ? $this->patient->detail_full_name : $this->name;
+    }
 }

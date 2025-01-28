@@ -66,4 +66,9 @@ class Patient extends Model
         $this->is_archived = 1;
         $this->save();
     }
+
+    public function getDetailFullNameAttribute()
+    {
+        return $this->nick_name . ' ' . $this->full_name;
+    }
 }

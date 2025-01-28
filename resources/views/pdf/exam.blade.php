@@ -50,7 +50,7 @@
             >
                 <span style="text-transform: uppercase;padding-right: 20px">ПІБ</span>
 
-                        {{ $patientExam->patient->full_name }}
+                        {{ $patientExam->patient->detail_full_name }}
                     </div>
                 </td>
                 <td style="width: 50%">

@@ -27,7 +27,8 @@ class PatientController extends Controller
         if (!empty($request->q)) {
             $model->where(function (Builder $query) use ($request) {
                 $query->whereLike('full_name', '%' . $request->q . '%')
-                    ->orWhereLike('phone', '%' . $request->q . '%');
+                    ->orWhereLike('phone', '%' . $request->q . '%')
+                    ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }
         $examTypes = Exam::get();
@@ -37,15 +38,18 @@ class PatientController extends Controller
                 $title = '';
                 foreach ($examTypes as $examType) {
                     $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'asc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '') . ', ';
                 }
                 return $title;
+            })
+            ->editColumn('full_name', function (Patient $patient) {
+                return $patient->detail_full_name;
             })
             ->addColumn('last_test', function (Patient $patient) use ($examTypes) {
                 $title = '';
                 foreach ($examTypes as $examType) {
                     $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'desc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '') . ', ';
                 }
                 return $title;
             })

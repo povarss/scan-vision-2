@@ -25,6 +25,7 @@ class PatientResource extends JsonResource
             'id' => $this->id,
             'doctor_id' => $this->doctor_id,
             'full_name' => $this->full_name,
+            'detail_full_name' => $this->detail_full_name,
             'phone' => $this->phone,
             'born_date' => $this->born_date?->format('Y-m-d'),
             'age' => !empty($this->born_date) ? Carbon::parse($this->born_date)->age : '',

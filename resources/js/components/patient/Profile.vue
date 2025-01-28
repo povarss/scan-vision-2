@@ -151,7 +151,7 @@ onMounted(() => {
             </VAvatar>
             <div class="d-flex flex-column align-start justify-start ms-4">
               <h5 class="text-h5">
-                {{ patientData.full_name }}
+                {{ patientData.detail_full_name }}
               </h5>
               <h6 class="text-h6">
                 {{ patientData.phone }}

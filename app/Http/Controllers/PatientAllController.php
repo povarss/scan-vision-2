@@ -31,7 +31,8 @@ class PatientAllController extends Controller
                     ->orWhereLike('field', '%' . $request->q . '%')
                     ->orWhereHas('user', function ($query) use ($request) {
                         return $query->whereLike('email', '%' . $request->q . '%');
-                    });
+                    })
+                    ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }
 
@@ -40,6 +41,9 @@ class PatientAllController extends Controller
 
         return DataTables::eloquent($model)
             ->only(['id', 'expire_at', 'doctor', 'email', 'full_name', 'answers', 'comment'])
+            ->editColumn('full_name', function (Patient $patient) {
+                return $patient->detail_full_name;
+            })
             ->editColumn('doctor', function (Patient $patient) {
                 return !empty($patient->doctor_id) ? $patient->doctor?->name : '';
             })
