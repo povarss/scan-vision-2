@@ -207,13 +207,13 @@ onMounted(() => {
                     :error-messages="errors.name"
                   />
                 </VCol>
-                <VCol cols="12" md="6">
+                <!-- <VCol cols="12" md="6">
                   <AppTextField
                     v-model="formData.nick_name"
                     :label="$t('register.nick_name')"
                     :error-messages="errors.nick_name"
                   />
-                </VCol>
+                </VCol> -->
 
                 <VCol cols="12" md="6">
                   <AppMaskTextField
@@ -222,7 +222,7 @@ onMounted(() => {
                     :error-messages="errors.phone"
                   />
                 </VCol>
-                <VCol cols="12" md="6">
+                <VCol cols="12" md="12">
                   <AppSelect
                     :items="references.region"
                     v-model="formData.region_id"

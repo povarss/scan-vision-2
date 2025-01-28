@@ -27,8 +27,8 @@ class PatientController extends Controller
         if (!empty($request->q)) {
             $model->where(function (Builder $query) use ($request) {
                 $query->whereLike('full_name', '%' . $request->q . '%')
-                    ->orWhereLike('phone', '%' . $request->q . '%')
-                    ->orWhereLike('nick_name', '%' . $request->q . '%');
+                    ->orWhereLike('phone', '%' . $request->q . '%');
+                    // ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }
         $examTypes = Exam::get();

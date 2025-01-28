@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["itemSelected", "timeout"]);
+const emit = defineEmits(["itemSelected", "timeout","doubleClickItem"]);
 
 let examData = ref([]);
 const loadTest = async () => {
@@ -79,6 +79,8 @@ const setSelected = (rowKey, colKey) => {
       x: item.x + item.width / 2,
       y: item.y + item.height / 2,
     });
+  }else{
+    emit("doubleClickItem", {rowKey, colKey});
   }
 };
 const onTimeout = () => {

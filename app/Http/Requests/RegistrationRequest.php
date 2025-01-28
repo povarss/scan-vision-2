@@ -25,7 +25,7 @@ class RegistrationRequest extends FormRequest
         $questionsCount = Question::count();
         return [
             'name' => 'required|string|max:255',
-            'nick_name' => 'required|string|max:255',
+            'nick_name' => 'nullable|string|max:255',
             'phone' => 'required|string|max:20|min:12',
             'region_id' => 'required|integer',
 
