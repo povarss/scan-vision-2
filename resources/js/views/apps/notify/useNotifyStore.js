@@ -5,18 +5,28 @@ export const useNotifyStore = defineStore("notify", {
     title: null,
     message: null,
     showOk: false,
+    showPromoAfterClose: false,
   }),
   actions: {
-    showNotification(title, message, showOk = false) {
+    showNotification(
+      title,
+      message,
+      showOk = false,
+      showPromoAfterClose = false
+    ) {
       this.isOpen = true;
       this.title = title;
       this.message = message;
       this.showOk = showOk;
+      this.showPromoAfterClose = showPromoAfterClose;
     },
     hideNotification() {
       this.isOpen = false;
       this.title = null;
       this.message = null;
+    },
+    promoCodeShowed() {
+      this.showPromoAfterClose = false;
     },
   },
 });

@@ -57,17 +57,16 @@ const verticalNavAttrs = computed(() => {
   };
 });
 const notifyStore = useNotifyStore();
-const isAccessPromoNeedShow = ref(true);
 
 const loadUserAccessData = async (id) => {
   const user = useCookie("userData");
   if (hasAccessRole(["doctor", "patient"])) {
     const { data } = await useApi(`/user-access`);
     if (!data.value.data.has_access) {
-      isAccessPromoNeedShow.value = true;
       notifyStore.showNotification(
         t("AccessExpired"),
         t("AccessExpiredDetail"),
+        true,
         true
       );
     }
@@ -84,10 +83,10 @@ onMounted(() => {
 watch(
   () => notifyStore.isOpen,
   (val) => {
-    if (isAccessPromoNeedShow.value && !val && hasAccessRole(["patient"])) {
+    if (notifyStore.showPromoAfterClose && !val && hasAccessRole(["patient"])) {
       isShowPromoDialog.value = true;
+      notifyStore.promoCodeShowed();
     }
-    isAccessPromoNeedShow.value = false;
   }
 );
 

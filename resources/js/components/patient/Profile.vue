@@ -64,7 +64,13 @@ const startTest = (type, examId) => {
       notifyStore.showNotification("", t("promo.AccessMinutesExceeded"));
     }
   } else {
-    notifyStore.showNotification("", t("promo.userAccessExpired"));
+    notifyStore.showNotification(
+        t("AccessExpired"),
+        t("AccessExpiredDetail"),
+        true,
+        true
+      );
+    // notifyStore.showNotification("", t("promo.userAccessExpired"));
   }
 };
 
