@@ -32,7 +32,7 @@ class PatientAllController extends Controller
                     ->orWhereLike('field', '%' . $request->q . '%')
                     ->orWhereHas('user', function ($query) use ($request) {
                         return $query->whereLike('email', '%' . $request->q . '%');
-                    })
+                    });
                     // ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }

@@ -1,5 +1,6 @@
 <script setup>
 import { VForm } from "vuetify/components/VForm";
+import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
 
 const props = defineProps({
   isDialogVisible: {
@@ -15,6 +16,7 @@ const emptyForm = {
 const formData = ref(emptyForm);
 const errors = ref({});
 const refForm = ref();
+const notifyStore = useNotifyStore();
 
 const formReset = () => {
   refForm.value?.reset();
@@ -38,8 +40,12 @@ const store = async () => {
       },
     });
 
-    if (res) {
-      afterSave();
+    if (res.activated) {
+      emit("update:isDialogVisible", false);
+      notifyStore.showNotification("", res.message);
+      setTimeout(() => {
+        afterSave();
+      }, 3000);
     }
   } catch (err) {
     console.error(err);

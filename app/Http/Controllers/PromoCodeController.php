@@ -99,6 +99,6 @@ class PromoCodeController extends Controller
         $promoCode->activate($user->patient);
         DB::commit();
 
-        return 1;
+        return response()->json(['activated' => 1, 'message' => __('labels.ActivatedTill') . $promoCode->end_date->format('d.m.Y')]);
     }
 }

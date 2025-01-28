@@ -17,4 +17,5 @@ return [
     'PromoCode already activated' => 'Промокод вже актививовано',
     'Active' => 'Активний',
     'InActive' => 'Не активний',
+    'ActivatedTill' => 'Підписку продовжено до '
 ];
