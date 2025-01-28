@@ -387,7 +387,10 @@ onMounted(() => {
               :class="{ 'bg-danger': clickedTypes.includes(examType.id) }"
               @click="onTypeClicked(examType.id)"
             >
-              розгорннути
+              <VIcon
+                size="24"
+                icon="tabler-chevron-down"
+              />
             </VBtn>
           </div>
         </VCardItem>
@@ -472,8 +475,8 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-.active {
-  /* Додайте ваші стилі для активного стану */
-  background-color: red;
+.scrollable.active {
+  height: auto;
+
 }
 </style>
