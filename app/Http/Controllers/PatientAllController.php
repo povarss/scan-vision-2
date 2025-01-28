@@ -23,7 +23,8 @@ class PatientAllController extends Controller
     // Register a new user
     public function list(Request $request)
     {
-        $model = Patient::query()->with(['user', 'patient_answers']);
+        $model = Patient::query()->with(['user', 'patient_answers'])
+            ->where('is_archived', 0);
 
         if (!empty($request->q)) {
             $model->where(function (Builder $query) use ($request) {

@@ -37,7 +37,7 @@ const reloadData = () => {
   loadPatientData(props.patientId);
 };
 const returnToPatientList = () => {
-  router.push({ name: "patients" });
+  router.push({ name: hasAccessRole(["admin"]) ? "patients-all" : "patients" });
 };
 
 const types = ref([
