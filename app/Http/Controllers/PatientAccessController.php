@@ -20,6 +20,7 @@ class PatientAccessController extends Controller
 
 
         $patient = Patient::findOrFail($request->id);
+        $patient->full_name = $request->full_name;
         $patient->comment = $request->comment;
         $patient->save();
 
