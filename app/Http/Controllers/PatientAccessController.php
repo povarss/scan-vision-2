@@ -43,7 +43,9 @@ class PatientAccessController extends Controller
         $patient->user_id = $user->id;
         $patient->save();
 
-        Subscription::store($user, $request->expire_at, $request->minutes);
+        if ($request->expire_at && $request->minutes) {
+            Subscription::store($user, $request->expire_at, $request->minutes);
+        }
         DB::commit();
 
         return response()->json([

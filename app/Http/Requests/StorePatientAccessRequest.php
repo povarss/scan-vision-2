@@ -28,8 +28,8 @@ class StorePatientAccessRequest extends FormRequest
             'full_name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($userId)],
             'password' => ($userId ? '' : 'required|'),
-            'expire_at' => 'required|date',
-            'minutes' => 'required|integer',
+            'expire_at' => 'nullable|date',
+            'minutes' => 'nullable|integer',
             'comment' => 'nullable',
         ];
     }
