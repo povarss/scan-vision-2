@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
+use App\Http\Resources\PatientAccessResource;
 use App\Http\Resources\PatientResource;
 use App\Models\Exam;
 use App\Models\Patient;
@@ -27,6 +28,7 @@ class PatientController extends Controller
             $model->where(function (Builder $query) use ($request) {
                 $query->whereLike('full_name', '%' . $request->q . '%')
                     ->orWhereLike('phone', '%' . $request->q . '%');
+                    // ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }
         $examTypes = Exam::get();
@@ -36,15 +38,18 @@ class PatientController extends Controller
                 $title = '';
                 foreach ($examTypes as $examType) {
                     $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'asc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '') . ', ';
                 }
                 return $title;
+            })
+            ->editColumn('full_name', function (Patient $patient) {
+                return $patient->detail_full_name;
             })
             ->addColumn('last_test', function (Patient $patient) use ($examTypes) {
                 $title = '';
                 foreach ($examTypes as $examType) {
                     $exam = PatientExam::where('patient_id', $patient->id)->where('exam_id', $examType->id)->orderBy('id', 'desc')->where('status', PatientExam::STATUS_FINISHED)->first();
-                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '').', ';
+                    $title  .= $examType->label . ' ' . (!empty($exam) ? '(' . $exam->getCorrectPercentage() . '%)' : '') . ', ';
                 }
                 return $title;
             })
@@ -97,5 +102,10 @@ class PatientController extends Controller
     public function get(Patient $patient)
     {
         return new PatientResource($patient);
+    }
+
+    public function getAccess(Patient $patient)
+    {
+        return new PatientAccessResource($patient);
     }
 }

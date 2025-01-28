@@ -1,5 +1,6 @@
 <script setup>
 import { HorizontalNav } from '@layouts/components'
+import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
 
 // ℹ️ Using import from `@layouts` causing build to hangup
 
@@ -14,6 +15,7 @@ const props = defineProps({
 })
 
 const configStore = useLayoutConfigStore()
+const notifyStore = useNotifyStore();
 </script>
 
 <template>
@@ -42,6 +44,13 @@ const configStore = useLayoutConfigStore()
     <main class="layout-page-content">
       <slot />
     </main>
+
+    <Notification
+      v-model:isDrawerOpen="notifyStore.isOpen"
+      :message="notifyStore.message"
+      :title="notifyStore.title"
+      :show-ok="notifyStore.showOk"
+    />
 
     <!-- 👉 Footer -->
     <footer class="layout-footer">

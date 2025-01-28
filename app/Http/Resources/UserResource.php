@@ -15,11 +15,13 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $subscription = $this->subscription;
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'expire_at' => $this->expire_at,
+            'expire_at' => $subscription ? $subscription->end_date : $this->expire_at,
+            'minutes' => $subscription?->minutes ?? 0
         ];
     }
 }

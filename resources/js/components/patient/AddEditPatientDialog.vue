@@ -220,7 +220,7 @@ watch(
             </VCol>
             <VCol cols="12">
               <AppTextField
-                :label="$t('patient.comment')"
+                :label="$t('patient.field')"
                 v-model="patient.field"
                 :rules="formRules.field"
                 :error-messages="errors.field"

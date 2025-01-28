@@ -103,7 +103,7 @@ const onSubmit = () => {
       md="4"
       class="d-none d-md-flex"
     >
-      <!-- here your illustration -->
+      <!-- here your illustration ііі-->
       <div class="d-flex justify-center align-center w-100 position-relative">
         <VImg
           :src="registerMultiStepIllustration"

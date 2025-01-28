@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActivatePromoCodeDialog: typeof import('./resources/js/components/patient/ActivatePromoCodeDialog.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./resources/js/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./resources/js/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditDoctorDialog: typeof import('./resources/js/components/doctor/AddEditDoctorDialog.vue')['default']
@@ -14,6 +15,7 @@ declare module 'vue' {
     AddEditPermissionDialog: typeof import('./resources/js/components/dialogs/AddEditPermissionDialog.vue')['default']
     AddEditRoleDialog: typeof import('./resources/js/components/dialogs/AddEditRoleDialog.vue')['default']
     AddPaymentMethodDialog: typeof import('./resources/js/components/dialogs/AddPaymentMethodDialog.vue')['default']
+    AddPromoCodeDialog: typeof import('./resources/js/components/promoCodes/AddPromoCodeDialog.vue')['default']
     AppAutocomplete: typeof import('./resources/js/@core/components/app-form-elements/AppAutocomplete.vue')['default']
     AppBarSearch: typeof import('./resources/js/@core/components/AppBarSearch.vue')['default']
     AppCardActions: typeof import('./resources/js/@core/components/cards/AppCardActions.vue')['default']
@@ -371,6 +373,7 @@ declare module 'vue' {
     DialogCloseBtn: typeof import('./resources/js/@core/components/DialogCloseBtn.vue')['default']
     Dots: typeof import('./resources/js/components/exam/Dots.vue')['default']
     DropZone: typeof import('./resources/js/@core/components/DropZone.vue')['default']
+    EditPatientAccess: typeof import('./resources/js/components/patient/EditPatientAccess.vue')['default']
     EnableOneTimePasswordDialog: typeof import('./resources/js/components/dialogs/EnableOneTimePasswordDialog.vue')['default']
     ErrorHeader: typeof import('./resources/js/components/ErrorHeader.vue')['default']
     I18n: typeof import('./resources/js/@core/components/I18n.vue')['default']
@@ -381,6 +384,8 @@ declare module 'vue' {
     PdfButton: typeof import('./resources/js/components/exam/PdfButton.vue')['default']
     PricingPlanDialog: typeof import('./resources/js/components/dialogs/PricingPlanDialog.vue')['default']
     ProductDescriptionEditor: typeof import('./resources/js/@core/components/ProductDescriptionEditor.vue')['default']
+    Profile: typeof import('./resources/js/components/patient/Profile.vue')['default']
+    ProfileAccess: typeof import('./resources/js/components/patient/ProfileAccess.vue')['default']
     ReferAndEarnDialog: typeof import('./resources/js/components/dialogs/ReferAndEarnDialog.vue')['default']
     Result: typeof import('./resources/js/components/exam/Result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -403,6 +408,5 @@ declare module 'vue' {
     TwoFactorAuthDialog: typeof import('./resources/js/components/dialogs/TwoFactorAuthDialog.vue')['default']
     UserInfoEditDialog: typeof import('./resources/js/components/dialogs/UserInfoEditDialog.vue')['default']
     UserUpgradePlanDialog: typeof import('./resources/js/components/dialogs/UserUpgradePlanDialog.vue')['default']
-    VueApexCharts: typeof import('vue3-apexcharts')['default']
   }
 }

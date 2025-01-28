@@ -189,6 +189,11 @@ return [
     |
     */
 
+    'Need answer to all questions' => 'Дайте відповідь на питання',
+    'All questions need bee answered' => 'Потрібно відповісти на всі питання',
+    'Answer the question' => 'Виберіть один з варіантів',
+    'The entered promocode is invalid or already used.' => 'Промокод активовано або недійсний',
+
     'attributes' => [
         'full_name' => 'ПІБ',
         'phone' => 'Телефон',

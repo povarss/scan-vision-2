@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -50,6 +51,8 @@ class DoctorController extends Controller
         $user->expire_at = $request->expire_at;
         $user->save();
 
+        Subscription::store($user, $request->expire_at, $request->minutes);
+
         $user->assignRole(User::ROLE_DOCTOR);
         DB::commit();
 
@@ -66,7 +69,8 @@ class DoctorController extends Controller
         return new UserResource($user);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $doctor = User::findOrFail($request->input('id'));
         $doctor->remove();
     }

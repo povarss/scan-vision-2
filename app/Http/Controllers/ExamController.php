@@ -6,6 +6,7 @@ use App\Dto\ExamResultDto;
 use App\Http\Requests\StartExamRequest;
 use App\Http\Requests\StoreExamSettingRequest;
 use App\Models\Exam;
+use App\Models\ExamTimes;
 use App\Models\PatientExam;
 use App\Models\PatientSettings;
 use App\Models\Reference;
@@ -14,6 +15,7 @@ use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ExamController extends Controller
 {
@@ -66,6 +68,14 @@ class ExamController extends Controller
             $patientExam->height = $height;
             $patientExam->save();
         }
+        if ($request->isStart) {
+            if (!$isNew) {
+                $patientExam->counter += 1;
+                $patientExam->save();
+            }
+            ExamTimes::start($patientExam);
+        }
+
         $examConfigs = config('exam');
         return response()->json([
             'pattern' => $patientExam->pattern,
@@ -121,6 +131,7 @@ class ExamController extends Controller
         $patientExam->end_time = date('Y-m-d H:i:s');
         $patientExam->setFinished();
         $patientExam->save();
+        ExamTimes::setTime($patientExam, true);
     }
 
     public function getDetail(PatientExam $patientExam)
@@ -196,6 +207,8 @@ class ExamController extends Controller
             $incorrectCount['right']
         );
         $analyzeInfo = (new GetRecommendationService($examResultDto))->getInformation();
+        $timeExpiredExamId = Cache::pull('time_expired_exam_id');
+        // dd($timeExpiredExamId);
         return [
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
@@ -207,6 +220,7 @@ class ExamController extends Controller
             'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
             'exam_type_recommend' => $patientExam->getExamTypeRecommendLabel(),
             'analyzeInfo' => $analyzeInfo,
+            'showTimeNotification' => ($timeExpiredExamId ==  $patientExam->id ? 1 : 0)
         ];
     }
     public function getInfo(PatientExam $patientExam)
@@ -224,5 +238,19 @@ class ExamController extends Controller
         $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference'))->setWarnings(true);
         // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'));
         return $pdf->stream();
+    }
+
+    public function setTime(PatientExam $patientExam)
+    {
+        $userTime = ExamTimes::setTime($patientExam);
+        $leftSeconds = $userTime->limited_time - $userTime->used_time;
+
+        if ($leftSeconds <= 0) {
+            Cache::put('time_expired_exam_id', $patientExam->id);
+        }
+
+        return [
+            'left_seconds' => $leftSeconds
+        ];
     }
 }

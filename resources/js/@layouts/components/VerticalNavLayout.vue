@@ -1,6 +1,10 @@
 <script setup>
-import { VerticalNav } from '@layouts/components'
-import { useLayoutConfigStore } from '@layouts/stores/config'
+import { VerticalNav } from "@layouts/components";
+import { useLayoutConfigStore } from "@layouts/stores/config";
+import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
+import Notification from "@/views/apps/notify/Notification.vue";
+import { hasAccessRole } from "../plugins/casl";
+const { t } = useI18n();
 
 const props = defineProps({
   navItems: {
@@ -12,53 +16,94 @@ const props = defineProps({
     required: false,
     default: () => ({}),
   },
-})
+});
 
-const { width: windowWidth } = useWindowSize()
-const configStore = useLayoutConfigStore()
-const isOverlayNavActive = ref(false)
-const isLayoutOverlayVisible = ref(false)
-const toggleIsOverlayNavActive = useToggle(isOverlayNavActive)
+const { width: windowWidth } = useWindowSize();
+const configStore = useLayoutConfigStore();
+const isOverlayNavActive = ref(false);
+const isLayoutOverlayVisible = ref(false);
+const toggleIsOverlayNavActive = useToggle(isOverlayNavActive);
+const isShowPromoDialog = ref(false);
 
 // ℹ️ This is alternative to below two commented watcher
 
 // We want to show overlay if overlay nav is visible and want to hide overlay if overlay is hidden and vice versa.
-syncRef(isOverlayNavActive, isLayoutOverlayVisible)
+syncRef(isOverlayNavActive, isLayoutOverlayVisible);
 
 // })
 
 // ℹ️ Hide overlay if user open overlay nav in <md and increase the window width without closing overlay nav
 watch(windowWidth, () => {
-  if (!configStore.isLessThanOverlayNavBreakpoint && isLayoutOverlayVisible.value)
-    isLayoutOverlayVisible.value = false
-})
+  if (
+    !configStore.isLessThanOverlayNavBreakpoint &&
+    isLayoutOverlayVisible.value
+  )
+    isLayoutOverlayVisible.value = false;
+});
 
 const verticalNavAttrs = computed(() => {
-  const vNavAttrs = toRef(props, 'verticalNavAttrs')
+  const vNavAttrs = toRef(props, "verticalNavAttrs");
 
   const {
     wrapper: verticalNavWrapper,
     wrapperProps: verticalNavWrapperProps,
     ...additionalVerticalNavAttrs
-  } = vNavAttrs.value
-
+  } = vNavAttrs.value;
 
   return {
     verticalNavWrapper,
     verticalNavWrapperProps,
     additionalVerticalNavAttrs,
+  };
+});
+const notifyStore = useNotifyStore();
+
+const loadUserAccessData = async (id) => {
+  const user = useCookie("userData");
+  if (hasAccessRole(["doctor", "patient"])) {
+    const { data } = await useApi(`/user-access`);
+    if (!data.value.data.has_access) {
+      notifyStore.showNotification(
+        t("AccessExpired"),
+        t("AccessExpiredDetail"),
+        true,
+        true
+      );
+    }
+    // if (data.value) {
+    //   patientData.value = data.value.data;
+    // }
   }
-})
+};
+
+onMounted(() => {
+  loadUserAccessData();
+});
+
+watch(
+  () => notifyStore.isOpen,
+  (val) => {
+    if (notifyStore.showPromoAfterClose && !val && hasAccessRole(["patient"])) {
+      isShowPromoDialog.value = true;
+      notifyStore.promoCodeShowed();
+    }
+  }
+);
+
+const promoActivated = () => {
+  location.reload();
+};
 </script>
 
 <template>
-  <div
-    class="layout-wrapper"
-    :class="configStore._layoutClasses"
-  >
+  <div class="layout-wrapper" :class="configStore._layoutClasses">
     <component
       v-if="false"
-      :is="verticalNavAttrs.verticalNavWrapper ? verticalNavAttrs.verticalNavWrapper : 'div'"
+      :is="
+        verticalNavAttrs.verticalNavWrapper
+          ? verticalNavAttrs.verticalNavWrapper
+          : 'div'
+      "
       v-bind="verticalNavAttrs.verticalNavWrapperProps"
       class="vertical-nav-wrapper"
     >
@@ -76,7 +121,7 @@ const verticalNavAttrs = computed(() => {
         </template>
       </VerticalNav>
     </component>
-    <div class="layout-content-wrapper" style="padding: 0px;">
+    <div class="layout-content-wrapper" style="padding: 0px">
       <header
         class="layout-navbar"
         :class="[{ 'navbar-blur': configStore.isNavbarBlurEnabled }]"
@@ -93,6 +138,16 @@ const verticalNavAttrs = computed(() => {
           <slot />
         </div>
       </main>
+      <Notification
+        v-model:isDrawerOpen="notifyStore.isOpen"
+        :message="notifyStore.message"
+        :title="notifyStore.title"
+        :show-ok="notifyStore.showOk"
+      />
+      <ActivatePromoCodeDialog
+        v-model:isDialogVisible="isShowPromoDialog"
+        @saved="promoActivated"
+      />
       <footer class="layout-footer">
         <div class="footer-content-container">
           <slot name="footer" />
@@ -102,7 +157,11 @@ const verticalNavAttrs = computed(() => {
     <div
       class="layout-overlay"
       :class="[{ visible: isLayoutOverlayVisible }]"
-      @click="() => { isLayoutOverlayVisible = !isLayoutOverlayVisible }"
+      @click="
+        () => {
+          isLayoutOverlayVisible = !isLayoutOverlayVisible;
+        }
+      "
     />
   </div>
 </template>

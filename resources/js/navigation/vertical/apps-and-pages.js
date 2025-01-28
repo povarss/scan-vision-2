@@ -1,7 +1,14 @@
 export default [
   {
+    title: 'menu.Profile',
+    icon: { icon: 'tabler-user' },
+    roles: ['patient'],
+    to: 'profile',
+  },
+  {
     title: 'menu.Patients',
     icon: { icon: 'tabler-users' },
+    roles: ['admin','doctor'],
     to: 'patients',
   },
   {
@@ -9,6 +16,18 @@ export default [
     icon: { icon: 'tabler-users' },
     roles: ['admin'],
     to: 'doctors',
+  },
+  {
+    title: 'menu.PromoCodes',
+    icon: { icon: 'tabler-rosette-discount-check' },
+    roles: ['admin'],
+    to: 'promo-codes',
+  },
+  {
+    title: 'menu.AllPatients',
+    icon: { icon: 'tabler-users' },
+    roles: ['admin'],
+    to: 'patients-all',
   },
   // {
   //   title: 'Авторизація',

@@ -51,16 +51,21 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+        $isArchived = false;
+        if (!$user) {
+            $isArchived = $user->hasRole(User::ROLE_PATIENT) && $user->patient->is_archived;
+        }
+        // $user->password =
         // Check if the user exists, if password is correct, and if access has expired
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password) || $isArchived) {
             throw ValidationException::withMessages(['email' => __('messages.InvalidCredentials')]);
             // return response()->json(['errors' => 'Invalid credentials'], 401);
         }
 
-        if ($this->checkIsExpired($user)) {
-            throw ValidationException::withMessages(['email' => __('messages.UserAccessHasExpired')]);
-            // return response()->json(['error' => 'User access has expired'], 403);
-        }
+        // if ($this->checkIsExpired($user)) {
+        //     throw ValidationException::withMessages(['email' => __('messages.UserAccessHasExpired')]);
+        //     // return response()->json(['error' => 'User access has expired'], 403);
+        // }
 
         $token = $user->createToken('authToken')->plainTextToken;
 
@@ -69,7 +74,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'userData' => [
                 'id' => $user->id,
-                'fullName' => $user->name,
+                'fullName' => $user->full_name,
                 'role' => $user->roles->first()->name
             ],
             'userAbilityRules' => [

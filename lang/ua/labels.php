@@ -11,5 +11,11 @@ return [
         1 => 'Скринінг',
         2 => 'Тренування',
         3 => 'Оптокінетичне тренування',
-    ]
+    ],
+    'Please enter promoCodes' => 'Введіть промокод',
+    'This promoCodes already exists' => 'Ці промокоди вже існують в системі',
+    'PromoCode already activated' => 'Промокод вже актививовано',
+    'Active' => 'Активний',
+    'InActive' => 'Не активний',
+    'ActivatedTill' => 'Підписку продовжено до '
 ];
