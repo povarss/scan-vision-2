@@ -127,6 +127,7 @@ class ExamController extends Controller
     {
         $patientExam = PatientExam::where('id', $request->id)->first();
         $patientExam->result = $request->result;
+        $patientExam->double_clicks = $request->double_clicks;
         $patientExam->end_time = date('Y-m-d H:i:s');
         $patientExam->setFinished();
         $patientExam->save();
@@ -163,8 +164,11 @@ class ExamController extends Controller
         }
 
         $correctCount = ['left' => 0, 'right' => 0, 'total' => $correctTotals['total'], 'selected' => 0];
-        $incorrectCount = ['left' => 0, 'right' => 0, 'total' => 0];
+        $incorrectCount = ['left' => 0, 'right' => 0, 'total' => 0, 'left_double' => 0, 'right_double' => 0, 'double_total' => 0];
 
+        $doubleClicks = collect($patientExam->double_clicks)->keyBy(function (array $item, int $key) {
+            return $item[0] . '_' . $item[1];
+        });
         foreach ($patientExam->result as $key => $position) {
             $item = $patientExam->pattern[$position[0]][$position[1]];
             if ($item['isCorrect']) {
@@ -176,10 +180,19 @@ class ExamController extends Controller
                 }
             } else {
                 $incorrectCount['total'] = $incorrectCount['total'] + 1;
+
                 if (in_array($item['section'], [1, 2, 7, 8])) {
                     $incorrectCount['right'] = $incorrectCount['right'] + 1;
                 } else {
                     $incorrectCount['left'] = $incorrectCount['left'] + 1;
+                }
+                if ($doubleClicks->has($position[0] . '_' . $position[1])) {
+                    $incorrectCount['double_total'] += 1;
+                    if (in_array($item['section'], [1, 2, 7, 8])) {
+                        $incorrectCount['right_double'] +=  1;
+                    } else {
+                        $incorrectCount['left_double'] +=  1;
+                    }
                 }
             }
         }

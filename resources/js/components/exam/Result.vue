@@ -28,6 +28,9 @@ const resultData = ref({
     total: 0,
     left: 0,
     right: 0,
+    double_total: 0,
+    left_double: 0,
+    right_double: 0,
   },
   typeLabel: "",
 });
@@ -223,6 +226,79 @@ onMounted(() => {
               </div>
             </template>
           </VListItem>
+
+          <VListItem>
+            <template #prepend>
+              <VAvatar
+                color="error"
+                variant="tonal"
+                size="34"
+                rounded
+                class="me-1"
+              >
+                <VIcon icon="tabler-exclamation-circle" size="22" />
+              </VAvatar>
+            </template>
+            <VListItemTitle class="font-weight-medium me-4">
+              Кількість неправильних стимулів c двойним кликом:
+            </VListItemTitle>
+            <template #append>
+              <div class="d-flex gap-x-4">
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.double_total }}
+                </div>
+              </div>
+            </template>
+          </VListItem>
+
+          <VListItem>
+            <template #prepend>
+              <VAvatar
+                color="secondary"
+                variant="tonal"
+                size="34"
+                rounded
+                class="me-1"
+              >
+                <VIcon icon="tabler-arrow-big-right" size="22" />
+              </VAvatar>
+            </template>
+            <VListItemTitle class="font-weight-medium me-4">
+              Кількість помилкових цілей з правого боку c двойним кликом
+            </VListItemTitle>
+            <template #append>
+              <div class="d-flex gap-x-4">
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.right_double }}
+                </div>
+              </div>
+            </template>
+          </VListItem>
+
+          <VListItem>
+            <template #prepend>
+              <VAvatar
+                color="secondary"
+                variant="tonal"
+                size="34"
+                rounded
+                class="me-1"
+              >
+                <VIcon icon="tabler-arrow-big-left" size="22" />
+              </VAvatar>
+            </template>
+            <VListItemTitle class="font-weight-medium me-4">
+              Кількість помилкових цілей з лівого боку c двойним кликом
+            </VListItemTitle>
+            <template #append>
+              <div class="d-flex gap-x-4">
+                <div class="text-body-1">
+                  {{ resultData.incorrectCount.left_double }}
+                </div>
+              </div>
+            </template>
+          </VListItem>
+
         </VList>
       </VCardText>
     </VCol>
