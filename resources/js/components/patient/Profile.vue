@@ -65,11 +65,11 @@ const startTest = (type, examId) => {
     }
   } else {
     notifyStore.showNotification(
-        t("AccessExpired"),
-        t("AccessExpiredDetail"),
-        true,
-        true
-      );
+      t("AccessExpired"),
+      t("AccessExpiredDetail"),
+      true,
+      true
+    );
     // notifyStore.showNotification("", t("promo.userAccessExpired"));
   }
 };
@@ -361,7 +361,11 @@ onMounted(() => {
   </VCard>
   <VRow>
     <!--    <VCol :cols="12 / patientData.examTypes.length"-->
-    <VCol cols="12" v-for="examType in patientData.examTypes">
+    <VCol
+      cols="12"
+      v-for="examType in patientData.examTypes"
+      :class="{ active: clickedTypes.includes(examType.id) }"
+    >
       <!-- 👉 User Activity timeline -->
       <VCard>
         <VCardItem class="notification-section">
@@ -384,7 +388,7 @@ onMounted(() => {
               variant="elevated"
               visible="true"
               class="ms-auto"
-              :class="{ 'bg-danger': clickedTypes.includes(examType.id) }"
+              :class="{ active: clickedTypes.includes(examType.id) }"
               @click="onTypeClicked(examType.id)"
             >
               розгорннути
