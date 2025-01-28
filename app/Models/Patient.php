@@ -69,6 +69,7 @@ class Patient extends Model
 
     public function getDetailFullNameAttribute()
     {
-        return $this->nick_name . ' ' . $this->full_name;
+        return $this->full_name;
+        // return $this->nick_name . ' ' . $this->full_name;
     }
 }
