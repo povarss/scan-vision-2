@@ -27,6 +27,7 @@ const isArchiveDialogVisible = ref(false);
 const isEditAccessOpen = ref(false);
 const router = useRouter();
 const clickedTypes = ref([]);
+const userData = useCookie("userData");
 
 const loadPatientData = async (id) => {
   const { data } = await useApi(`/patient/${id}`);
@@ -97,6 +98,9 @@ const openEdit = () => {
   if (hasAccessRole(["admin"])) {
     if (patientData.value.doctor_id == 0) {
       isEditAccessOpen.value = true;
+    }
+    if (patientData.value.doctor_id == userData.value.id) {
+      isAddPatientVisible.value = true;
     }
   } else {
     isAddPatientVisible.value = true;
