@@ -365,6 +365,7 @@ onMounted(() => {
       cols="12"
       v-for="examType in patientData.examTypes"
       :class="{ active: clickedTypes.includes(examType.id) }"
+      class="scrollable-b"
     >
       <!-- 👉 User Activity timeline -->
       <VCard>
@@ -387,11 +388,14 @@ onMounted(() => {
             <VBtn
               variant="elevated"
               visible="true"
-              class="ms-auto"
+              class="ms-auto scrolable-btn"
               :class="{ active: clickedTypes.includes(examType.id) }"
               @click="onTypeClicked(examType.id)"
             >
-              розгорннути
+              <VIcon
+                size="24"
+                icon="tabler-chevron-down"
+              />
             </VBtn>
           </div>
         </VCardItem>
@@ -469,6 +473,7 @@ onMounted(() => {
   padding-bottom: 10px !important;
 }
 .scrollable {
+  min-height: auto;
   height: 260px;
   overflow-y: auto;
   //border: 1px solid #ccc;
@@ -476,8 +481,12 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-.active {
-  /* Додайте ваші стилі для активного стану */
-  background-color: red;
+.scrollable-b.active .scrollable{
+  min-height: 260px;
+  height: auto!important;
+
+}
+.scrolable-btn.active .v-icon{
+  transform: rotate(180deg);
 }
 </style>
