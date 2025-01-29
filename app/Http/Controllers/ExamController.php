@@ -15,6 +15,7 @@ use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class ExamController extends Controller
@@ -187,11 +188,12 @@ class ExamController extends Controller
                     $incorrectCount['left'] = $incorrectCount['left'] + 1;
                 }
                 if ($doubleClicks->has($position[0] . '_' . $position[1])) {
-                    $incorrectCount['double_total'] += 1;
+                    $clicks = Arr::get($doubleClicks->get($position[0] . '_' . $position[1]), 2);
+                    $incorrectCount['double_total'] += $clicks;
                     if (in_array($item['section'], [1, 2, 7, 8])) {
-                        $incorrectCount['right_double'] +=  1;
+                        $incorrectCount['right_double'] +=  $clicks;
                     } else {
-                        $incorrectCount['left_double'] +=  1;
+                        $incorrectCount['left_double'] +=  $clicks;
                     }
                 }
             }

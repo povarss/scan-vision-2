@@ -80,10 +80,13 @@ const onItemSelected = (items) => {
 };
 
 const onDoubleClicked = (item) => {
-  if (
-    !doubleCLicks.value.some((v) => v[0] == item.rowKey && v[1] == item.colKey)
-  ) {
-    doubleCLicks.value.push([parseInt(item.rowKey), parseInt(item.colKey)]);
+  const existingClick = doubleCLicks.value.find(
+    (v) => v[0] == item.rowKey && v[1] == item.colKey
+  );
+  if (existingClick) {
+    existingClick[2]++;
+  } else {
+    doubleCLicks.value.push([parseInt(item.rowKey), parseInt(item.colKey), 1]);
   }
 };
 
