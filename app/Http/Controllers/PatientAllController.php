@@ -32,8 +32,11 @@ class PatientAllController extends Controller
                     ->orWhereLike('field', '%' . $request->q . '%')
                     ->orWhereHas('user', function ($query) use ($request) {
                         return $query->whereLike('email', '%' . $request->q . '%');
+                    })
+                    ->orWhereHas('doctor', function ($query) use ($request) {
+                        return $query->whereLike('name', '%' . $request->q . '%');
                     });
-                    // ->orWhereLike('nick_name', '%' . $request->q . '%');
+                // ->orWhereLike('nick_name', '%' . $request->q . '%');
             });
         }
 
@@ -55,7 +58,7 @@ class PatientAllController extends Controller
                 return $patient->field;
             })
             ->addColumn('expire_at', function (Patient $patient) {
-                if (empty($patient->user_id)) {
+                if (!empty($patient->doctor_id)) {
                     return  null;
                 }
                 $access = (new CheckTestAccessService($patient->user))->handle();
