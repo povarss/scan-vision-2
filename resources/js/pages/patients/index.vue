@@ -25,18 +25,22 @@ const headers = [
   {
     title: "Користувач",
     key: "user",
+    sortable: false,
   },
   {
     title: "Телефон",
     key: "role",
+    sortable: false,
   },
   {
     title: "Перший тест",
     key: "first_test",
+    sortable: false,
   },
   {
     title: "Останній тест",
     key: "last_test",
+    sortable: false,
   },
   {
     title: "",

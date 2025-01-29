@@ -25,30 +25,37 @@ const headers = [
   {
     title: t("promo.status"),
     key: "status",
+    sortable: false,
   },
   {
     title: t("promo.code"),
     key: "code",
+    sortable: false,
   },
   {
     title: t("promo.created_at"),
     key: "created_at",
+    sortable: false,
   },
   {
     title: t("promo.activated_at"),
     key: "activated_at",
+    sortable: false,
   },
   {
     title: t("promo.user_email"),
     key: "user_email",
+    sortable: false,
   },
   {
     title: t("promo.days"),
     key: "days",
+    sortable: false,
   },
   {
     title: t("promo.minutes"),
     key: "minutes",
+    sortable: false,
   },
   // {
   //   title: "",

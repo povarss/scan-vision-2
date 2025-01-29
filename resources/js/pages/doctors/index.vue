@@ -24,14 +24,17 @@ const headers = [
   {
     title: "Користувач",
     key: "name",
+    sortable: false,
   },
   {
     title: "Email",
     key: "email",
+    sortable: false,
   },
   {
     title: "Дата закінчення підписки",
     key: "expire_at",
+    sortable: false,
   },
   {
     title: "",
