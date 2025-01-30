@@ -33,6 +33,10 @@ const resultData = ref({
     right_double: 0,
   },
   typeLabel: "",
+  analyzeInfo : {
+    messages: [],
+    recommendations: []
+  }
 });
 const emit = defineEmits(["dataLoaded"]);
 const notifyStore = useNotifyStore();
@@ -42,7 +46,7 @@ const getResult = async () => {
   if (data.value) {
     resultData.value = data.value;
     emit("dataLoaded", data.value);
-    if(resultData.value.showTimeNotification == 1){
+    if (resultData.value.showTimeNotification == 1) {
       notifyStore.showNotification("", t("promo.AccessMinutesExceeded"));
     }
   }
@@ -298,9 +302,38 @@ onMounted(() => {
               </div>
             </template>
           </VListItem>
-
         </VList>
       </VCardText>
+    </VCol>
+    <VCol cols="12" md="12">
+      <div>
+        <table style="color: #0058a0; padding: 0 0 0 0 !important">
+          <tr
+            style="padding: 0 0 0 0 !important"
+            v-for="message in resultData.analyzeInfo.messages"
+          >
+            <td style="padding: 0 0 0 0 !important">
+              {{ message }}
+            </td>
+          </tr>
+        </table>
+        <table
+          style="
+            color: #0058a0;
+            padding: 0 0 0 0 !important;
+            font-style: italic;
+          "
+        >
+          <tr
+            style="padding: 0 0 0 0 !important"
+            v-for="recommendation in resultData.analyzeInfo.recommendations"
+          >
+            <td style="padding: 0 0 0 0 !important">
+              {{ recommendation }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </VCol>
 
     <VCol cols="12" md="12">
