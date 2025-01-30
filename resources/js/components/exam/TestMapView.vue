@@ -121,7 +121,11 @@ const wrapperHeight = computed(() => {
               <img
                 @click="setSelected(rowKey, colKey)"
                 :src="
-                  '/images/' + examParams.configs.folder + '/' + imgItem.type + '.svg'
+                  '/images/' +
+                  examParams.configs.folder +
+                  '/' +
+                  imgItem.type +
+                  '.svg'
                 "
                 :width="imgItem.width"
                 :height="imgItem.height"
@@ -140,6 +144,23 @@ const wrapperHeight = computed(() => {
                   backgroundColor: getSectionColor(imgItem, rowKey, colKey),
                 }"
               />
+              <div
+                v-if="examParams.doubleClicks[rowKey + '_' + colKey]"
+                style="
+                  position: absolute;
+                  padding: 2px;
+                  box-sizing: content-box;
+                  border: 2px solid transparent;
+                  color: #ffff;
+                  font-size: 18px;
+                "
+                :style="{
+                  top: imgItem.y + 'px',
+                  left: imgItem.x + 'px',
+                }"
+              >
+                {{ examParams.doubleClicks[rowKey + "_" + colKey][2] }}
+              </div>
             </template>
           </template>
         </div>

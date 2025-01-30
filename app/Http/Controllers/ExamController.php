@@ -87,6 +87,9 @@ class ExamController extends Controller
             'configs' => $examConfigs[$patientExam->exam_id],
             'custom_settings' => $patientExam->custom_settings,
             'pattern_additional_items' => $patientExam->pattern_additional_items,
+            'doubleClicks' => collect($patientExam->double_clicks)->keyBy(function (array $item, int $key) {
+                return $item[0] . '_' . $item[1];
+            })
         ]);
     }
 
@@ -222,7 +225,7 @@ class ExamController extends Controller
             'typeLabel' => Exam::where('id', $patientExam->exam_id)->first()->label,
             'exam_type_recommend' => $patientExam->getExamTypeRecommendLabel(),
             'analyzeInfo' => $analyzeInfo,
-            'showTimeNotification' => ($timeExpiredExamId ==  $patientExam->id ? 1 : 0)
+            'showTimeNotification' => ($timeExpiredExamId ==  $patientExam->id ? 1 : 0),
         ];
     }
     public function getInfo(PatientExam $patientExam)
@@ -237,7 +240,10 @@ class ExamController extends Controller
         $examConfigs = config('exam');
         $config = $examConfigs[$patientExam->exam_id];
         $reference = Reference::get()->keyBy('id')->groupBy('key_', true);
-        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference'))->setWarnings(true);
+        $doubleClicks = collect($patientExam->double_clicks)->keyBy(function (array $item, int $key) {
+            return $item[0] . '_' . $item[1];
+        });
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference','doubleClicks'))->setWarnings(true);
         // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'));
         return $pdf->stream();
     }
