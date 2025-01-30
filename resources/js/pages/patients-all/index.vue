@@ -25,26 +25,32 @@ const headers = [
   {
     title: "Дійсний до",
     key: "expire_at",
+    sortable: false,
   },
   {
     title: "email",
     key: "email",
+    sortable: false,
   },
   {
     title: "ПІБ",
     key: "full_name",
+    sortable: false,
   },
   {
-    title: "Доктор",
+    title: "Лікар",
     key: "doctor",
+    sortable: false,
   },
   {
     title: "скарги",
     key: "answers",
+    sortable: false,
   },
   {
     title: "комментарий",
     key: "comment",
+    sortable: false,
   },
   {
     title: "",
