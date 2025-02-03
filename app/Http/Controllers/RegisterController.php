@@ -31,7 +31,7 @@ class RegisterController extends Controller
 
         $expireDate = Carbon::now()->addDays($promoCode->day)->format('Y-m-d');
 
-        $user = User::createPatientUser($request->nick_name, $request->email, $request->password, $expireDate);
+        $user = User::createPatientUser($request->name, $request->email, $request->password, $expireDate);
 
         $patient = new Patient();
         $patient->doctor_id = 0;
