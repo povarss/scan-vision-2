@@ -119,7 +119,6 @@ const onSubmit = () => {
                   label="Email"
                   type="email"
                   placeholder="johndoe@email.com"
-                  :rules="[requiredValidator, emailValidator]"
                   :error-messages="errors.email"
                 />
               </VCol>
