@@ -203,7 +203,7 @@ onMounted(() => {
                 <VCol cols="12" md="6">
                   <AppTextField
                     v-model="formData.name"
-                    :label="$t('register.name')"
+                    :label="$t('patient.full_name')"
                     :error-messages="errors.name"
                   />
                 </VCol>
