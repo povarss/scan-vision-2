@@ -54,7 +54,9 @@ class ExamController extends Controller
     {
         $isNew = empty($patientExam->pattern);
 
-        if ($isNew) {
+        $isRestart = $request->isRestart;
+        if ($isNew || $isRestart) {
+            $patientExam->pattern = null;
             $width  = intval(floor($request->width));
             $height  = intval(floor($request->height));
             $filler = new PatternMakerService($patientExam, $width, $height);

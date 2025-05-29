@@ -27,12 +27,15 @@ const emit = defineEmits([
   "doubleClickItem",
   "loadTest",
   "finish",
+  "restart",
 ]);
 
 const examData = computed(() => props.examParams.pattern);
 const currentNumber = ref(1);
 const wrongSelections = ref(new Set());
 const properItems = ref([]);
+const showRefreshTimer = ref(false);
+const refreshTime = ref(0.1);
 
 const setSelected = (selectedNumber, rowKey, colKey) => {
   const items = [...props.selectedItems, `${rowKey}_${colKey}`];
@@ -43,7 +46,10 @@ const setSelected = (selectedNumber, rowKey, colKey) => {
     properItems.value.push(`${rowKey}_${colKey}`);
     currentNumber.value++;
   } else {
-    if (!properItems.value.some((item) => item === position) && props.selectedItems.some((item) => item === position)) {
+    if (
+      !properItems.value.some((item) => item === position) &&
+      props.selectedItems.some((item) => item === position)
+    ) {
       emit("doubleClickItem", { rowKey, colKey });
     }
     wrongSelections.value.add(position);
@@ -52,19 +58,37 @@ const setSelected = (selectedNumber, rowKey, colKey) => {
     }, 1000);
   }
 
-  if (properItems.value.length === props.examParams.pattern.length * props.examParams.pattern[0].length) {
-    emit("finish");
+  if (
+    properItems.value.length ===
+    props.examParams.pattern.length * props.examParams.pattern[0].length
+  ) {
+    if (props.exam.type == 2) {
+      showRefreshTimer.value = true;
+    } else {
+      emit("finish");
+    }
   }
 };
 
-const isSelected = (rowKey, colKey) => properItems.value.includes(`${rowKey}_${colKey}`);
+const isSelected = (rowKey, colKey) =>
+  properItems.value.includes(`${rowKey}_${colKey}`);
 const loadTest = () => emit("loadTest");
 const onTimeout = () => emit("timeout");
 
 const getCellColor = (rowKey, colKey) => {
   if (isSelected(rowKey, colKey)) return "rgba(0, 255, 0, 0.3)";
-  if (wrongSelections.value.has(`${rowKey}_${colKey}`)) return "rgba(255, 0, 0, 0.3)";
+  if (wrongSelections.value.has(`${rowKey}_${colKey}`))
+    return "rgba(255, 0, 0, 0.3)";
   return "#e0e0e0"; // Lighter grey for better contrast
+};
+
+const onRefreshTimeout = () => {
+  showRefreshTimer.value = false;
+  refreshTime.value = 0.1;
+  properItems.value = [];
+  wrongSelections.value = new Set();
+  currentNumber.value = 1;
+  emit("restart");
 };
 
 onMounted(() => {
@@ -72,12 +96,23 @@ onMounted(() => {
     loadTest();
   }, 1000);
 });
-
 </script>
 
 <template>
   <VCol cols="12" class="d-flex flex-column">
-    <Timer :initialTime="exam.time" @timeout="onTimeout" />
+    <template v-if="!showRefreshTimer">
+      <Timer :initialTime="exam.time" @timeout="onTimeout" />
+    </template>
+    <div class="d-flex flex-column" style="height: 20px">
+      <template v-if="showRefreshTimer">
+        <div class="d-flex flex-row align-center justify-center">
+          <div class="text-center me-2">Refresh Time:</div>
+          <div>
+            <Timer :initialTime="refreshTime" @timeout="onRefreshTimeout" />
+          </div>
+        </div>
+      </template>
+    </div>
   </VCol>
   <VCol cols="12" class="d-flex flex-column">
     <div
@@ -87,11 +122,7 @@ onMounted(() => {
     >
       <div class="number-grid">
         <dots v-if="examParams.type == 3" :examParams="examParams" />
-        <div
-          v-for="(row, rowKey) in examData"
-          :key="rowKey"
-          class="number-row"
-        >
+        <div v-for="(row, rowKey) in examData" :key="rowKey" class="number-row">
           <div
             v-for="(cellNumber, colKey) in row"
             :key="colKey"

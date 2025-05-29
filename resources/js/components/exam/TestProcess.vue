@@ -21,7 +21,7 @@ const examParams = ref({});
 const container = ref();
 const timer = ref();
 
-const loadTest = async () => {
+const loadTest = async (isRestart = false) => {
   await nextTick();
   startTimer();
   const { data } = await useApi(
@@ -31,7 +31,8 @@ const loadTest = async () => {
       container.value.clientWidth +
       "&height=" +
       container.value.clientHeight +
-      "&isStart=1"
+      "&isStart=1" +
+      (isRestart ? "&isRestart=1" : "")
   );
   if (data.value) {
     // examData.value = data.value.pattern;
@@ -105,6 +106,13 @@ const startTimer = () => {
   }, 1000); // 30 seconds in milliseconds
 };
 
+const restart = () => {
+  if (timer.value) {
+    clearInterval(timer.value);
+  }
+  loadTest(true);
+};
+
 onBeforeUnmount(() => {
   if (timer.value) {
     clearInterval(timer.value);
@@ -148,6 +156,7 @@ onBeforeUnmount(() => {
         @doubleClickItem="handleDoubleClickItem"
         @loadTest="loadTest"
         @finish="onTimeout"
+        @restart="restart"
         v-if="isNumberFinderExam(exam)"
       />
     </div>
