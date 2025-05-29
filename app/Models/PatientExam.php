@@ -74,10 +74,15 @@ class PatientExam extends Model
     public function selectedCorrectCount()
     {
         $count = 0;
-        foreach ($this->result as $pos) {
-            if ($this->pattern[$pos[0]][$pos[1]]['isCorrect']) {
-                $count++;
+        if ($this->exam_id < 4) {
+            foreach ($this->result as $pos) {
+                if ($this->pattern[$pos[0]][$pos[1]]['isCorrect']) {
+                    $count++;
+                }
             }
+        } else {
+            $level = config('exam.4.levels.' . $this->level);
+            $count = $level['x'] * $level['y'];
         }
         return  $count;
     }
@@ -85,14 +90,19 @@ class PatientExam extends Model
     public function totalCorrectCount()
     {
         $count = 0;
-        if (!empty($this->pattern)) {
-            foreach ($this->pattern as $row) {
-                foreach ($row as $cell) {
-                    if ($cell['isCorrect']) {
-                        $count++;
+        if ($this->exam_id < 4) {
+            if (!empty($this->pattern)) {
+                foreach ($this->pattern as $row) {
+                    foreach ($row as $cell) {
+                        if ($cell['isCorrect']) {
+                            $count++;
+                        }
                     }
                 }
             }
+        } else {
+            $level = config('exam.4.levels.' . $this->level);
+            $count = $level['x'] * $level['y'];
         }
         return  $count;
     }

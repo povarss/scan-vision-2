@@ -39,6 +39,10 @@ const modeInfo = computed(() => {
   return props.references?.modes;
 });
 
+const resultLevels = computed(() => {
+  return props.references?.id == 4 ? props.references?.levels : levels;
+});
+
 onMounted(() => {});
 const emit = defineEmits(["settingsSaved"]);
 const storeSetting = () => {
@@ -113,9 +117,6 @@ watch(
             <div v-html="infoText"></div>
           </VCardText>
 
-          <!--          <VCardText class="d-flex justify-end">-->
-          <!--            <VBtn @click="levelDialogInfo = false"> I accept </VBtn>-->
-          <!--          </VCardText>-->
         </VCard>
       </VDialog>
 
@@ -126,7 +127,7 @@ watch(
         <CustomRadiosWithIcon
           v-model:selected-radio="formData.level"
           @info-clicked="infoClicked($event)"
-          :radio-content="levels"
+          :radio-content="resultLevels"
           :grid-column="{ sm: '4', cols: '12' }"
         />
       </div>

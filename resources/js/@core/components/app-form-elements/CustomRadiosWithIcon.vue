@@ -5,7 +5,7 @@ const props = defineProps({
     required: true,
   },
   radioContent: {
-    type: Array,
+    type: [Array, Object],
     required: true,
   },
   gridColumn: {
