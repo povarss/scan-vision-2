@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from "vue";
-import testImg from "@images/test_img.png";
 import { useNotifyStore } from "@/views/apps/notify/useNotifyStore";
+import { isSvgExam } from "./testUtil";
 const { t } = useI18n();
 
 const props = defineProps({
@@ -33,10 +33,10 @@ const resultData = ref({
     right_double: 0,
   },
   typeLabel: "",
-  analyzeInfo : {
+  analyzeInfo: {
     messages: [],
-    recommendations: []
-  }
+    recommendations: [],
+  },
 });
 const emit = defineEmits(["dataLoaded"]);
 const notifyStore = useNotifyStore();
@@ -336,16 +336,9 @@ onMounted(() => {
       </div>
     </VCol>
 
-    <VCol cols="12" md="12">
+    <VCol cols="12" md="12" v-if="isSvgExam(resultData)">
       <div class="symbol-container border rounded mt-5 pa-5">
         <TestMapView :exam="exam" :references="references" />
-
-        <!-- <img
-          class="misc-footer-img d-none d-md-block"
-          :src="testImg"
-          alt="misc-footer-img"
-          width="100%"
-        /> -->
       </div>
     </VCol>
   </VRow>

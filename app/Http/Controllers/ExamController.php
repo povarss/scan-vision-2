@@ -11,6 +11,7 @@ use App\Models\PatientExam;
 use App\Models\PatientSettings;
 use App\Models\Reference;
 use App\Services\GetRecommendationService;
+use App\Services\PatternMakerService;
 use App\Services\SvgFillerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -53,17 +54,15 @@ class ExamController extends Controller
     {
         $isNew = empty($patientExam->pattern);
 
-        if ($isNew) {
+        $isRestart = $request->isRestart;
+        if ($isNew || $isRestart) {
+            $patientExam->pattern = null;
             $width  = intval(floor($request->width));
             $height  = intval(floor($request->height));
-            $filler = new SvgFillerService($patientExam, $width, $height);
-            $pattern = $filler->makePrint();
-            $patientExam->pattern = $pattern;
-            if ($patientExam->type == PatientExam::TYPE_WITH_DOTS) {
-                $patientExam->pattern_additional_items = [
-                    'dots' => $filler->makeDots()
-                ];
-            }
+            $filler = new PatternMakerService($patientExam, $width, $height);
+            $filler->makePattern();
+            $patientExam->pattern = $filler->getPattern();
+            $patientExam->pattern_additional_items = $filler->getAdditionalItems();
             $patientExam->start_time = date('Y-m-d H:i:s');
             $patientExam->width = $width;
             $patientExam->height = $height;
@@ -152,55 +151,11 @@ class ExamController extends Controller
         $testMinute = intval(floor($difSeconds / 60));
         $testSecond = $difSeconds - $testMinute * 60;
 
+        $patternMaker = new PatternMakerService($patientExam, $patientExam->width, $patientExam->height);
+        $correctTotals = $patternMaker->calcTotals();
+        [$correctCount, $incorrectCount] = $patternMaker->getCorrectTotals();
+        $correctCount['total'] = $correctTotals['total'];
 
-        $correctTotals = ['total' => 0, 'left' => 0, 'right' => 0];
-        foreach ($patientExam->pattern as $row) {
-            foreach ($row as $item) {
-                if ($item['isCorrect']) {
-                    $correctTotals['total'] = $correctTotals['total'] + 1;
-                    if (in_array($item['section'], [1, 2, 7, 8])) {
-                        $correctTotals['right'] = $correctTotals['right'] + 1;
-                    } else {
-                        $correctTotals['left'] = $correctTotals['left'] + 1;
-                    }
-                }
-            }
-        }
-
-        $correctCount = ['left' => 0, 'right' => 0, 'total' => $correctTotals['total'], 'selected' => 0];
-        $incorrectCount = ['left' => 0, 'right' => 0, 'total' => 0, 'left_double' => 0, 'right_double' => 0, 'double_total' => 0];
-
-        $doubleClicks = collect($patientExam->double_clicks)->keyBy(function (array $item, int $key) {
-            return $item[0] . '_' . $item[1];
-        });
-        foreach ($patientExam->result as $key => $position) {
-            $item = $patientExam->pattern[$position[0]][$position[1]];
-            if ($item['isCorrect']) {
-                $correctCount['selected'] = $correctCount['selected'] + 1;
-                if (in_array($item['section'], [1, 2, 7, 8])) {
-                    $correctCount['right'] = $correctCount['right'] + 1;
-                } else {
-                    $correctCount['left'] = $correctCount['left'] + 1;
-                }
-            } else {
-                $incorrectCount['total'] = $incorrectCount['total'] + 1;
-
-                if (in_array($item['section'], [1, 2, 7, 8])) {
-                    $incorrectCount['right'] = $incorrectCount['right'] + 1;
-                } else {
-                    $incorrectCount['left'] = $incorrectCount['left'] + 1;
-                }
-                if ($doubleClicks->has($position[0] . '_' . $position[1])) {
-                    $clicks = Arr::get($doubleClicks->get($position[0] . '_' . $position[1]), 2);
-                    $incorrectCount['double_total'] += $clicks;
-                    if (in_array($item['section'], [1, 2, 7, 8])) {
-                        $incorrectCount['right_double'] +=  $clicks;
-                    } else {
-                        $incorrectCount['left_double'] +=  $clicks;
-                    }
-                }
-            }
-        }
         $examResultDto = new ExamResultDto(
             $patientExam->exam_id,
             $correctTotals['total'] - $correctCount['selected'],
@@ -213,7 +168,6 @@ class ExamController extends Controller
         );
         $analyzeInfo = (new GetRecommendationService($examResultDto))->getInformation();
         $timeExpiredExamId = Cache::pull('time_expired_exam_id');
-        // dd($timeExpiredExamId);
         return [
             'patientId' => $patientExam->patient_id,
             'totalMinute' => $patientExam->time,
@@ -226,6 +180,7 @@ class ExamController extends Controller
             'exam_type_recommend' => $patientExam->getExamTypeRecommendLabel(),
             'analyzeInfo' => $analyzeInfo,
             'showTimeNotification' => ($timeExpiredExamId ==  $patientExam->id ? 1 : 0),
+            'exam_id' => $patientExam->exam_id,
         ];
     }
     public function getInfo(PatientExam $patientExam)
@@ -243,7 +198,8 @@ class ExamController extends Controller
         $doubleClicks = collect($patientExam->double_clicks)->keyBy(function (array $item, int $key) {
             return $item[0] . '_' . $item[1];
         });
-        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference','doubleClicks'))->setWarnings(true);
+        $isWithMap = $patientExam->exam_id != 4;
+        $pdf = Pdf::loadView('pdf.exam', compact('patientExam', 'totals', 'config', 'reference', 'doubleClicks', 'isWithMap'))->setWarnings(true);
         // return view('pdf.exam', compact('patientExam', 'totals', 'config','reference'));
         return $pdf->stream();
     }

@@ -4,6 +4,7 @@ use App\Models\PatientExamOptions;
 
 return [
     1 => [
+        'id' => 1,
         'folder' => 'vision',
         'svgs' => [
             1 => ['1'],
@@ -77,6 +78,7 @@ return [
         'mode_type' => 1,
     ],
     2 => [
+        'id' => 2,
         'folder' => 'vision2',
         'svgs' => [
             1 => ['Alpaca1'],
@@ -130,6 +132,7 @@ return [
         'mode_type' => 2,
     ],
     3 => [
+        'id' => 3,
         'folder' => 'vision3',
         'svgs' => [
             1 => ['circle'],
@@ -181,5 +184,247 @@ return [
             ],
         ],
         'mode_type' => 3,
-    ]
+    ],
+    4 => [
+        'id' => 4,
+        'folder' => 'shulte_table',
+        'levels' => [
+            1 => [
+                'x' => 3,
+                'y' => 3,
+                'title' => "Легкий",
+                'desc' => "сітка 3х3",
+                'value' => "1",
+                'icon' => ['icon' => "tabler-rocket", 'size' => "28"],
+                'description' =>       " <h1 style='text-align: center'>Легкий рівень</h1>\n" .
+                    "    \n" .
+                    "    <h2>Кому підходить?</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Пацієнтам із помірними когнітивними або зорово-моторними порушеннями.</li>\n" .
+                    "        <li>Тим, хто вже досяг прогресу на легкому рівні.</li>\n" .
+                    "        <li>Для пацієнтів із залишковими симптомами неглекту.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Характеристики тесту:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Використовується <strong>Single Task</strong> або <strong>Dual Task</strong>, залежно від цілей терапії.</li>\n" .
+                    "        <li>Збільшена кількість стимулів на дошці, які розташовані щільніше.</li>\n" .
+                    "        <li>Візуальні стимули більш схожі один на одного, включаючи відволікаючі елементи.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Мета:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Тренувати здатність обробляти більшу кількість інформації.</li>\n" .
+                    "        <li>Покращувати швидкість реакції та вибіркову увагу.</li>\n" .
+                    "    </ul>",
+            ],
+            2 => [
+                'x' => 4,
+                'y' => 4,
+                'title' => "Середній",
+                'desc' => "сітка 4х4",
+                'value' => "2",
+                'icon' => ['icon' => "tabler-star", 'size' => "28"],
+                'description' =>       " <h1 style='text-align: center'>Середній рівень</h1>\n" .
+                    "    \n" .
+                    "    <h2>Кому підходить?</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Пацієнтам із помірними когнітивними або зорово-моторними порушеннями.</li>\n" .
+                    "        <li>Тим, хто вже досяг прогресу на легкому рівні.</li>\n" .
+                    "        <li>Для пацієнтів із залишковими симптомами неглекту.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Характеристики тесту:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Використовується <strong>Single Task</strong> або <strong>Dual Task</strong>, залежно від цілей терапії.</li>\n" .
+                    "        <li>Збільшена кількість стимулів на дошці, які розташовані щільніше.</li>\n" .
+                    "        <li>Візуальні стимули більш схожі один на одного, включаючи відволікаючі елементи.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Мета:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Тренувати здатність обробляти більшу кількість інформації.</li>\n" .
+                    "        <li>Покращувати швидкість реакції та вибіркову увагу.</li>\n" .
+                    "    </ul>",
+            ],
+            3 => [
+                'x' => 5,
+                'y' => 5,
+                'title' => "Важкий",
+                'desc' => "сітка 5х5",
+                'value' => "3",
+                'icon' => ['icon' => "tabler-crown", 'size' => "28"],
+                'description' =>       " <h1 style='text-align: center'>Середній рівень</h1>\n" .
+                    "    \n" .
+                    "    <h2>Кому підходить?</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Пацієнтам із помірними когнітивними або зорово-моторними порушеннями.</li>\n" .
+                    "        <li>Тим, хто вже досяг прогресу на легкому рівні.</li>\n" .
+                    "        <li>Для пацієнтів із залишковими симптомами неглекту.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Характеристики тесту:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Використовується <strong>Single Task</strong> або <strong>Dual Task</strong>, залежно від цілей терапії.</li>\n" .
+                    "        <li>Збільшена кількість стимулів на дошці, які розташовані щільніше.</li>\n" .
+                    "        <li>Візуальні стимули більш схожі один на одного, включаючи відволікаючі елементи.</li>\n" .
+                    "    </ul>\n" .
+                    "    \n" .
+                    "    <h2>Мета:</h2>\n" .
+                    "    <ul>\n" .
+                    "        <li>Тренувати здатність обробляти більшу кількість інформації.</li>\n" .
+                    "        <li>Покращувати швидкість реакції та вибіркову увагу.</li>\n" .
+                    "    </ul>",
+
+            ],
+        ],
+    ],
+    5 => [
+        'id' => 5,
+        'folder' => 'vision5',
+        'svgs' => [
+            1 => ['A'],
+            2 => ['O'],
+            3 => ['U'],
+            4 => ['B'],
+            5 => ['M'],
+            6 => ['P'],
+        ],
+        'allSvgs' => ['A', 'O', 'U', 'B', 'M'],
+        'levels' => [1 => ['count' => 15, 'size' => 76], 2 => ['count' => 22, 'size' => 57], 3 => ['count' => 30, 'size' => 38]],
+        'default_size' => 76,
+        'default_max_count' => 8,
+        'modes' => [
+            [
+                'title' => "1",
+                'image' => 'vision5/A.svg',
+                'desc' =>  "1",
+                'value' => "1",
+                'icon' => ['icon' => "tabler-box-multiple-1", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "2",
+                'value' => "2",
+                'image' => 'vision5/O.svg',
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "3",
+                'image' => 'vision5/U.svg',
+                'value' => "3",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "4",
+                'image' => 'vision5/B.svg',
+                'value' => "4",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "5",
+                'image' => 'vision5/M.svg',
+                'value' => "5",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "6",
+                'image' => 'vision5/P.svg',
+                'value' => "6",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+        ],
+        'mode_type' => 5,
+    ],
+    6 => [
+        'id' => 6,
+        'folder' => 'vision6',
+        'svgs' => [
+            1 => ['1'],
+            2 => ['2'],
+            3 => ['3'],
+            4 => ['4'],
+            5 => ['5'],
+            6 => ['6'],
+            7 => ['7'],
+            8 => ['8'],
+            9 => ['9'],
+        ],
+        'allSvgs' => ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        'levels' => [1 => ['count' => 15, 'size' => 76], 2 => ['count' => 22, 'size' => 57], 3 => ['count' => 30, 'size' => 38]],
+        'default_size' => 76,
+        'default_max_count' => 8,
+        'modes' => [
+            [
+                'title' => "1",
+                'image' => 'vision6/1.svg',
+                'desc' =>  "1",
+                'value' => "1",
+                'icon' => ['icon' => "tabler-box-multiple-1", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "2",
+                'value' => "2",
+                'image' => 'vision6/2.svg',
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "3",
+                'image' => 'vision6/3.svg',
+                'value' => "3",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "4",
+                'image' => 'vision6/4.svg',
+                'value' => "4",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "5",
+                'image' => 'vision6/5.svg',
+                'value' => "5",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "6",
+                'image' => 'vision6/6.svg',
+                'value' => "6",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "7",
+                'image' => 'vision6/7.svg',
+                'value' => "7",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "8",
+                'image' => 'vision6/8.svg',
+                'value' => "8",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+            [
+                'title' => "9",
+                'image' => 'vision6/9.svg',
+                'value' => "9",
+                'icon' => ['icon' => "tabler-box-multiple-2", 'size' => "28"],
+                'description' => ''
+            ],
+        ],
+        'mode_type' => 6,
+    ],
 ];
